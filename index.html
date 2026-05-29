@@ -32,20 +32,23 @@
         /* HALAMAN 1 (Aktif di Awal) */
         #page1 {
             display: block;
-            background-image: url('BEBEK (1).jpg');
+            background-image: url('https://i.pinimg.com/736x/21/2e/da/212eda57f6d90066299b1093120155a0.jpg');
             background-size: cover;
             background-position: center;
             background-repeat: no-repeat;
         }
 
-        /* HALAMAN 2 (Tempat Scrapbook Selanjutnya) */
+        /* HALAMAN 2 (Countdown dengan Background hal 2.jpeg) */
         #page2 {
-            background-color: #fffaf0; /* Warna dasar estetik scrapbook */
+            background-image: url('hal 2.jpeg'); /* Menggunakan file gambar yang kamu unggah */
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
             display: none; 
             justify-content: center;
             align-items: center;
             flex-direction: column;
-            padding: 20px;
+            position: relative;
         }
 
         /* Teks Ucapan Tengah Halaman 1 */
@@ -149,7 +152,6 @@
             pointer-events: none;
         }
 
-        /* Tali Balon 120px */
         .balloon-string {
             position: absolute;
             bottom: -120px;
@@ -161,7 +163,6 @@
             pointer-events: none;
         }
 
-        /* Ikon Surat & Kado di Ujung Tali */
         .scroll-icon {
             position: absolute;
             bottom: -145px;
@@ -235,9 +236,8 @@
 
         .hint { margin-top: 20px; font-size: 0.9rem; color: #ff9ff3; font-weight: normal; }
 
-        /* TOMBOL NEXT */
         .next-btn {
-            display: none; /* Hanya muncul saat kado pecah */
+            display: none; 
             margin: 25px auto 0 auto;
             padding: 12px 35px;
             background-color: #ff4757;
@@ -254,6 +254,88 @@
         .next-btn:hover {
             background-color: #ff6b81;
             transform: scale(1.05);
+        }
+
+        /* ================= STYLE COUNTDOWN HALAMAN 2 ================= */
+        .countdown-container {
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(10px);
+            padding: 35px 25px;
+            border-radius: 25px;
+            text-align: center;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+            border: 3px dashed #ffb6c1;
+            max-width: 90%;
+            width: 500px;
+            z-index: 10;
+        }
+
+        .countdown-container h2 {
+            font-family: 'Comic Sans MS', cursive, sans-serif;
+            color: #ff4757;
+            font-size: 1.8rem;
+            margin-bottom: 10px;
+        }
+
+        .countdown-container p {
+            color: #555;
+            font-size: 1rem;
+            margin-bottom: 25px;
+            font-weight: 500;
+        }
+
+        .timer-box {
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+        }
+
+        .time-segment {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 75px;
+        }
+
+        .time-number {
+            font-size: 2.5rem;
+            font-weight: 800;
+            color: #2c2c54;
+            background: #ffffff;
+            width: 100%;
+            padding: 5px 0;
+            border-radius: 12px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.05);
+            font-family: monospace;
+        }
+
+        .time-label {
+            font-size: 0.85rem;
+            font-weight: bold;
+            color: #ff6b81;
+            margin-top: 8px;
+            text-transform: uppercase;
+        }
+
+        /* Tombol Buka Setelah Hitung Mundur Selesai */
+        .unlock-btn {
+            display: none;
+            margin-top: 20px;
+            padding: 15px 40px;
+            background-color: #2ed573;
+            color: white;
+            font-size: 1.3rem;
+            font-weight: bold;
+            border: none;
+            border-radius: 30px;
+            cursor: pointer;
+            box-shadow: 0 6px 20px rgba(46, 213, 115, 0.4);
+            animation: pulseBtn 1.5s infinite alternate;
+        }
+
+        @keyframes pulseBtn {
+            0% { transform: scale(1); }
+            100% { transform: scale(1.05); }
         }
     </style>
 </head>
@@ -273,10 +355,31 @@
     </div>
 
     <div id="page2" class="page">
-        <h1 style="font-family: 'Comic Sans MS'; color: #ff4757; font-size: 3rem; text-align: center;">
-            Selamat Datang di Halaman Scrapbook Kita! 📖✨
-        </h1>
-        <p style="color: #555; margin-top: 15px; font-size: 1.2rem;">(Tempat untuk menaruh foto dan lembar ceritamu selanjutnya)</p>
+        <div class="countdown-container">
+            <h2>Sabar Yaa Sayangkuuu... 💜</h2>
+            <p>Kado utamamu baru bisa dibuka pada hari Sabtu, 6 Juni jam 15.00 WIB!</p>
+            
+            <div class="timer-box" id="timer-display">
+                <div class="time-segment">
+                    <span class="time-number" id="days">00</span>
+                    <span class="time-label">Hari</span>
+                </div>
+                <div class="time-segment">
+                    <span class="time-number" id="hours">00</span>
+                    <span class="time-label">Jam</span>
+                </div>
+                <div class="time-segment">
+                    <span class="time-number" id="minutes">00</span>
+                    <span class="time-label">Menit</span>
+                </div>
+                <div class="time-segment">
+                    <span class="time-number" id="seconds">00</span>
+                    <span class="time-label">Detik</span>
+                </div>
+            </div>
+
+            <button class="unlock-btn" id="scbk-open-btn" onclick="alert('Membuka scrapbook cerita kita... ✨📖')">Buka Isi Scrapbook! 📖</button>
+        </div>
     </div>
 
     <div id="letter-overlay">
@@ -309,7 +412,7 @@
         }
         generateFlowerBorder();
 
-        // LOGIKA UTAMA WEBSITE
+        // LOGIKA UTAMA BALON
         const container = document.getElementById('balloon-container');
         const overlay = document.getElementById('letter-overlay');
         const secretText = document.getElementById('secret-text');
@@ -317,7 +420,6 @@
         const closeHint = document.getElementById('close-hint');
 
         const baseColors = ['#ff3838', '#ff1f5a', '#1e90ff', '#6c5ce7', '#ffa502', '#ff6b81', '#ff4757', '#2ed573', '#ff781f'];
-
         const messages = [
             "SELAMAT ULANG TAHUN YANG KE 21 SAYANGKUUUU, SEMOGAAA SEMUA YANG DI INGINKANN SAYANGKUUU CEPAT TERJADII YAAAA. ❤️",
             "SEMANGATTT TERUSSS ORANG HEBATKUUUU, DILANCARKANNN SEGAANYAAAA",
@@ -328,7 +430,6 @@
         let messageIndex = 0;
         const MAX_BALLOONS = 5; 
 
-        // 1. FUNGSI BUAT BALON BIASA (SURAT 📜)
         function createNormalBalloon() {
             if (container.children.length >= MAX_BALLOONS) return; 
 
@@ -363,7 +464,6 @@
             container.appendChild(balloon);
         }
 
-        // 2. FUNGSI BUAT BALON KADO SPESIAL (MUNCUL 5 DETIK SEKALI)
         function createGiftBalloon() {
             if (container.children.length >= MAX_BALLOONS) return;
 
@@ -371,11 +471,9 @@
             balloon.classList.add('balloon');
             balloon.style.left = (Math.random() * 70 + 15) + '%';
 
-            // Kecepatan diatur sama tenangnya
             const duration = Math.random() * 3 + 15;
             balloon.style.animation = `floatUpAnimation ${duration}s linear forwards`;
 
-            // Kunci warna Emas/Gold murni biar eksklusif
             balloon.style.background = `radial-gradient(circle at 30% 30%, #ffffff 0%, #ffd700 30%, #b8860b 100%)`;
             balloon.style.boxShadow = `inset -10px -10px 20px rgba(0,0,0,0.4), 0px 12px 25px rgba(218, 165, 32, 0.5)`;
 
@@ -383,10 +481,9 @@
             string.classList.add('balloon-string');
             balloon.appendChild(string);
 
-            // Ikat Kado di Ujung Tali
             const giftIcon = document.createElement('div');
             giftIcon.classList.add('scroll-icon');
-            giftIcon.innerText = "🎁"; // Menggunakan ikon kado
+            giftIcon.innerText = "🎁";
             balloon.appendChild(giftIcon);
 
             balloon.dataset.message = "YAYYYYY, SELAMATTT SAYANGKUUUUU";
@@ -396,7 +493,6 @@
             container.appendChild(balloon);
         }
 
-        // Fungsi pembagi logika klik balon
         function setupBalloonClick(balloon) {
             balloon.addEventListener('click', (e) => {
                 e.stopPropagation();
@@ -406,10 +502,9 @@
                     if (balloon.dataset.message) {
                         secretText.innerText = balloon.dataset.message;
                         
-                        // Jika yang pecah adalah Balon Kado, tampilkan tombol Next
                         if (balloon.dataset.type === "gift") {
                             nextPageBtn.style.display = "block";
-                            closeHint.style.display = "none"; // Sembunyikan instruksi klik luar sementara
+                            closeHint.style.display = "none";
                         } else {
                             nextPageBtn.style.display = "none";
                             closeHint.style.display = "block";
@@ -427,28 +522,65 @@
             });
         }
 
-        // INTERVAL PEMICU SPAWN BALON
-        setInterval(createNormalBalloon, 3000); // Balon surat biasa nge-spawn tiap 3 detik
-        setInterval(createGiftBalloon, 5000);   // Balon Kado khusus muncul tiap 5 detik sekali
+        setInterval(createNormalBalloon, 3000);
+        setInterval(createGiftBalloon, 5000);
 
-        // LOGIKA PINDAH KE HALAMAN KEDUA (SAAT TOMBOL NEXT DIKLIK)
         nextPageBtn.addEventListener('click', (e) => {
             e.stopPropagation();
             overlay.classList.remove('show');
             overlay.style.display = 'none';
             
-            // Eksekusi Pindah Halaman
             document.getElementById('page1').style.display = 'none';
-            document.getElementById('page2').style.display = 'flex'; // Halaman kedua aktif!
+            document.getElementById('page2').style.display = 'flex';
+            
+            // JALANKAN LOGIKA COUNTDOWN BEGITU HALAMAN 2 DIBUKA
+            startCountdown();
         });
 
-        // Klik di mana saja pada overlay untuk menutup (Hanya bekerja jika bukan tombol next)
         overlay.addEventListener('click', () => {
             if (nextPageBtn.style.display !== "block") {
                 overlay.classList.remove('show');
                 setTimeout(() => overlay.style.display = 'none', 300);
             }
         });
+
+
+        // ================= LOGIKA COUNTDOWN REAL-TIME =================
+        function startCountdown() {
+            // Target: Sabtu, 6 Juni 2026 jam 15:00:00 WIB
+            const targetDate = new Date("June 6, 2026 15:00:00").getTime();
+
+            const timerInterval = setInterval(() => {
+                const now = new Date().getTime();
+                const difference = targetDate - now;
+
+                // Perhitungan waktu Matematika dasar (Hari, Jam, Menit, Detik)
+                const d = Math.floor(difference / (1000 * 60 * 60 * 24));
+                const h = Math.floor((difference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                const m = Math.floor((difference % (1000 * 60 * 60)) / (1000 * 60));
+                const s = Math.floor((difference % (1000 * 60)) / 1000);
+
+                // Update angka di layar dengan format 2 digit (01, 02, dst)
+                document.getElementById("days").innerText = d < 10 ? "0" + d : d;
+                document.getElementById("hours").innerText = h < 10 ? "0" + h : h;
+                document.getElementById("minutes").innerText = m < 10 ? "0" + m : m;
+                document.getElementById("seconds").innerText = s < 10 ? "0" + s : s;
+
+                // KONDISI JIKA WAKTU HABIS (SUDAH TANGGAL 6 JUNI JAM 15.00)
+                if (difference < 0) {
+                    clearInterval(timerInterval);
+                    
+                    // Sembunyikan timer kotak angka
+                    document.getElementById("timer-display").style.display = "none";
+                    
+                    // Ubah teks instruksi
+                    document.querySelector(".countdown-container p").innerText = "Waktunya telah tibaaa! Klik tombol di bawah untuk membukanya! ❤️";
+                    
+                    // Munculkan tombol utama pembuka scrapbook
+                    document.getElementById("scbk-open-btn").style.display = "inline-block";
+                }
+            }, 1000);
+        }
     </script>
 </body>
 </html>
