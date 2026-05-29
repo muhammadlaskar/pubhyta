@@ -35,28 +35,28 @@
             width: 60px;
             height: 75px;
             border-radius: 50% 50% 50% 50% / 40% 40% 60% 60%;
-            bottom: -150px;
+            bottom: -180px; /* Disesuaikan karena tali lebih panjang */
             cursor: pointer;
-            animation: floatUp 10s linear infinite;
+            animation: floatUp 12s linear infinite; /* Sedikit diperlambat biar lebih anggun */
             display: flex;
             justify-content: center;
         }
 
-        /* Tali Balon */
+        /* Tali Balon (DIPANJANGKAN) */
         .balloon::after {
             content: "";
             position: absolute;
-            bottom: -30px;
-            width: 2px;
-            height: 30px;
+            bottom: -60px; /* Panjang tali diubah dari 30px ke 60px */
+            width: 1.5px;
+            height: 60px;
             background-color: #888;
         }
 
-        /* Gulungan Surat di Tali */
+        /* Gulungan Surat di Tali (Disesuaikan posisinya) */
         .balloon.has-letter::before {
             content: "📜";
             position: absolute;
-            bottom: -35px;
+            bottom: -70px; /* Mengikuti ujung tali yang baru */
             font-size: 16px;
             z-index: 2;
             animation: dangle 1.5s ease-in-out infinite alternate;
@@ -72,7 +72,7 @@
                 opacity: 1;
             }
             100% {
-                transform: translateY(-120vh) rotate(10deg);
+                transform: translateY(-130vh) rotate(10deg);
                 opacity: 0;
             }
         }
@@ -96,7 +96,7 @@
             justify-content: center;
             align-items: center;
             z-index: 10;
-            cursor: pointer; /* Klik di mana saja untuk menutup */
+            cursor: pointer;
         }
 
         .letter-content {
@@ -133,11 +133,9 @@
 </head>
 <body>
 
-    <!-- Wadah tempat balon akan muncul -->
     <div id="balloon-container"></div>
 
-    <!-- Pop-up Surat Konten -->
-    <div id="letter-overlay" id="overlay">
+    <div id="letter-overlay">
         <div class="letter-content">
             <p id="secret-text">Pesan rahasia akan muncul di sini...</p>
             <div class="hint">Klik di mana saja untuk kembali</div>
@@ -149,10 +147,9 @@
         const overlay = document.getElementById('letter-overlay');
         const secretText = document.getElementById('secret-text');
 
-        // Daftar warna balon yang estetik/pastel
         const colors = ['#ff6b6b', '#ff4757', '#74b9ff', '#a29bfe', '#ffeaa7', '#fab1a0', '#fd79a8', '#55efc4'];
 
-        // Kumpulan kata-kata romantis/ucapan dari kamu
+        // Silakan ganti/tambah isi pesan di bawah ini sesuai keinginanmu
         const messages = [
             "Selamat ulang tahun ya! Terima kasih sudah hadir dan jadi bagian terindah di hidupku. ❤️",
             "Di hari spesialmu ini, aku berharap semua kebaikan dan kebahagiaan selalu menyertaimu. Kamu berharga banget!",
@@ -162,50 +159,41 @@
 
         let messageIndex = 0;
 
-        // Fungsi membuat balon secara acak
         function createBalloon() {
             const balloon = document.createElement('div');
             balloon.classList.add('balloon');
 
-            // Set warna acak
             const randomColor = colors[Math.floor(Math.random() * colors.length)];
             balloon.style.backgroundColor = randomColor;
             balloon.style.boxShadow = `inset -7px -7px 10px rgba(0,0,0,0.1), 0px 5px 10px ${randomColor}88`;
 
-            // Posisi horizontal acak (0% sampai 90% lebar layar)
             balloon.style.left = Math.random() * 90 + '%';
 
-            // Durasi naik acak (biar ada yang cepat dan lambat, antara 6s sampai 12s)
-            const duration = Math.random() * 6 + 6;
+            // Durasi naik sedikit diperlambat (antara 8 sampai 14 detik) agar tidak terburu-buru
+            const duration = Math.random() * 6 + 8;
             balloon.style.animationDuration = duration + 's';
 
-            // Menentukan apakah balon ini membawa surat (peluang 30%)
-            const hasLetter = Math.random() < 0.3;
+            // Peluang balon membawa surat (diatur 40% karena jumlah balon sekarang lebih sedikit)
+            const hasLetter = Math.random() < 0.4;
             if (hasLetter) {
                 balloon.classList.add('has-letter');
-                
-                // Simpan pesan tertentu ke dalam balon ini
                 const currentMessage = messages[messageIndex % messages.length];
                 balloon.dataset.message = currentMessage;
-                messageIndex++; // Bergeser ke pesan berikutnya untuk balon selanjutnya
+                messageIndex++;
             }
 
-            // Event saat balon di-klik
             balloon.addEventListener('click', (e) => {
-                e.stopPropagation(); // Mencegah trigger klik pada body
+                e.stopPropagation();
                 
                 if (balloon.classList.contains('has-letter')) {
-                    // Tampilkan pesan
                     secretText.innerText = balloon.dataset.message;
                     overlay.style.display = 'flex';
                     setTimeout(() => overlay.classList.add('show'), 10);
                 }
                 
-                // Efek Pecah (balon langsung hilang)
                 balloon.remove();
             });
 
-            // Hapus balon jika sudah melewati layar atas agar browser tidak lemot
             balloon.addEventListener('animationend', () => {
                 balloon.remove();
             });
@@ -213,10 +201,9 @@
             container.appendChild(balloon);
         }
 
-        // Loop untuk terus memproduksi balon setiap 800 milidetik
-        setInterval(createBalloon, 800);
+        // SPAWN BALLOON DIKURANGI: diubah ke 1500ms (1.5 detik sekali)
+        setInterval(createBalloon, 1500);
 
-        // Event klik di mana saja pada overlay untuk menutup pesan dan kembali ke animasi awal
         overlay.addEventListener('click', () => {
             overlay.classList.remove('show');
             setTimeout(() => overlay.style.display = 'none', 300);
