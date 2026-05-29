@@ -19,6 +19,50 @@
             position: relative;
         }
 
+        /* Teks Ucapan di Tengah Halaman */
+        .center-text {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 2.5rem;
+            font-weight: bold;
+            color: #d63031;
+            text-align: center;
+            z-index: 1;
+            pointer-events: none;
+            text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.15);
+            font-family: 'Comic Sans MS', cursive, sans-serif;
+            animation: pulse 2s ease-in-out infinite;
+            width: 90%;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: translate(-50%, -50%) scale(1); }
+            50% { transform: translate(-50%, -50%) scale(1.05); }
+        }
+
+        /* Dekorasi Bunga di Sudut */
+        .flower {
+            position: absolute;
+            font-size: 40px;
+            color: #d63031;
+            z-index: 5;
+            pointer-events: none;
+            animation: spinFlower 6s linear infinite;
+            user-select: none;
+        }
+
+        .top-left { top: 20px; left: 20px; }
+        .top-right { top: 20px; right: 20px; }
+        .bottom-left { bottom: 20px; left: 20px; }
+        .bottom-right { bottom: 20px; right: 20px; }
+
+        @keyframes spinFlower {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
         /* Container Balon */
         #balloon-container {
             position: absolute;
@@ -35,49 +79,46 @@
             width: 60px;
             height: 75px;
             border-radius: 50% 50% 50% 50% / 40% 40% 60% 60%;
-            bottom: -180px; /* Disesuaikan karena tali lebih panjang */
+            bottom: -180px;
             cursor: pointer;
-            animation: floatUp 12s linear infinite; /* Sedikit diperlambat biar lebih anggun */
+            animation: floatUp 14s linear infinite;
             display: flex;
             justify-content: center;
+            z-index: 2;
         }
 
-        /* Tali Balon (DIPANJANGKAN) */
+        /* Tali Balon */
         .balloon::after {
             content: "";
             position: absolute;
-            bottom: -120px; /* Panjang tali diubah dari 30px ke 60px */
+            bottom: -60px;
             width: 1.5px;
-            height: 120px;
+            height: 60px;
             background-color: #888;
         }
 
-        /* Gulungan Surat di Tali (Disesuaikan posisinya) */
+        /* Gulungan Surat di Tali */
         .balloon.has-letter::before {
             content: "📜";
             position: absolute;
-            bottom: -120px; /* Mengikuti ujung tali yang baru */
+            bottom: -70px;
             font-size: 16px;
-            z-index: 2;
+            z-index: 3;
             animation: dangle 1.5s ease-in-out infinite alternate;
         }
 
-        /* Animasi Balon Bergerak ke Atas */
         @keyframes floatUp {
             0% {
                 transform: translateY(0) rotate(0deg);
                 opacity: 1;
             }
-            90% {
-                opacity: 1;
-            }
+            90% { opacity: 1; }
             100% {
                 transform: translateY(-130vh) rotate(10deg);
                 opacity: 0;
             }
         }
 
-        /* Animasi Tali Bergoyang */
         @keyframes dangle {
             0% { transform: rotate(-10deg); }
             100% { transform: rotate(10deg); }
@@ -133,6 +174,13 @@
 </head>
 <body>
 
+    <div class="center-text">HAPPY BIRTHDAY SAYANGKUUUU</div>
+
+    <div class="flower top-left">🌺</div>
+    <div class="flower top-right">🌺</div>
+    <div class="flower bottom-left">🌺</div>
+    <div class="flower bottom-right">🌺</div>
+
     <div id="balloon-container"></div>
 
     <div id="letter-overlay">
@@ -149,7 +197,7 @@
 
         const colors = ['#ff6b6b', '#ff4757', '#74b9ff', '#a29bfe', '#ffeaa7', '#fab1a0', '#fd79a8', '#55efc4'];
 
-        // Silakan ganti/tambah isi pesan di bawah ini sesuai keinginanmu
+        // Sesuai request, kalimat sudah diperbarui dengan teks dari kamu
         const messages = [
             "SELAMAT ULANG TAHUN YANG KE 21 SAYANGKUUUU, SEMOGAAA SEMUA YANG DI INGINKANN SAYANGKUUU CEPAT TERJADII YAAAA. ❤️",
             "SEMANGATTT TERUSSS ORANG HEBATKUUUU, DILANCARKANNN SEGAANYAAAA",
@@ -169,12 +217,10 @@
 
             balloon.style.left = Math.random() * 90 + '%';
 
-            // Durasi naik sedikit diperlambat (antara 8 sampai 14 detik) agar tidak terburu-buru
             const duration = Math.random() * 6 + 8;
             balloon.style.animationDuration = duration + 's';
 
-            // Peluang balon membawa surat (diatur 40% karena jumlah balon sekarang lebih sedikit)
-            const hasLetter = Math.random() < 0.4;
+            const hasLetter = Math.random() < 0.5;
             if (hasLetter) {
                 balloon.classList.add('has-letter');
                 const currentMessage = messages[messageIndex % messages.length];
@@ -201,8 +247,7 @@
             container.appendChild(balloon);
         }
 
-        // SPAWN BALLOON DIKURANGI: diubah ke 1500ms (1.5 detik sekali)
-        setInterval(createBalloon, 1500);
+        setInterval(createBalloon, 2500);
 
         overlay.addEventListener('click', () => {
             overlay.classList.remove('show');
