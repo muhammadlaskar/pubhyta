@@ -66,7 +66,7 @@
             100% { transform: rotate(360deg); }
         }
 
-        /* Container Balon */
+        /* Container Utama Balon */
         #balloon-container {
             position: absolute;
             width: 100%;
@@ -76,21 +76,20 @@
             left: 0;
         }
 
-        /* Style Dasar Balon - UKURAN DIPERBESAR & 3D GRADIENT */
+        /* Style Dasar Balon */
         .balloon {
             position: absolute;
             width: 90px;
             height: 115px;
             border-radius: 50% 50% 50% 50% / 40% 40% 60% 60%;
-            bottom: -300px;
+            bottom: -300px; /* Sembunyi di bawah layar sebelum meluncur */
             cursor: pointer;
-            animation: floatUp 15s linear infinite;
             z-index: 5;
             transform-origin: bottom center;
             transition: transform 0.15s ease-out, opacity 0.15s ease-out;
         }
 
-        /* Hiasan Pantulan Cahaya di Balon (Glossy Effect) */
+        /* Hiasan Pantulan Cahaya (Glossy) */
         .balloon::before {
             content: "";
             position: absolute;
@@ -101,9 +100,10 @@
             border-radius: 50%;
             background: rgba(255, 255, 255, 0.6);
             transform: rotate(-30deg);
+            pointer-events: none;
         }
 
-        /* Tali Balon 120px - Di-center secara presisi */
+        /* Tali Balon 120px (Kini di dalam elemen balon agar PASTI TERIKAT) */
         .balloon-string {
             position: absolute;
             bottom: -120px;
@@ -111,14 +111,14 @@
             transform: translateX(-50%);
             width: 2px;
             height: 120px;
-            background-color: rgba(255, 255, 255, 0.75);
+            background-color: rgba(255, 255, 255, 0.8);
             pointer-events: none;
         }
 
         /* Gulungan Surat di Ujung Tali */
         .scroll-icon {
             position: absolute;
-            bottom: -140px;
+            bottom: -145px;
             left: 50%;
             transform: translateX(-50%);
             font-size: 22px;
@@ -128,26 +128,35 @@
             pointer-events: none;
         }
 
-        /* Animasi Pecah Balon (Pop) */
+        /* Animasi Balon Bergerak ke Atas (DIPERLAMBAT AGAR LEBIH ANGGUN) */
+        @keyframes floatUpAnimation {
+            0% {
+                transform: translateY(0) rotate(0deg);
+                opacity: 1;
+            }
+            90% {
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(-150vh) rotate(10deg);
+                opacity: 0;
+            }
+        }
+
+        /* Animasi Pecah Balon */
         .balloon.pop-animation {
             animation: balloonPop 0.15s ease-out forwards !important;
         }
 
         @keyframes balloonPop {
             0% { transform: scale(1); opacity: 1; }
-            50% { transform: scale(1.3); opacity: 0.8; }
+            50% { transform: scale(1.2); opacity: 0.5; }
             100% { transform: scale(0); opacity: 0; }
         }
 
-        @keyframes floatUp {
-            0% { transform: translateY(0) rotate(0deg); opacity: 1; }
-            90% { opacity: 1; }
-            100% { transform: translateY(-145vh) rotate(15deg); opacity: 0; }
-        }
-
         @keyframes dangle {
-            0% { transform: translateX(-50%) rotate(-10deg); }
-            100% { transform: translateX(-50%) rotate(10deg); }
+            0% { transform: translateX(-50%) rotate(-8deg); }
+            100% { transform: translateX(-50%) rotate(8deg); }
         }
 
         /* Overlay Pop-up Surat */
@@ -214,7 +223,7 @@
         const overlay = document.getElementById('letter-overlay');
         const secretText = document.getElementById('secret-text');
 
-        // Hex warna dasar balon untuk kalkulasi warna tajam 3D
+        // Warna balon tajam dengan efek pencahayaan radial
         const baseColors = ['#ff3838', '#ff1f5a', '#1e90ff', '#6c5ce7', '#ffa502', '#ff6b81', '#ff4757', '#2ed573', '#ff781f'];
 
         const messages = [
@@ -227,34 +236,33 @@
         let messageIndex = 0;
 
         function createBalloon() {
-            // Kita bungkus balon dan tali dalam satu wrapper div agar bergerak bersama secara lurus
-            const wrapper = document.createElement('div');
-            wrapper.style.position = 'absolute';
-            wrapper.style.bottom = '-300px';
-            wrapper.style.left = Math.random() * 85 + '%';
-            
-            const duration = Math.random() * 5 + 10;
-            wrapper.style.animation = `floatUp ${duration}s linear infinite`;
-
             const balloon = document.createElement('div');
             balloon.classList.add('balloon');
 
-            // Warna tajam menggunakan Radial Gradient (Efek Menggelembung 3D)
+            // Set posisi horizontal acak
+            balloon.style.left = Math.random() * 85 + '%';
+
+            // JALAN BALON DIPERLAMBAT: Durasi diperlama menjadi antara 14 hingga 20 detik
+            const duration = Math.random() * 6 + 14;
+            balloon.style.animation = `floatUpAnimation ${duration}s linear infinite`;
+
+            // Style warna 3D tajam
             const color = baseColors[Math.floor(Math.random() * baseColors.length)];
             balloon.style.background = `radial-gradient(circle at 30% 30%, #ffffff 0%, ${color} 20%, #000000 100%)`;
             balloon.style.boxShadow = `inset -10px -10px 20px rgba(0,0,0,0.4), 0px 12px 20px rgba(0,0,0,0.3)`;
 
-            // Buat tali lurus secara terpisah agar rapi
+            // Membuat Tali (Anak elemen dari balon agar melekat sempurna)
             const string = document.createElement('div');
             string.classList.add('balloon-string');
-            wrapper.appendChild(string);
+            balloon.appendChild(string);
 
+            // Menentukan kejutan surat
             const hasLetter = Math.random() < 0.5;
             if (hasLetter) {
                 const scrollIcon = document.createElement('div');
                 scrollIcon.classList.add('scroll-icon');
                 scrollIcon.innerText = "📜";
-                wrapper.appendChild(scrollIcon);
+                balloon.appendChild(scrollIcon);
 
                 const currentMessage = messages[messageIndex % messages.length];
                 balloon.dataset.message = currentMessage;
@@ -262,37 +270,35 @@
                 messageIndex++;
             }
 
-            // Event saat balon di-klik
+            // Aksi saat balon dipecahkan
             balloon.addEventListener('click', (e) => {
                 e.stopPropagation();
                 
-                // Trigger animasi pop pecah balon
                 balloon.classList.add('pop-animation');
-                string.style.opacity = '0';
-                const scroll = wrapper.querySelector('.scroll-icon');
-                if(scroll) scroll.style.opacity = '0';
 
-                // Tunggu animasi pecah selesai (0.15 detik) baru munculkan pop-up teks
+                // Tunggu transisi pecah (150ms) sebelum memunculkan surat
                 setTimeout(() => {
                     if (balloon.dataset.hasLetter === "true") {
                         secretText.innerText = balloon.dataset.message;
                         overlay.style.display = 'flex';
                         setTimeout(() => overlay.classList.add('show'), 10);
                     }
-                    wrapper.remove();
+                    balloon.remove();
                 }, 150);
             });
 
-            wrapper.addEventListener('animationend', () => {
-                wrapper.remove();
+            // Hapus otomatis jika lolos ke langit atas
+            balloon.addEventListener('animationend', () => {
+                balloon.remove();
             });
 
-            wrapper.appendChild(balloon);
-            container.appendChild(wrapper);
+            container.appendChild(balloon);
         }
 
-        setInterval(createBalloon, 2500);
+        // JUMLAH SPAWN DIKURANGI: Balon baru hanya akan muncul setiap 4 detik (4000ms)
+        setInterval(createBalloon, 4000);
 
+        // Menutup pesan
         overlay.addEventListener('click', () => {
             overlay.classList.remove('show');
             setTimeout(() => overlay.style.display = 'none', 300);
