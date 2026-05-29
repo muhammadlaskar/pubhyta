@@ -19,31 +19,33 @@
             background-attachment: fixed;
             overflow: hidden;
             height: 100vh;
+            /* Font utama disamakan dengan memo */
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             position: relative;
         }
 
-        /* Teks Ucapan di Tengah Halaman */
+        /* Teks Ucapan Tengah - FONT & UKURAN DISAMAKAN DENGAN MEMO */
         .center-text {
             position: absolute;
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
-            font-size: 2.8rem;
-            font-weight: bold;
-            color: #ffffff;
+            font-size: 2.8rem; /* Ukuran sesuai request */
+            font-weight: bold; /* Tebal seimbang */
+            color: #ffffff; /* Warna putih bersih */
             text-align: center;
             z-index: 10;
             pointer-events: none;
-            text-shadow: 2px 4px 10px rgba(0, 0, 0, 0.3);
-            font-family: 'Comic Sans MS', cursive, sans-serif;
+            text-shadow: 2px 4px 10px rgba(0, 0, 0, 0.3); /* Shadow agar kontras */
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; /* Font Memo */
             animation: pulse 2s ease-in-out infinite;
             width: 90%;
+            letter-spacing: 1px; /* Membuat teks kapital lebih rapi dan terbaca */
         }
 
         @keyframes pulse {
             0%, 100% { transform: translate(-50%, -50%) scale(1); }
-            50% { transform: translate(-50%, -50%) scale(1.05); }
+            50% { transform: translate(-50%, -50%) scale(1.03); }
         }
 
         /* Dekorasi Bunga Pink di Sudut */
@@ -82,7 +84,7 @@
             width: 90px;
             height: 115px;
             border-radius: 50% 50% 50% 50% / 40% 40% 60% 60%;
-            bottom: -300px; /* Sembunyi di bawah layar sebelum meluncur */
+            bottom: -300px;
             cursor: pointer;
             z-index: 5;
             transform-origin: bottom center;
@@ -103,7 +105,7 @@
             pointer-events: none;
         }
 
-        /* Tali Balon 120px (Kini di dalam elemen balon agar PASTI TERIKAT) */
+        /* Tali Balon 120px */
         .balloon-string {
             position: absolute;
             bottom: -120px;
@@ -128,19 +130,11 @@
             pointer-events: none;
         }
 
-        /* Animasi Balon Bergerak ke Atas (DIPERLAMBAT AGAR LEBIH ANGGUN) */
+        /* Animasi Balon Bergerak ke Atas */
         @keyframes floatUpAnimation {
-            0% {
-                transform: translateY(0) rotate(0deg);
-                opacity: 1;
-            }
-            90% {
-                opacity: 1;
-            }
-            100% {
-                transform: translateY(-150vh) rotate(10deg);
-                opacity: 0;
-            }
+            0% { transform: translateY(0) rotate(0deg); opacity: 1; }
+            90% { opacity: 1; }
+            100% { transform: translateY(-150vh) rotate(10deg); opacity: 0; }
         }
 
         /* Animasi Pecah Balon */
@@ -159,7 +153,7 @@
             100% { transform: translateX(-50%) rotate(8deg); }
         }
 
-        /* Overlay Pop-up Surat */
+        /* Overlay Pop-up Surat (Memo) */
         #letter-overlay {
             position: fixed;
             top: 0;
@@ -223,7 +217,6 @@
         const overlay = document.getElementById('letter-overlay');
         const secretText = document.getElementById('secret-text');
 
-        // Warna balon tajam dengan efek pencahayaan radial
         const baseColors = ['#ff3838', '#ff1f5a', '#1e90ff', '#6c5ce7', '#ffa502', '#ff6b81', '#ff4757', '#2ed573', '#ff781f'];
 
         const messages = [
@@ -239,24 +232,19 @@
             const balloon = document.createElement('div');
             balloon.classList.add('balloon');
 
-            // Set posisi horizontal acak
             balloon.style.left = Math.random() * 85 + '%';
 
-            // JALAN BALON DIPERLAMBAT: Durasi diperlama menjadi antara 14 hingga 20 detik
             const duration = Math.random() * 6 + 14;
             balloon.style.animation = `floatUpAnimation ${duration}s linear infinite`;
 
-            // Style warna 3D tajam
             const color = baseColors[Math.floor(Math.random() * baseColors.length)];
             balloon.style.background = `radial-gradient(circle at 30% 30%, #ffffff 0%, ${color} 20%, #000000 100%)`;
             balloon.style.boxShadow = `inset -10px -10px 20px rgba(0,0,0,0.4), 0px 12px 20px rgba(0,0,0,0.3)`;
 
-            // Membuat Tali (Anak elemen dari balon agar melekat sempurna)
             const string = document.createElement('div');
             string.classList.add('balloon-string');
             balloon.appendChild(string);
 
-            // Menentukan kejutan surat
             const hasLetter = Math.random() < 0.5;
             if (hasLetter) {
                 const scrollIcon = document.createElement('div');
@@ -270,13 +258,10 @@
                 messageIndex++;
             }
 
-            // Aksi saat balon dipecahkan
             balloon.addEventListener('click', (e) => {
                 e.stopPropagation();
-                
                 balloon.classList.add('pop-animation');
 
-                // Tunggu transisi pecah (150ms) sebelum memunculkan surat
                 setTimeout(() => {
                     if (balloon.dataset.hasLetter === "true") {
                         secretText.innerText = balloon.dataset.message;
@@ -287,7 +272,6 @@
                 }, 150);
             });
 
-            // Hapus otomatis jika lolos ke langit atas
             balloon.addEventListener('animationend', () => {
                 balloon.remove();
             });
@@ -295,10 +279,8 @@
             container.appendChild(balloon);
         }
 
-        // JUMLAH SPAWN DIKURANGI: Balon baru hanya akan muncul setiap 4 detik (4000ms)
         setInterval(createBalloon, 4000);
 
-        // Menutup pesan
         overlay.addEventListener('click', () => {
             overlay.classList.remove('show');
             setTimeout(() => overlay.style.display = 'none', 300);
