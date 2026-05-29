@@ -12,18 +12,43 @@
         }
 
         body {
-            background-image: url('BEBEK (1).jpg');
-            background-size: cover;
-            background-position: center;
-            background-repeat: no-repeat;
-            background-attachment: fixed;
             overflow: hidden;
             height: 100vh;
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             position: relative;
+            background-color: #f7f1e3;
         }
 
-        /* Teks Ucapan Tengah - Statis */
+        /* SISTEM HALAMAN */
+        .page {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: none;
+        }
+
+        /* HALAMAN 1 (Aktif di Awal) */
+        #page1 {
+            display: block;
+            background-image: url('BEBEK (1).jpg');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+        }
+
+        /* HALAMAN 2 (Tempat Scrapbook Selanjutnya) */
+        #page2 {
+            background-color: #fffaf0; /* Warna dasar estetik scrapbook */
+            display: none; 
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            padding: 20px;
+        }
+
+        /* Teks Ucapan Tengah Halaman 1 */
         .center-text {
             position: absolute;
             top: 50%;
@@ -40,7 +65,7 @@
             width: 90%;
         }
 
-        /* BINGKAI BUNGA MENGITARI TEPI LAYAR */
+        /* BINGKAI TEPI BUNGA */
         .flower-border {
             position: absolute;
             top: 0;
@@ -54,7 +79,6 @@
             box-sizing: border-box;
         }
 
-        /* Bagian baris bunga atas & bawah */
         .flower-row {
             position: absolute;
             left: 0;
@@ -66,7 +90,6 @@
         .flower-row.top { top: 0; }
         .flower-row.bottom { bottom: 0; }
 
-        /* Bagian kolom bunga kiri & kanan */
         .flower-column {
             position: absolute;
             top: 60px;
@@ -78,7 +101,6 @@
         .flower-column.left { left: 15px; }
         .flower-column.right { right: 15px; }
 
-        /* Element Bunga Tunggal yang Berputar */
         .flower-border span {
             display: inline-block;
             font-size: 35px;
@@ -91,7 +113,7 @@
             100% { transform: rotate(360deg); }
         }
 
-        /* Container Utama Balon */
+        /* CONTAINER BALON */
         #balloon-container {
             position: absolute;
             width: 100%;
@@ -101,7 +123,7 @@
             left: 0;
         }
 
-        /* Style Dasar Balon */
+        /* STYLE BALON */
         .balloon {
             position: absolute;
             width: 90px;
@@ -112,10 +134,8 @@
             z-index: 5;
             transform-origin: bottom center;
             transition: transform 0.15s ease-out, opacity 0.15s ease-out;
-            will-change: transform, opacity;
         }
 
-        /* Hiasan Pantulan Cahaya (Glossy) */
         .balloon::before {
             content: "";
             position: absolute;
@@ -141,7 +161,7 @@
             pointer-events: none;
         }
 
-        /* Gulungan Surat di Ujung Tali */
+        /* Ikon Surat & Kado di Ujung Tali */
         .scroll-icon {
             position: absolute;
             bottom: -145px;
@@ -154,14 +174,12 @@
             pointer-events: none;
         }
 
-        /* Animasi Pergerakan Lambat dan Mulus */
         @keyframes floatUpAnimation {
             0% { transform: translateY(0) rotate(0deg); opacity: 1; }
             85% { opacity: 1; }
             100% { transform: translateY(-160vh) rotate(10deg); opacity: 0; }
         }
 
-        /* Animasi Pecah Balon */
         .balloon.pop-animation {
             animation: balloonPop 0.15s ease-out forwards !important;
         }
@@ -177,7 +195,7 @@
             100% { transform: translateX(-50%) rotate(8deg); }
         }
 
-        /* Overlay Pop-up Surat (Memo) */
+        /* OVERLAY MEMO */
         #letter-overlay {
             position: fixed;
             top: 0;
@@ -216,25 +234,56 @@
         }
 
         .hint { margin-top: 20px; font-size: 0.9rem; color: #ff9ff3; font-weight: normal; }
+
+        /* TOMBOL NEXT */
+        .next-btn {
+            display: none; /* Hanya muncul saat kado pecah */
+            margin: 25px auto 0 auto;
+            padding: 12px 35px;
+            background-color: #ff4757;
+            color: white;
+            border: none;
+            border-radius: 25px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            cursor: pointer;
+            box-shadow: 0 5px 15px rgba(255, 71, 87, 0.4);
+            transition: transform 0.2s, background-color 0.2s;
+        }
+
+        .next-btn:hover {
+            background-color: #ff6b81;
+            transform: scale(1.05);
+        }
     </style>
 </head>
 <body>
 
-    <div class="center-text">HAPPY BIRTHDAY SAYANGGG</div>
+    <div id="page1" class="page">
+        <div class="center-text">HAPPY BIRTHDAY SAYANGGG</div>
 
-    <div class="flower-border">
-        <div class="flower-row top" id="row-top"></div>
-        <div class="flower-column left" id="col-left"></div>
-        <div class="flower-column right" id="col-right"></div>
-        <div class="flower-row bottom" id="row-bottom"></div>
+        <div class="flower-border">
+            <div class="flower-row top" id="row-top"></div>
+            <div class="flower-column left" id="col-left"></div>
+            <div class="flower-column right" id="col-right"></div>
+            <div class="flower-row bottom" id="row-bottom"></div>
+        </div>
+
+        <div id="balloon-container"></div>
     </div>
 
-    <div id="balloon-container"></div>
+    <div id="page2" class="page">
+        <h1 style="font-family: 'Comic Sans MS'; color: #ff4757; font-size: 3rem; text-align: center;">
+            Selamat Datang di Halaman Scrapbook Kita! 📖✨
+        </h1>
+        <p style="color: #555; margin-top: 15px; font-size: 1.2rem;">(Tempat untuk menaruh foto dan lembar ceritamu selanjutnya)</p>
+    </div>
 
     <div id="letter-overlay">
-        <div class="letter-content">
+        <div class="letter-content" onclick="event.stopPropagation()">
             <p id="secret-text"></p>
-            <div class="hint">Klik di mana saja untuk kembali</div>
+            <button id="next-page-btn" class="next-btn">Next &rarr;</button>
+            <div class="hint" id="close-hint">Klik di mana saja untuk kembali</div>
         </div>
     </div>
 
@@ -246,35 +295,32 @@
             const colLeft = document.getElementById('col-left');
             const colRight = document.getElementById('col-right');
 
-            // Atur jumlah bunga berdasarkan kerapatan layar (bisa disesuaikan)
             const horizontalCount = 12; 
             const verticalCount = 5;
 
-            // Isi baris atas dan bawah
             for (let i = 0; i < horizontalCount; i++) {
                 rowTop.innerHTML += '<span>🌸</span>';
                 rowBottom.innerHTML += '<span>🌸</span>';
             }
-            // Isi kolom kiri dan kanan
             for (let i = 0; i < verticalCount; i++) {
                 colLeft.innerHTML += '<span>🌸</span>';
                 colRight.innerHTML += '<span>🌸</span>';
             }
         }
-        // Jalankan pembuat bingkai bunga
         generateFlowerBorder();
 
-
-        // LOGIKA UTAMA BALON STABIL
+        // LOGIKA UTAMA WEBSITE
         const container = document.getElementById('balloon-container');
         const overlay = document.getElementById('letter-overlay');
         const secretText = document.getElementById('secret-text');
+        const nextPageBtn = document.getElementById('next-page-btn');
+        const closeHint = document.getElementById('close-hint');
 
         const baseColors = ['#ff3838', '#ff1f5a', '#1e90ff', '#6c5ce7', '#ffa502', '#ff6b81', '#ff4757', '#2ed573', '#ff781f'];
 
         const messages = [
-            "SELAMAT ULANG TAHUN YANG KE 21 SAYANGKUUUU, SEMOGAAA SEMUA YANG DI INGINKANN SAYANGKUUU CEPAT TERCAPAII YAAAA. ❤️",
-            "SEMANGATTT TERUSSS ORANG HEBATKUUUU, DILANCARKANNN SEGALANYAAAA",
+            "SELAMAT ULANG TAHUN YANG KE 21 SAYANGKUUUU, SEMOGAAA SEMUA YANG DI INGINKANN SAYANGKUUU CEPAT TERJADII YAAAA. ❤️",
+            "SEMANGATTT TERUSSS ORANG HEBATKUUUU, DILANCARKANNN SEGAANYAAAA",
             "LOVEEE YOUUU, LOVEEE YOUUUU LOVEEE YOUUU, LOVEEEE YOUUU SOO MUCHHHH SAYANGGGGGGG. ❤️",
             "SAYANGGG, KAMUU ORANGG HEBATTTT BANGETTTTTTT! ✨"
         ];
@@ -282,15 +328,13 @@
         let messageIndex = 0;
         const MAX_BALLOONS = 5; 
 
-        function createBalloon() {
-            if (container.children.length >= MAX_BALLOONS) {
-                return; 
-            }
+        // 1. FUNGSI BUAT BALON BIASA (SURAT 📜)
+        function createNormalBalloon() {
+            if (container.children.length >= MAX_BALLOONS) return; 
 
             const balloon = document.createElement('div');
             balloon.classList.add('balloon');
-
-            balloon.style.left = (Math.random() * 70 + 15) + '%'; // Jarak aman dari bunga kiri-kanan
+            balloon.style.left = (Math.random() * 70 + 15) + '%';
 
             const duration = Math.random() * 3 + 15;
             balloon.style.animation = `floatUpAnimation ${duration}s linear forwards`;
@@ -310,19 +354,67 @@
                 scrollIcon.innerText = "📜";
                 balloon.appendChild(scrollIcon);
 
-                const currentMessage = messages[messageIndex % messages.length];
-                balloon.dataset.message = currentMessage;
-                balloon.dataset.hasLetter = "true";
+                balloon.dataset.message = messages[messageIndex % messages.length];
+                balloon.dataset.type = "letter";
                 messageIndex++;
             }
 
+            setupBalloonClick(balloon);
+            container.appendChild(balloon);
+        }
+
+        // 2. FUNGSI BUAT BALON KADO SPESIAL (MUNCUL 5 DETIK SEKALI)
+        function createGiftBalloon() {
+            if (container.children.length >= MAX_BALLOONS) return;
+
+            const balloon = document.createElement('div');
+            balloon.classList.add('balloon');
+            balloon.style.left = (Math.random() * 70 + 15) + '%';
+
+            // Kecepatan diatur sama tenangnya
+            const duration = Math.random() * 3 + 15;
+            balloon.style.animation = `floatUpAnimation ${duration}s linear forwards`;
+
+            // Kunci warna Emas/Gold murni biar eksklusif
+            balloon.style.background = `radial-gradient(circle at 30% 30%, #ffffff 0%, #ffd700 30%, #b8860b 100%)`;
+            balloon.style.boxShadow = `inset -10px -10px 20px rgba(0,0,0,0.4), 0px 12px 25px rgba(218, 165, 32, 0.5)`;
+
+            const string = document.createElement('div');
+            string.classList.add('balloon-string');
+            balloon.appendChild(string);
+
+            // Ikat Kado di Ujung Tali
+            const giftIcon = document.createElement('div');
+            giftIcon.classList.add('scroll-icon');
+            giftIcon.innerText = "🎁"; // Menggunakan ikon kado
+            balloon.appendChild(giftIcon);
+
+            balloon.dataset.message = "YAYYYYY, SELAMATTT SAYANGKUUUUU";
+            balloon.dataset.type = "gift";
+
+            setupBalloonClick(balloon);
+            container.appendChild(balloon);
+        }
+
+        // Fungsi pembagi logika klik balon
+        function setupBalloonClick(balloon) {
             balloon.addEventListener('click', (e) => {
                 e.stopPropagation();
                 balloon.classList.add('pop-animation');
 
                 setTimeout(() => {
-                    if (balloon.dataset.hasLetter === "true") {
+                    if (balloon.dataset.message) {
                         secretText.innerText = balloon.dataset.message;
+                        
+                        // Jika yang pecah adalah Balon Kado, tampilkan tombol Next
+                        if (balloon.dataset.type === "gift") {
+                            nextPageBtn.style.display = "block";
+                            closeHint.style.display = "none"; // Sembunyikan instruksi klik luar sementara
+                        } else {
+                            nextPageBtn.style.display = "none";
+                            closeHint.style.display = "block";
+                        }
+
                         overlay.style.display = 'flex';
                         setTimeout(() => overlay.classList.add('show'), 10);
                     }
@@ -333,15 +425,29 @@
             balloon.addEventListener('animationend', () => {
                 balloon.remove();
             });
-
-            container.appendChild(balloon);
         }
 
-        setInterval(createBalloon, 3000);
+        // INTERVAL PEMICU SPAWN BALON
+        setInterval(createNormalBalloon, 3000); // Balon surat biasa nge-spawn tiap 3 detik
+        setInterval(createGiftBalloon, 5000);   // Balon Kado khusus muncul tiap 5 detik sekali
 
-        overlay.addEventListener('click', () => {
+        // LOGIKA PINDAH KE HALAMAN KEDUA (SAAT TOMBOL NEXT DIKLIK)
+        nextPageBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
             overlay.classList.remove('show');
-            setTimeout(() => overlay.style.display = 'none', 300);
+            overlay.style.display = 'none';
+            
+            // Eksekusi Pindah Halaman
+            document.getElementById('page1').style.display = 'none';
+            document.getElementById('page2').style.display = 'flex'; // Halaman kedua aktif!
+        });
+
+        // Klik di mana saja pada overlay untuk menutup (Hanya bekerja jika bukan tombol next)
+        overlay.addEventListener('click', () => {
+            if (nextPageBtn.style.display !== "block") {
+                overlay.classList.remove('show');
+                setTimeout(() => overlay.style.display = 'none', 300);
+            }
         });
     </script>
 </body>
