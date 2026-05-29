@@ -23,7 +23,7 @@
             position: relative;
         }
 
-        /* Teks Ucapan Tengah - KEMBALI KE SEMULA & TANPA ANIMASI */
+        /* Teks Ucapan Tengah - Statis Tanpa Animasi */
         .center-text {
             position: absolute;
             top: 50%;
@@ -36,9 +36,8 @@
             z-index: 10;
             pointer-events: none;
             text-shadow: 2px 4px 10px rgba(0, 0, 0, 0.3);
-            font-family: 'Comic Sans MS', cursive, sans-serif; /* Font semula */
+            font-family: 'Comic Sans MS', cursive, sans-serif;
             width: 90%;
-            /* Animasi pulse sudah dihapus total agar teks diam/statis */
         }
 
         /* Dekorasi Cluster Bunga (3 Bunga di setiap pojok) */
@@ -51,14 +50,12 @@
             user-select: none;
         }
 
-        /* Animasi Berputar untuk setiap bunga */
         .flower-cluster span {
             display: inline-block;
             font-size: 40px;
             animation: spinFlower 6s linear infinite;
         }
 
-        /* Penempatan 3 Bunga di masing-masing Sudut */
         .top-left { top: 20px; left: 20px; }
         .top-right { top: 20px; right: 20px; }
         .bottom-left { bottom: 20px; left: 20px; }
@@ -90,6 +87,7 @@
             z-index: 5;
             transform-origin: bottom center;
             transition: transform 0.15s ease-out, opacity 0.15s ease-out;
+            will-change: transform, opacity;
         }
 
         /* Hiasan Pantulan Cahaya (Glossy) */
@@ -106,7 +104,7 @@
             pointer-events: none;
         }
 
-        /* Tali Balon 120px menempel sempurna */
+        /* Tali Balon 120px */
         .balloon-string {
             position: absolute;
             bottom: -120px;
@@ -131,11 +129,11 @@
             pointer-events: none;
         }
 
-        /* Animasi Pergerakan Lambat (14-20 detik) */
+        /* Animasi Pergerakan Lambat dan Mulus */
         @keyframes floatUpAnimation {
             0% { transform: translateY(0) rotate(0deg); opacity: 1; }
-            90% { opacity: 1; }
-            100% { transform: translateY(-150vh) rotate(10deg); opacity: 0; }
+            85% { opacity: 1; }
+            100% { transform: translateY(-160vh) rotate(10deg); opacity: 0; }
         }
 
         /* Animasi Pecah Balon */
@@ -228,16 +226,22 @@
         ];
 
         let messageIndex = 0;
+        const MAX_BALLOONS = 5; // Batasi maksimal hanya ada 5 balon di layar sekaligus
 
         function createBalloon() {
+            // JIKA BALON DI LAYAR SUDAH MENCAPAI MAKSIMAL, JANGAN BUAT BARU
+            if (container.children.length >= MAX_BALLOONS) {
+                return; 
+            }
+
             const balloon = document.createElement('div');
             balloon.classList.add('balloon');
 
-            balloon.style.left = Math.random() * 85 + '%';
+            balloon.style.left = (Math.random() * 80 + 5) + '%';
 
-            // Durasi Lambat (14 - 20 detik)
-            const duration = Math.random() * 6 + 14;
-            balloon.style.animation = `floatUpAnimation ${duration}s linear infinite`;
+            // Durasi konstan lambat (15-18 detik) agar ritme stabil
+            const duration = Math.random() * 3 + 15;
+            balloon.style.animation = `floatUpAnimation ${duration}s linear forwards`;
 
             const color = baseColors[Math.floor(Math.random() * baseColors.length)];
             balloon.style.background = `radial-gradient(circle at 30% 30%, #ffffff 0%, ${color} 20%, #000000 100%)`;
@@ -270,10 +274,11 @@
                         overlay.style.display = 'flex';
                         setTimeout(() => overlay.classList.add('show'), 10);
                     }
-                    balloon.remove();
+                    balloon.remove(); // HAPUS PERMANEN DARI LOGIKA BROWSER
                 }, 150);
             });
 
+            // FIX UTAMA: KETIKA ANIMASI SELESAI, BALON LANGSUNG DIHAPUS TOTAL AGAR TIDAK MENUMPUK
             balloon.addEventListener('animationend', () => {
                 balloon.remove();
             });
@@ -281,8 +286,8 @@
             container.appendChild(balloon);
         }
 
-        // Muncul irit dan rapi setiap 4 detik sekali
-        setInterval(createBalloon, 4000);
+        // Cek pembuatan balon setiap 3 detik sekali secara konstan
+        setInterval(createBalloon, 3000);
 
         overlay.addEventListener('click', () => {
             overlay.classList.remove('show');
