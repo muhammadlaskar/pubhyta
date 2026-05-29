@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Happy Birthday! 🎈</title>
+    <title>Happy Birthday Sayang! 🎈</title>
     <style>
         * {
             box-sizing: border-box;
@@ -12,26 +12,31 @@
         }
 
         body {
-            background: linear-gradient(to bottom, #fbc531, #f7f1e3);
+            /* Menggunakan gambar bebek pink sebagai background */
+            background-image: url('https://i.pinimg.com/736x/21/2e/da/212eda57f6d90066299b1093120155a0.jpg');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
             overflow: hidden;
             height: 100vh;
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             position: relative;
         }
 
-        /* Teks Ucapan di Tengah Halaman */
+        /* Teks Ucapan di Tengah Halaman (Putih) */
         .center-text {
             position: absolute;
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
-            font-size: 2.5rem;
+            font-size: 2.8rem;
             font-weight: bold;
-            color: #d63031;
+            color: #ffffff; /* Warna Putih */
             text-align: center;
-            z-index: 1;
+            z-index: 10;
             pointer-events: none;
-            text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.15);
+            text-shadow: 2px 4px 10px rgba(0, 0, 0, 0.3); /* Shadow agar teks putih terbaca jelas */
             font-family: 'Comic Sans MS', cursive, sans-serif;
             animation: pulse 2s ease-in-out infinite;
             width: 90%;
@@ -42,17 +47,17 @@
             50% { transform: translate(-50%, -50%) scale(1.05); }
         }
 
-        /* Dekorasi Bunga di Sudut */
+        /* Dekorasi Bunga Pink di Sudut */
         .flower {
             position: absolute;
-            font-size: 40px;
-            color: #d63031;
-            z-index: 5;
+            font-size: 50px;
+            z-index: 15;
             pointer-events: none;
             animation: spinFlower 6s linear infinite;
             user-select: none;
         }
 
+        /* Posisi Sudut */
         .top-left { top: 20px; left: 20px; }
         .top-right { top: 20px; right: 20px; }
         .bottom-left { bottom: 20px; left: 20px; }
@@ -76,183 +81,22 @@
         /* Style Dasar Balon */
         .balloon {
             position: absolute;
-            width: 60px;
-            height: 75px;
+            width: 65px;
+            height: 80px;
             border-radius: 50% 50% 50% 50% / 40% 40% 60% 60%;
-            bottom: -180px;
+            bottom: -250px; /* Lebih dalam karena tali panjang */
             cursor: pointer;
-            animation: floatUp 14s linear infinite;
+            animation: floatUp 15s linear infinite;
             display: flex;
             justify-content: center;
-            z-index: 2;
+            z-index: 5;
         }
 
-        /* Tali Balon */
+        /* Tali Balon (DIPANJANGKAN ke 120px) */
         .balloon::after {
             content: "";
             position: absolute;
-            bottom: -60px;
+            bottom: -120px; /* Panjang tali 120px */
             width: 1.5px;
-            height: 60px;
-            background-color: #888;
-        }
-
-        /* Gulungan Surat di Tali */
-        .balloon.has-letter::before {
-            content: "📜";
-            position: absolute;
-            bottom: -70px;
-            font-size: 16px;
-            z-index: 3;
-            animation: dangle 1.5s ease-in-out infinite alternate;
-        }
-
-        @keyframes floatUp {
-            0% {
-                transform: translateY(0) rotate(0deg);
-                opacity: 1;
-            }
-            90% { opacity: 1; }
-            100% {
-                transform: translateY(-130vh) rotate(10deg);
-                opacity: 0;
-            }
-        }
-
-        @keyframes dangle {
-            0% { transform: rotate(-10deg); }
-            100% { transform: rotate(10deg); }
-        }
-
-        /* Overlay Surat / Pop-up Kata-kata */
-        #letter-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.7);
-            backdrop-filter: blur(5px);
-            display: none;
-            justify-content: center;
-            align-items: center;
-            z-index: 10;
-            cursor: pointer;
-        }
-
-        .letter-content {
-            background: #fffdf0;
-            padding: 30px;
-            border-radius: 15px;
-            max-width: 80%;
-            width: 400px;
-            text-align: center;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.3);
-            border: 2px dashed #d1ccc0;
-            transform: scale(0.7);
-            transition: transform 0.3s ease;
-            position: relative;
-        }
-
-        #letter-overlay.show .letter-content {
-            transform: scale(1);
-        }
-
-        .letter-content p {
-            font-size: 1.2rem;
-            color: #2c2c54;
-            line-height: 1.6;
-            font-style: italic;
-        }
-
-        .hint {
-            margin-top: 20px;
-            font-size: 0.8rem;
-            color: #aaa;
-        }
-    </style>
-</head>
-<body>
-
-    <div class="center-text">HAPPY BIRTHDAY SAYANGKUUUU</div>
-
-    <div class="flower top-left">🌺</div>
-    <div class="flower top-right">🌺</div>
-    <div class="flower bottom-left">🌺</div>
-    <div class="flower bottom-right">🌺</div>
-
-    <div id="balloon-container"></div>
-
-    <div id="letter-overlay">
-        <div class="letter-content">
-            <p id="secret-text">Pesan rahasia akan muncul di sini...</p>
-            <div class="hint">Klik di mana saja untuk kembali</div>
-        </div>
-    </div>
-
-    <script>
-        const container = document.getElementById('balloon-container');
-        const overlay = document.getElementById('letter-overlay');
-        const secretText = document.getElementById('secret-text');
-
-        const colors = ['#ff6b6b', '#ff4757', '#74b9ff', '#a29bfe', '#ffeaa7', '#fab1a0', '#fd79a8', '#55efc4'];
-
-        // Sesuai request, kalimat sudah diperbarui dengan teks dari kamu
-        const messages = [
-            "SELAMAT ULANG TAHUN YANG KE 21 SAYANGKUUUU, SEMOGAAA SEMUA YANG DI INGINKANN SAYANGKUUU CEPAT TERJADII YAAAA. ❤️",
-            "SEMANGATTT TERUSSS ORANG HEBATKUUUU, DILANCARKANNN SEGAANYAAAA",
-            "LOVEEE YOUUU, LOVEEE YOUUUU LOVEEE YOUUU, LOVEEEE YOUUU SOO MUCHHHH SAYANGGGGGGG. ❤️",
-            "SAYANGGG, KAMUU ORANGG HEBATTTT BANGETTTTTTT! ✨"
-        ];
-
-        let messageIndex = 0;
-
-        function createBalloon() {
-            const balloon = document.createElement('div');
-            balloon.classList.add('balloon');
-
-            const randomColor = colors[Math.floor(Math.random() * colors.length)];
-            balloon.style.backgroundColor = randomColor;
-            balloon.style.boxShadow = `inset -7px -7px 10px rgba(0,0,0,0.1), 0px 5px 10px ${randomColor}88`;
-
-            balloon.style.left = Math.random() * 90 + '%';
-
-            const duration = Math.random() * 6 + 8;
-            balloon.style.animationDuration = duration + 's';
-
-            const hasLetter = Math.random() < 0.5;
-            if (hasLetter) {
-                balloon.classList.add('has-letter');
-                const currentMessage = messages[messageIndex % messages.length];
-                balloon.dataset.message = currentMessage;
-                messageIndex++;
-            }
-
-            balloon.addEventListener('click', (e) => {
-                e.stopPropagation();
-                
-                if (balloon.classList.contains('has-letter')) {
-                    secretText.innerText = balloon.dataset.message;
-                    overlay.style.display = 'flex';
-                    setTimeout(() => overlay.classList.add('show'), 10);
-                }
-                
-                balloon.remove();
-            });
-
-            balloon.addEventListener('animationend', () => {
-                balloon.remove();
-            });
-
-            container.appendChild(balloon);
-        }
-
-        setInterval(createBalloon, 2500);
-
-        overlay.addEventListener('click', () => {
-            overlay.classList.remove('show');
-            setTimeout(() => overlay.style.display = 'none', 300);
-        });
-    </script>
-</body>
-</html>
+            height: 120px;
+            background-color: rgba(255, 255
