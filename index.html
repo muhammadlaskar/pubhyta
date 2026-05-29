@@ -23,7 +23,7 @@
             position: relative;
         }
 
-        /* Teks Ucapan Tengah - Statis Tanpa Animasi */
+        /* Teks Ucapan Tengah - Statis */
         .center-text {
             position: absolute;
             top: 50%;
@@ -40,26 +40,51 @@
             width: 90%;
         }
 
-        /* Dekorasi Cluster Bunga (3 Bunga di setiap pojok) */
-        .flower-cluster {
+        /* BINGKAI BUNGA MENGITARI TEPI LAYAR */
+        .flower-border {
             position: absolute;
-            z-index: 15;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
             pointer-events: none;
+            z-index: 15;
             display: flex;
-            gap: 5px;
+            justify-content: space-between;
+            box-sizing: border-box;
+        }
+
+        /* Bagian baris bunga atas & bawah */
+        .flower-row {
+            position: absolute;
+            left: 0;
+            width: 100%;
+            display: flex;
+            justify-content: space-around;
+            padding: 10px 0;
+        }
+        .flower-row.top { top: 0; }
+        .flower-row.bottom { bottom: 0; }
+
+        /* Bagian kolom bunga kiri & kanan */
+        .flower-column {
+            position: absolute;
+            top: 60px;
+            bottom: 60px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-around;
+        }
+        .flower-column.left { left: 15px; }
+        .flower-column.right { right: 15px; }
+
+        /* Element Bunga Tunggal yang Berputar */
+        .flower-border span {
+            display: inline-block;
+            font-size: 35px;
+            animation: spinFlower 6s linear infinite;
             user-select: none;
         }
-
-        .flower-cluster span {
-            display: inline-block;
-            font-size: 40px;
-            animation: spinFlower 6s linear infinite;
-        }
-
-        .top-left { top: 20px; left: 20px; }
-        .top-right { top: 20px; right: 20px; }
-        .bottom-left { bottom: 20px; left: 20px; }
-        .bottom-right { bottom: 20px; right: 20px; }
 
         @keyframes spinFlower {
             0% { transform: rotate(0deg); }
@@ -197,10 +222,12 @@
 
     <div class="center-text">HAPPY BIRTHDAY SAYANGGG</div>
 
-    <div class="flower-cluster top-left"><span>🌸</span><span>🌸</span><span>🌸</span></div>
-    <div class="flower-cluster top-right"><span>🌸</span><span>🌸</span><span>🌸</span></div>
-    <div class="flower-cluster bottom-left"><span>🌸</span><span>🌸</span><span>🌸</span></div>
-    <div class="flower-cluster bottom-right"><span>🌸</span><span>🌸</span><span>🌸</span></div>
+    <div class="flower-border">
+        <div class="flower-row top" id="row-top"></div>
+        <div class="flower-column left" id="col-left"></div>
+        <div class="flower-column right" id="col-right"></div>
+        <div class="flower-row bottom" id="row-bottom"></div>
+    </div>
 
     <div id="balloon-container"></div>
 
@@ -212,6 +239,33 @@
     </div>
 
     <script>
+        // GENERATOR BINGKAI BUNGA TEPI HALAMAN
+        function generateFlowerBorder() {
+            const rowTop = document.getElementById('row-top');
+            const rowBottom = document.getElementById('row-bottom');
+            const colLeft = document.getElementById('col-left');
+            const colRight = document.getElementById('col-right');
+
+            // Atur jumlah bunga berdasarkan kerapatan layar (bisa disesuaikan)
+            const horizontalCount = 12; 
+            const verticalCount = 5;
+
+            // Isi baris atas dan bawah
+            for (let i = 0; i < horizontalCount; i++) {
+                rowTop.innerHTML += '<span>🌸</span>';
+                rowBottom.innerHTML += '<span>🌸</span>';
+            }
+            // Isi kolom kiri dan kanan
+            for (let i = 0; i < verticalCount; i++) {
+                colLeft.innerHTML += '<span>🌸</span>';
+                colRight.innerHTML += '<span>🌸</span>';
+            }
+        }
+        // Jalankan pembuat bingkai bunga
+        generateFlowerBorder();
+
+
+        // LOGIKA UTAMA BALON STABIL
         const container = document.getElementById('balloon-container');
         const overlay = document.getElementById('letter-overlay');
         const secretText = document.getElementById('secret-text');
@@ -219,17 +273,17 @@
         const baseColors = ['#ff3838', '#ff1f5a', '#1e90ff', '#6c5ce7', '#ffa502', '#ff6b81', '#ff4757', '#2ed573', '#ff781f'];
 
         const messages = [
-            "SELAMAT ULANG TAHUN YANG KE 21 SAYANGKUUUU, SEMOGAAA SEMUA YANG DI INGINKANN SAYANGKUUU CEPAT TERJADII YAAAA. ❤️",
-            "SEMANGATTT TERUSSS ORANG HEBATKUUUU, DILANCARKANNN SEGAANYAAAA",
+            "SELAMAT ULANG TAHUN YANG KE 21 SAYANGKUUUU, SEMOGAAA SEMUA YANG DI INGINKANN SAYANGKUUU CEPAT TERCAPAII YAAAA. ❤️",
+            "SEMANGATTT TERUSSS ORANG HEBATKUUUU, DILANCARKANNN SEGALANYAAAA",
             "LOVEEE YOUUU, LOVEEE YOUUUU LOVEEE YOUUU, LOVEEEE YOUUU SOO MUCHHHH SAYANGGGGGGG. ❤️",
             "SAYANGGG, KAMUU ORANGG HEBATTTT BANGETTTTTTT! ✨"
+            "HAPPY BIRTHDAYY SAYANGGGG, WISH YOU ALL THE BESTTTT"
         ];
 
         let messageIndex = 0;
-        const MAX_BALLOONS = 5; // Batasi maksimal hanya ada 5 balon di layar sekaligus
+        const MAX_BALLOONS = 5; 
 
         function createBalloon() {
-            // JIKA BALON DI LAYAR SUDAH MENCAPAI MAKSIMAL, JANGAN BUAT BARU
             if (container.children.length >= MAX_BALLOONS) {
                 return; 
             }
@@ -237,9 +291,8 @@
             const balloon = document.createElement('div');
             balloon.classList.add('balloon');
 
-            balloon.style.left = (Math.random() * 80 + 5) + '%';
+            balloon.style.left = (Math.random() * 70 + 15) + '%'; // Jarak aman dari bunga kiri-kanan
 
-            // Durasi konstan lambat (15-18 detik) agar ritme stabil
             const duration = Math.random() * 3 + 15;
             balloon.style.animation = `floatUpAnimation ${duration}s linear forwards`;
 
@@ -274,11 +327,10 @@
                         overlay.style.display = 'flex';
                         setTimeout(() => overlay.classList.add('show'), 10);
                     }
-                    balloon.remove(); // HAPUS PERMANEN DARI LOGIKA BROWSER
+                    balloon.remove(); 
                 }, 150);
             });
 
-            // FIX UTAMA: KETIKA ANIMASI SELESAI, BALON LANGSUNG DIHAPUS TOTAL AGAR TIDAK MENUMPUK
             balloon.addEventListener('animationend', () => {
                 balloon.remove();
             });
@@ -286,7 +338,6 @@
             container.appendChild(balloon);
         }
 
-        // Cek pembuatan balon setiap 3 detik sekali secara konstan
         setInterval(createBalloon, 3000);
 
         overlay.addEventListener('click', () => {
