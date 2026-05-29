@@ -12,52 +12,53 @@
         }
 
         body {
-            background-image: url('BEBEK (1).jpg');
+            background-image: url('https://BEBEK (1).jpg');
             background-size: cover;
             background-position: center;
             background-repeat: no-repeat;
             background-attachment: fixed;
             overflow: hidden;
             height: 100vh;
-            /* Font utama disamakan dengan memo */
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             position: relative;
         }
 
-        /* Teks Ucapan Tengah - FONT & UKURAN DISAMAKAN DENGAN MEMO */
+        /* Teks Ucapan Tengah - KEMBALI KE SEMULA & TANPA ANIMASI */
         .center-text {
             position: absolute;
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
-            font-size: 2.8rem; /* Ukuran sesuai request */
-            font-weight: bold; /* Tebal seimbang */
-            color: #ffffff; /* Warna putih bersih */
+            font-size: 2.8rem;
+            font-weight: bold;
+            color: #ffffff;
             text-align: center;
             z-index: 10;
             pointer-events: none;
-            text-shadow: 2px 4px 10px rgba(0, 0, 0, 0.3); /* Shadow agar kontras */
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; /* Font Memo */
-            animation: pulse 2s ease-in-out infinite;
+            text-shadow: 2px 4px 10px rgba(0, 0, 0, 0.3);
+            font-family: 'Comic Sans MS', cursive, sans-serif; /* Font semula */
             width: 90%;
-            letter-spacing: 1px; /* Membuat teks kapital lebih rapi dan terbaca */
+            /* Animasi pulse sudah dihapus total agar teks diam/statis */
         }
 
-        @keyframes pulse {
-            0%, 100% { transform: translate(-50%, -50%) scale(1); }
-            50% { transform: translate(-50%, -50%) scale(1.03); }
-        }
-
-        /* Dekorasi Bunga Pink di Sudut */
-        .flower {
+        /* Dekorasi Cluster Bunga (3 Bunga di setiap pojok) */
+        .flower-cluster {
             position: absolute;
-            font-size: 50px;
             z-index: 15;
             pointer-events: none;
-            animation: spinFlower 6s linear infinite;
+            display: flex;
+            gap: 5px;
             user-select: none;
         }
 
+        /* Animasi Berputar untuk setiap bunga */
+        .flower-cluster span {
+            display: inline-block;
+            font-size: 40px;
+            animation: spinFlower 6s linear infinite;
+        }
+
+        /* Penempatan 3 Bunga di masing-masing Sudut */
         .top-left { top: 20px; left: 20px; }
         .top-right { top: 20px; right: 20px; }
         .bottom-left { bottom: 20px; left: 20px; }
@@ -105,7 +106,7 @@
             pointer-events: none;
         }
 
-        /* Tali Balon 120px */
+        /* Tali Balon 120px menempel sempurna */
         .balloon-string {
             position: absolute;
             bottom: -120px;
@@ -130,7 +131,7 @@
             pointer-events: none;
         }
 
-        /* Animasi Balon Bergerak ke Atas */
+        /* Animasi Pergerakan Lambat (14-20 detik) */
         @keyframes floatUpAnimation {
             0% { transform: translateY(0) rotate(0deg); opacity: 1; }
             90% { opacity: 1; }
@@ -198,10 +199,10 @@
 
     <div class="center-text">HAPPY BIRTHDAY SAYANGGG</div>
 
-    <div class="flower top-left">🌸</div>
-    <div class="flower top-right">🌸</div>
-    <div class="flower bottom-left">🌸</div>
-    <div class="flower bottom-right">🌸</div>
+    <div class="flower-cluster top-left"><span>🌸</span><span>🌸</span><span>🌸</span></div>
+    <div class="flower-cluster top-right"><span>🌸</span><span>🌸</span><span>🌸</span></div>
+    <div class="flower-cluster bottom-left"><span>🌸</span><span>🌸</span><span>🌸</span></div>
+    <div class="flower-cluster bottom-right"><span>🌸</span><span>🌸</span><span>🌸</span></div>
 
     <div id="balloon-container"></div>
 
@@ -234,6 +235,7 @@
 
             balloon.style.left = Math.random() * 85 + '%';
 
+            // Durasi Lambat (14 - 20 detik)
             const duration = Math.random() * 6 + 14;
             balloon.style.animation = `floatUpAnimation ${duration}s linear infinite`;
 
@@ -279,6 +281,7 @@
             container.appendChild(balloon);
         }
 
+        // Muncul irit dan rapi setiap 4 detik sekali
         setInterval(createBalloon, 4000);
 
         overlay.addEventListener('click', () => {
