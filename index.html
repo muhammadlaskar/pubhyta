@@ -989,7 +989,7 @@
             drawCtx.clearRect(0, 0, drawCanvas.width, drawCanvas.height);
         }
 
-        // PERBAIKAN FINAL: MENYESUAIKAN SKALA KETEBALAN GARIS DAN MEMOTONG TOTAL EFEK SHADOW AGAR TAJAM, PADAT, & ANTI-MELEBAR
+        // FIX PROSES SNAP INDEPENDEN: MENGUNCI NILAI PIXEL STATIS TANPA PERKALIAN MONITOR AGAR HASILNYA 100% IDENTIK
         function capturePhotoboxFrame() {
             isCaptured = true;
             const canvas = document.getElementById('hidden-canvas');
@@ -1008,8 +1008,8 @@
             ctx.drawImage(videoElement, 0, 0, w, h);
             ctx.setTransform(1, 0, 0, 1, 0, 0); 
 
-            // KALIBRASI SCALING FINAL: Disetel ke 7.3 agar ketebalan pas, tajam, solid, & proporsional di file asli
-            ctx.lineWidth = 7.3; 
+            // KALIBRASI FIX TOTAL: Mengunci ketebalan di 11.5 dan sebaran pendaran neon di 16 (Tanpa rumus pengali layar monitor)
+            ctx.lineWidth = 11.5; 
             ctx.lineCap = 'round';
             ctx.lineJoin = 'round';
 
@@ -1023,7 +1023,7 @@
 
                 ctx.strokeStyle = lineData.color;
                 ctx.shadowColor = lineData.shadow;
-                ctx.shadowBlur = 0; // MEMOTONG TOTAL efek glow agar garis tidak memiliki bias gradasi melebar/leleh
+                ctx.shadowBlur = 16; // Pendaran lampu neon dikunci sempurna mengikuti besaran 1280px
 
                 ctx.beginPath();
                 ctx.moveTo(path[0].x * scaleX, path[0].y * scaleY);
@@ -1032,7 +1032,7 @@
                 }
                 ctx.stroke();
             }
-            ctx.shadowBlur = 0; // Pastikan dimatikan total
+            ctx.shadowBlur = 0;
 
             lastCapturedDataURL = canvas.toDataURL('image/jpeg', 0.95);
             previewRender.src = lastCapturedDataURL;
