@@ -341,7 +341,7 @@
             z-index: 10;
         }
 
-        /* TOMBOL PANAH RAHASIA PASWORD DEVELOEPER */
+        /* TOMBOL PANAH RAHASIA DEVELOEPER */
         .arrow-btn {
             position: absolute;
             bottom: 15px;
@@ -405,7 +405,6 @@
 </head>
 <body>
 
-    <!-- ================== HALAMAN 1 ================== -->
     <div id="page1" class="page">
         <div class="center-text">HAPPY BIRTHDAY SAYANGGG</div>
 
@@ -419,7 +418,6 @@
         <div id="balloon-container"></div>
     </div>
 
-    <!-- ================== HALAMAN 2 ================== -->
     <div id="page2" class="page">
         <h2 class="page2-title">Sabar Yaa Sayangkuuuu, hehe 💜</h2>
         <p class="page2-subtitle">Nunggu duluu yaaaaa</p>
@@ -447,19 +445,17 @@
         <button class="arrow-btn" onclick="checkDeveloperPassword()">&rarr;</button>
     </div>
 
-    <!-- ================== HALAMAN 3 ================== -->
     <div id="page3" class="page">
         <div class="video-box-overlay">
-            <video id="birthday-video" controls>
-                <!-- WAJIB: Download video dari Drive, rename 'video-ultah.mp4', simpan satu folder dengan file ini -->
-                <source src="video-ultah" type="video/mp4">
+            <video id="birthday-video" controls preload="auto">
+                <source src="video-upload.mp4" type="video/mp4">
+                <source src="video-ultah.mp4" type="video/mp4">
                 Browser kamu tidak mendukung pemutar video HTML5.
             </video>
         </div>
         <button class="fake-next-hitbox" onclick="goToNextScrapbookPage()"></button>
     </div>
 
-    <!-- OVERLAY MEMO SURAT -->
     <div id="letter-overlay">
         <div class="letter-content" onclick="event.stopPropagation()">
             <p id="secret-text"></p>
@@ -601,7 +597,7 @@
         }
 
         setInterval(createNormalBalloon, 3000);
-        setInterval(createGiftBalloon, 25000); // 25 detik sekali konstan
+        setInterval(createGiftBalloon, 25000); 
 
         nextPageBtn.addEventListener('click', (e) => {
             e.stopPropagation();
@@ -625,7 +621,6 @@
         let isCountdownActive = true;
 
         function startCountdown() {
-            // Target Penguncian Otomatis: Sabtu, 6 Juni 2026 jam 15:00:00 WIB
             const targetDate = new Date("June 6, 2026 15:00:00").getTime();
 
             const timerInterval = setInterval(() => {
@@ -661,7 +656,7 @@
             document.getElementById('page3').style.display = 'flex';
         });
 
-        // ================= FITUR BYPASS PASSWORD BYPASS RAHASIA =================
+        // ================= FITUR BYPASS PASSWORD RAHASIA =================
         function checkDeveloperPassword() {
             const userInput = prompt("Masukkan password rahasia untuk masuk ke Halaman 3:");
             
