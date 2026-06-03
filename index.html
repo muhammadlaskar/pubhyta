@@ -181,7 +181,7 @@
             100% { transform: translateX(-50%) rotate(8deg); }
         }
 
-        /* ================== FIX STYLING HALAMAN 2 (COUNTDOWN) ================== */
+        /* ================== HALAMAN 2 (COUNTDOWN) ================== */
         #page2 {
             background-image: url('hal 2.jpeg');
             background-size: cover;
@@ -280,7 +280,7 @@
         }
         #page2 .arrow-btn:hover { color: rgba(255, 71, 87, 0.6); }
 
-        /* ================== FIX STYLING HALAMAN 3 (VIDEO THEME) ================== */
+        /* ================== HALAMAN 3 (VIDEO THEME) ================== */
         #page3 {
             background-image: url('hal 3.png');
             background-size: cover;
@@ -543,11 +543,6 @@
             transition: transform 0.2s;
         }
         .next-btn:hover { background-color: #ff6b81; transform: scale(1.05); }
-
-        @keyframes pulseBtn {
-            0% { transform: scale(1); }
-            100% { transform: scale(1.05); }
-        }
     </style>
 </head>
 <body>
@@ -989,7 +984,7 @@
             drawCtx.clearRect(0, 0, drawCanvas.width, drawCanvas.height);
         }
 
-        // FIX PROSES SNAP: MENYESUAIKAN SKALA KETEBALAN GARIS PADA RESOLUSI HD
+        // PERBAIKAN UTAMA: KALIBRASI ULANG KETEBALAN GARIS JEPRI (DARI 16 DIKECILKAN MENJADI 9)
         function capturePhotoboxFrame() {
             isCaptured = true;
             const canvas = document.getElementById('hidden-canvas');
@@ -1008,8 +1003,8 @@
             ctx.drawImage(videoElement, 0, 0, w, h);
             ctx.setTransform(1, 0, 0, 1, 0, 0); 
 
-            // KALIBRASI SCALING: Dipertebal dari 6 menjadi 16 agar guratan tidak menciut di file asli
-            ctx.lineWidth = 16; 
+            // KALIBRASI SCALING BARU: Disetel ke 9 agar ketebalan pas, tajam, dan proporsional di file asli
+            ctx.lineWidth = 9; 
             ctx.lineCap = 'round';
             ctx.lineJoin = 'round';
 
@@ -1023,7 +1018,7 @@
 
                 ctx.strokeStyle = lineData.color;
                 ctx.shadowColor = lineData.shadow;
-                ctx.shadowBlur = 14; // Memperkuat intensitas cahaya glow neon agar proporsional
+                ctx.shadowBlur = 10; // Reduksi sedikit intensitas glow agar seimbang dengan garis 9px
 
                 ctx.beginPath();
                 ctx.moveTo(path[0].x * scaleX, path[0].y * scaleY);
@@ -1057,7 +1052,6 @@
             floatingMenu.style.display = 'flex'; 
         }
 
-        // DOWNLOAD UTAMA
         function saveAndResetForNext() {
             if (!lastCapturedDataURL) return;
 
