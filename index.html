@@ -29,7 +29,7 @@
             display: none;
         }
 
-        /* HALAMAN 1 (Aktif di Awal) */
+        /* HALAMAN 1 */
         #page1 {
             display: block;
             background-image: url('BEBEK (1).jpg');
@@ -38,7 +38,7 @@
             background-repeat: no-repeat;
         }
 
-        /* HALAMAN 2 (CLEAN DESIGN - LANGSUNG COUNTDOWN) */
+        /* HALAMAN 2 */
         #page2 {
             background-image: url('hal 2.jpeg');
             background-size: cover;
@@ -52,16 +52,55 @@
             text-align: center;
         }
 
-        /* HALAMAN 3 (TEMPAT SCRAPBOOK UTAMA) */
+        /* ================= STYLE HALAMAN 3 (BACKGROUND hal 3.png) ================= */
         #page3 {
-            background-color: #fffaf0;
+            background-image: url('hal 3.png'); /* Menggunakan background pita & ceri */
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
             display: none;
-            justify-content: center;
-            align-items: center;
-            flex-direction: column;
             position: relative;
-            overflow-y: auto;
-            padding: 40px 20px;
+            width: 100%;
+            height: 100%;
+        }
+
+        /* Container Pemosisian Video agar Pas di Dalam Kotak Pink Gambar */
+        .video-box-overlay {
+            position: absolute;
+            /* Koordinat ini dihitung agar pas di tengah area kotak pink bawaan gambar */
+            top: 49.5%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            /* Menyesuaikan ukuran video dengan proporsi kotak pink (sekitar 38% dari lebar layar) */
+            width: 38.5%; 
+            aspect-ratio: 16 / 9;
+            border-radius: 35px; /* Menyesuaikan kebulatan sudut kotak pink */
+            overflow: hidden;
+            z-index: 10;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+        }
+
+        .video-box-overlay video {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+            background-color: #000;
+        }
+
+        /* Tombol Next Bawaan Gambar di bagian bawah (Area Interaktif) */
+        .fake-next-hitbox {
+            position: absolute;
+            bottom: 3.5%;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 110px;
+            height: 45px;
+            cursor: pointer;
+            z-index: 20;
+            background: transparent; /* Transparan karena tombol sudah ada di gambar */
+            border: none;
+            border-radius: 20px;
         }
 
         /* Teks Ucapan Tengah Halaman 1 */
@@ -269,7 +308,7 @@
             transform: scale(1.05);
         }
 
-        /* ================= STYLE HALAMAN 2 ================= */
+        /* STYLE COUNTDOWN HALAMAN 2 */
         .page2-title {
             font-family: 'Comic Sans MS', cursive, sans-serif;
             color: #ff4757;
@@ -341,14 +380,13 @@
             z-index: 10;
         }
 
-        /* TOMBOL PANAH KECIL RAHASIA (POJOK KANAN BAWAH) */
         .arrow-btn {
             position: absolute;
             bottom: 15px;
             right: 15px;
             background: transparent;
             border: none;
-            color: rgba(0, 0, 0, 0.15); /* Dibuat sangat samar agar tidak dicurigai pacar */
+            color: rgba(0, 0, 0, 0.15); 
             font-size: 1rem;
             cursor: pointer;
             z-index: 50;
@@ -357,7 +395,7 @@
         }
 
         .arrow-btn:hover {
-            color: rgba(255, 71, 87, 0.6); /* Berubah pink tipis saat kamu sorot cursor */
+            color: rgba(255, 71, 87, 0.6); 
         }
 
         @keyframes pulseBtn {
@@ -368,7 +406,6 @@
 </head>
 <body>
 
-    <!-- ================== HALAMAN 1 ================== -->
     <div id="page1" class="page">
         <div class="center-text">HAPPY BIRTHDAY SAYANGGG</div>
 
@@ -382,7 +419,6 @@
         <div id="balloon-container"></div>
     </div>
 
-    <!-- ================== HALAMAN 2 (COUNTDOWN) ================== -->
     <div id="page2" class="page">
         <h2 class="page2-title">Sabar Yaa Sayangkuuuu, hehe 💜</h2>
         <p class="page2-subtitle">Nunggu duluu yaaaaa</p>
@@ -407,23 +443,22 @@
         </div>
 
         <button class="unlock-btn" id="scbk-open-btn">Buka Isi Scrapbook! 📖</button>
-
-        <!-- Tombol Pengalih Rahasia (Bypass Password) -->
         <button class="arrow-btn" onclick="checkDeveloperPassword()">&rarr;</button>
     </div>
 
-    <!-- ================== HALAMAN 3 (RUANG KERJA SCRAPBOOK) ================== -->
     <div id="page3" class="page">
-        <h1 style="font-family: 'Comic Sans MS'; color: #ff4757; font-size: 2.5rem; text-align: center; margin-bottom: 20px;">
-            🛠️ Ruang Kerja Scrapbook Halaman 3 🛠️
-        </h1>
-        <p style="color: #666; font-size: 1.1rem; text-align: center; max-width: 600px; line-height: 1.6;">
-            Sip! Kamu berhasil masuk menggunakan password rahasia.<br><br>
-            <strong>Sekorban, mari kita bangun isinya di sini!</strong> Beritahu saya apa saja teks, susunan foto, atau dekorasi yang ingin kamu letakkan di halaman utama scrapbook ini.
-        </p>
+        
+        <div class="video-container-box video-box-overlay">
+            <video id="birthday-video" controls>
+                <source src="video-ultah.mp4" type="video/mp4">
+                <source src="https://drive.google.com/uc?export=download&id=1ci9uiSL6AkFV33tNYzIbLD7aD7M_fdVu" type="video/mp4">
+                Browser kamu tidak mendukung pemutar video HTML5.
+            </video>
+        </div>
+
+        <button class="fake-next-hitbox" onclick="goToNextScrapbookPage()"></button>
     </div>
 
-    <!-- OVERLAY MEMO SURAT -->
     <div id="letter-overlay">
         <div class="letter-content" onclick="event.stopPropagation()">
             <p id="secret-text"></p>
@@ -625,7 +660,7 @@
             document.getElementById('page3').style.display = 'flex';
         });
 
-        // ================= FITUR BYPASS TOMBOL PANAH KECIL =================
+        // ================= FITUR BYPASS PASSWORD RAHASIA =================
         function checkDeveloperPassword() {
             const userInput = prompt("Masukkan password rahasia untuk masuk ke Halaman 3:");
             
@@ -636,6 +671,15 @@
             } else if (userInput !== null) {
                 alert("Password salah! Tetap di halaman countdown yaa.");
             }
+        }
+
+        // Fungsi pemicu saat tombol "NEXT" di bawah video diklik
+        function goToNextScrapbookPage() {
+            // Matikan video jika sedang terputar agar suaranya tidak bocor ke halaman berikutnya
+            const vid = document.getElementById('birthday-video');
+            if(vid) vid.pause();
+
+            alert("Menuju ke halaman scrapbook berikutnya... ✨ (Silakan buat Halaman 4 nanti)");
         }
     </script>
 </body>
