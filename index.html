@@ -68,10 +68,10 @@
             height: 100%;
         }
 
-        /* ================== PERBAIKAN TOTAL: HALAMAN 4 (PHOTOBOX SESUAI RETAKAN GAMBAR) ================== */
+        /* ================== SOLUSI FIX POSISI PRESETS: HALAMAN 4 ================== */
         #page4 {
-            background-image: url('hal 4.png'); /* Menggunakan background gambar yang kamu kirim */
-            background-size: cover;
+            background-image: url('hal 4.png');
+            background-size: 100% 100%; /* Mengunci background agar skalanya pas mengikuti window */
             background-position: center;
             background-repeat: no-repeat;
             display: none; 
@@ -80,29 +80,28 @@
             height: 100%;
         }
 
-        /* Pembungkus Area Kamera & Preview Foto */
+        /* Pembungkus Frame Kamera Diatur Mengikuti Garis Kotak Abu-Abu Secara Presisi */
         .photobox-frame {
             position: absolute;
-            top: 48.5%; /* Menyelaraskan posisi kotak kamera di dalam template gambar */
-            left: 50%;
-            transform: translate(-50%, -50%);
-            width: 44.5%; /* Menyesuaikan proporsi kotak abu-abu pada gambar */
-            aspect-ratio: 16 / 9;
+            top: 23%;       /* Batas atas kotak abu-abu template */
+            left: 27.2%;     /* Batas kiri kotak abu-abu template */
+            width: 45.6%;    /* Lebar total kotak abu-abu template */
+            height: 45.5%;   /* Tinggi total kotak abu-abu template */
             background: #2b2b2b;
-            border-radius: 20px;
+            border-radius: 14px; /* Menyesuaikan kelembutan sudut bingkai */
             overflow: hidden;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            box-shadow: inset 0 4px 10px rgba(0,0,0,0.5);
+            z-index: 10;
         }
 
         #webcam-view {
             width: 100%;
             height: 100%;
             object-fit: cover;
-            transform: scaleX(-1); /* Efek Cermin (Mirror) Biar Natural */
+            transform: scaleX(-1); /* Mirror view */
             display: block;
         }
 
-        /* Elemen Gambar Hasil Freeze (Muncul saat tombol jepret ditekan) */
         #photo-preview-render {
             position: absolute;
             top: 0;
@@ -111,92 +110,83 @@
             height: 100%;
             object-fit: cover;
             display: none;
-            z-index: 5;
+            z-index: 12;
         }
 
-        /* PANEL KONTROL NAVIGASI (Diletakkan Pas di Atas Lingkaran Gambar) */
+        /* PANEL KONTROL NAVIGASI (Ditempatkan di area tombol bawah) */
         .photobox-controls {
             position: absolute;
-            bottom: 3.5%; /* Menyelaraskan dengan posisi lingkaran di bagian bawah gambar */
+            top: 76.8%;     /* Diturunkan tepat sejajar di area lingkaran putih kecil */
             left: 50%;
             transform: translateX(-50%);
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 20px; /* Jarak proporsional antara Batal - Jepret - Next */
+            gap: 35px;      /* Jarak seimbang untuk tombol Batal & Next */
             z-index: 20;
             width: auto;
         }
 
-        /* FIX: Tombol Jepret Bulat Mengikuti Pola Lingkaran */
+        /* Tombol Jepret Disesuaikan Ukurannya Agar Pas Masuk Lingkaran Putih */
         .btn-snap-circle {
-            width: 54px;
-            height: 54px;
+            width: 44px;
+            height: 44px;
             border-radius: 50%;
-            background: rgba(255, 255, 255, 0.25);
+            background: rgba(255, 255, 255, 0.1);
             border: 3px solid #ffffff;
             cursor: pointer;
             display: flex;
             align-items: center;
             justify-content: center;
             transition: background 0.2s, transform 0.1s;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.2);
         }
 
         .btn-snap-circle::after {
             content: "";
-            width: 34px;
-            height: 34px;
+            width: 26px;
+            height: 26px;
             background: #ffffff;
             border-radius: 50%;
             display: block;
         }
 
-        .btn-snap-circle:hover { background: rgba(255, 255, 255, 0.4); }
-        .btn-snap-circle:active { transform: scale(0.92); }
+        .btn-snap-circle:hover { background: rgba(255, 255, 255, 0.35); }
+        .btn-snap-circle:active { transform: scale(0.90); }
 
-        /* Tombol Navigasi Samping (Batal & Next) */
+        /* Desain Tombol Samping Kiri & Kanan */
         .btn-side-nav {
-            padding: 8px 20px;
-            font-size: 0.95rem;
+            padding: 7px 18px;
+            font-size: 0.85rem;
             font-weight: bold;
             color: #ffffff;
             border: none;
             border-radius: 20px;
             cursor: pointer;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
-            transition: transform 0.2s, background 0.2s;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+            transition: opacity 0.2s, transform 0.2s;
             opacity: 0;
-            visibility: hidden; /* Sembunyikan sebelum mengambil foto */
+            visibility: hidden;
         }
 
         .btn-side-nav:active { transform: scale(0.95); }
+        .btn-nav-cancel { background-color: #e74c3c; }
+        .btn-nav-cancel:hover { background-color: #ff7675; }
+        .btn-nav-next { background-color: #2ecc71; }
+        .btn-nav-next:hover { background-color: #55efc4; }
 
-        /* Tombol Batal (Warna Merah Kalem) */
-        .btn-nav-cancel {
-            background-color: #ff4757;
-        }
-        .btn-nav-cancel:hover { background-color: #ff6b81; }
-
-        /* Tombol Next (Warna Hijau Sukses) */
-        .btn-nav-next {
-            background-color: #2ed573;
-        }
-        .btn-nav-next:hover { background-color: #26af5f; }
-
-        /* Kelas Pembantu untuk memunculkan Tombol Batal dan Next */
+        /* Status Muncul Ketika Foto Diambil */
         .controls-active .btn-side-nav {
             opacity: 1;
             visibility: visible;
         }
 
-        /* Menandakan Mode Siap Foto (Menyembunyikan lingkaran jepret saat sudah diambil) */
         .controls-active .btn-snap-circle {
-            opacity: 0.4;
+            opacity: 0.2;
             pointer-events: none;
         }
 
-        /* KODE DESIGN ELEMEN LAINNYA */
+        /* LAIN-LAIN */
         .center-text {
             position: absolute;
             top: 50%;
@@ -516,11 +506,6 @@
             border: none;
             border-radius: 20px;
         }
-
-        @keyframes pulseBtn {
-            0% { transform: scale(1); }
-            100% { transform: scale(1.05); }
-        }
     </style>
 </head>
 <body>
@@ -618,7 +603,7 @@
         }
         generateFlowerBorder();
 
-        // LOGIKA BALON HALAMAN 1
+        // LOGIKA BALON
         const container = document.getElementById('balloon-container');
         const overlay = document.getElementById('letter-overlay');
         const secretText = document.getElementById('secret-text');
@@ -749,7 +734,7 @@
             }
         });
 
-        // LOGIKA COUNTDOWN HALAMAN 2
+        // COUNTDOWN HALAMAN 2
         let isCountdownActive = true;
         function startCountdown() {
             const targetDate = new Date("June 6, 2026 15:00:00").getTime();
@@ -793,8 +778,6 @@
                 isCountdownActive = false; 
                 document.getElementById('page2').style.display = 'none';
                 document.getElementById('page3').style.display = 'flex'; 
-            } else if (userInput !== null) {
-                alert("Password salah!");
             }
         }
 
@@ -803,20 +786,19 @@
             if(vid) vid.pause();
             document.getElementById('page3').style.display = 'none';
             document.getElementById('page4').style.display = 'block'; 
-            initiateWebcamHalaman4(); // Langsung mengaktifkan kamera otomatis saat masuk hal 4
+            initiateWebcamHalaman4();
         }
 
-        // ================= LOGIKA UTAMA PHOTOBOX HALAMAN 4 =================
+        // PHOTOBOX HALAMAN 4
         let videoStream = null;
-        let lastCapturedDataURL = null; // Menyimpan data base64 foto sementara
+        let lastCapturedDataURL = null;
 
         function initiateWebcamHalaman4() {
             const videoElement = document.getElementById('webcam-view');
             navigator.mediaDevices.getUserMedia({ 
                 video: { 
                     width: { ideal: 1280 },
-                    height: { ideal: 720 },
-                    aspectRatio: 1.7777777778 
+                    height: { ideal: 720 }
                 }, 
                 audio: false 
             })
@@ -825,12 +807,10 @@
                 videoElement.srcObject = stream;
             })
             .catch(function(err) {
-                alert("Mohon izinkan akses kamera untuk Photobox ya sayang! 💕");
                 console.log(err);
             });
         }
 
-        // FUNGSI JREPRET FOTO (FREEZE DI LAYAR KAMERA)
         function capturePhotoboxFrame() {
             const video = document.getElementById('webcam-view');
             const canvas = document.getElementById('hidden-canvas');
@@ -838,46 +818,34 @@
             const controlPanel = document.getElementById('control-panel-wrapper');
             const ctx = canvas.getContext('2d');
 
-            const captureWidth = 1280;
-            const captureHeight = 720;
-            canvas.width = captureWidth;
-            canvas.height = captureHeight;
+            canvas.width = video.videoWidth || 1280;
+            canvas.height = video.videoHeight || 720;
 
-            // Membalikkan gambar agar sesuai dengan tampilan cermin webcam
-            ctx.translate(captureWidth, 0);
+            ctx.translate(canvas.width, 0);
             ctx.scale(-1, 1);
-            ctx.drawImage(video, 0, 0, captureWidth, captureHeight);
+            ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
 
-            // Simpan data URL sementara
             lastCapturedDataURL = canvas.toDataURL('image/jpeg', 0.9);
-
-            // Pasang hasil foto ke elemen img preview dan tampilkan (Menimpa video)
             previewRender.src = lastCapturedDataURL;
             previewRender.style.display = 'block';
 
-            // Aktifkan tombol Batal dan Next di samping kanan-kiri
             controlPanel.classList.add('controls-active');
         }
 
-        // FUNGSI TOMBOL BATAL (MENGULANG FOTO)
         function cancelAndRetakePhoto() {
             const previewRender = document.getElementById('photo-preview-render');
             const controlPanel = document.getElementById('control-panel-wrapper');
 
-            // Sembunyikan render preview foto lama
             previewRender.style.display = 'none';
             previewRender.src = '';
             lastCapturedDataURL = null;
 
-            // Kembalikan tombol ke keadaan semula (Tombol samping disembunyikan lagi)
             controlPanel.classList.remove('controls-active');
         }
 
-        // FUNGSI TOMBOL NEXT (DOWNLOAD RESMI + RESET FOTO LAGI)
         function saveAndResetForNext() {
             if (!lastCapturedDataURL) return;
 
-            // Jalankan Trigger Download Otomatis Ke Perangkat
             const downloadLink = document.createElement('a');
             downloadLink.href = lastCapturedDataURL;
             downloadLink.download = 'Photobox_Kita_' + Date.now() + '.jpg';
@@ -885,7 +853,6 @@
             downloadLink.click();
             document.body.removeChild(downloadLink);
 
-            // Reset kembali kamera agar bisa digunakan berfoto lagi
             cancelAndRetakePhoto();
         }
     </script>
