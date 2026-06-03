@@ -72,7 +72,7 @@
             height: 100%;
         }
 
-        /* ================== HALAMAN 4: SMART SMART CANVAS PHOTOBOX ================== */
+        /* HALAMAN 4: SMART CANVAS PHOTOBOX */
         #page4 {
             background-image: url('hal 4.png');
             background-size: 100% 100%;
@@ -84,7 +84,6 @@
             height: 100%;
         }
 
-        /* Bingkai Kamera Tetap Presisi Sesuai Gambar Pendukung */
         .photobox-frame {
             position: absolute;
             top: 23%;       
@@ -102,11 +101,10 @@
             width: 100%;
             height: 100%;
             object-fit: cover;
-            transform: scaleX(-1); /* Efek Mirror Kamera */
+            transform: scaleX(-1); 
             display: block;
         }
 
-        /* Tumpukan Kanvas Gambar Transparan Tepat di Atas Layar Kamera */
         #drawing-canvas {
             position: absolute;
             top: 0;
@@ -114,10 +112,9 @@
             width: 100%;
             height: 100%;
             z-index: 11;
-            pointer-events: none; /* Biar tidak mengganggu klik sistem */
+            pointer-events: none; 
         }
 
-        /* Layar Rendering Hasil Freeze Gambar */
         #photo-preview-render {
             position: absolute;
             top: 0;
@@ -129,7 +126,6 @@
             z-index: 12;
         }
 
-        /* Tombol Khusus untuk Reset/Hapus Semua Gambar Coretan Tangan */
         .btn-clear-canvas {
             position: absolute;
             top: 15px;
@@ -150,7 +146,7 @@
         }
         .btn-clear-canvas:hover { background: rgba(255, 71, 87, 0.9); transform: rotate(-45deg); }
 
-        /* PANEL KONTROL JEPRI & NAVIGASI */
+        /* PANEL KONTROL NAVIGASI */
         .photobox-controls {
             position: absolute;
             top: 76.8%;     
@@ -819,25 +815,30 @@
             initiateSmartPhotoboxHalaman4();
         }
 
-        // ================== CORE LOGIC: HAND TRACKING CANVAS DRAWING ==================
+        // ================== UTAMA: SMART CANVAS DENGAN ANTI-JITTER FILTER ==================
         let lastCapturedDataURL = null;
         let isCaptured = false;
         
-        // Memori array untuk menampung seluruh titik koordinat guratan gambar
         let drawingLines = []; 
         let currentPath = [];
         let lastHandPresent = false;
+
+        // Variabel Penyimpanan Koordinat Sebelumnya untuk Keperluan Low-Pass Filter
+        let lastFilteredX = null;
+        let lastFilteredY = null;
+
+        // Debounce Buffer Counter (Mencegah Telunjuk Respon Seketika Tanpa Niat)
+        let drawValidationCounter = 0;
+        const FRAME_VALIDATION_THRESHOLD = 9; // Harus 9 frame tegak lurus berturut-turut (~0.3 detik)
 
         const videoElement = document.getElementById('webcam-view');
         const drawCanvas = document.getElementById('drawing-canvas');
         const drawCtx = drawCanvas.getContext('2d');
 
         function initiateSmartPhotoboxHalaman4() {
-            // Sinkronkan resolusi kanvas gambar internal agar pas dengan ukuran kotak
             resizeDrawingCanvas();
             window.addEventListener('resize', resizeDrawingCanvas);
 
-            // Setup Sistem Kecerdasan Buatan MediaPipe Hands
             const hands = new Hands({
                 locateFile: (file) => `https://cdn.jsdelivr.net/npm/@mediapipe/hands/${file}`
             });
@@ -845,13 +846,12 @@
             hands.setOptions({
                 maxNumHands: 1,
                 modelComplexity: 1,
-                minDetectionConfidence: 0.62,
-                minTrackingConfidence: 0.62
+                minDetectionConfidence: 0.65,
+                minTrackingConfidence: 0.65
             });
 
-            hands.onResults(onHandTrackingResults);
+            hands.onResults(onHandTrackingResultsWithFilter);
 
-            // Hubungkan kamera sistem
             const camera = new Camera(videoElement, {
                 onFrame: async () => {
                     if (!isCaptured) {
@@ -870,61 +870,80 @@
             redrawStoredLines();
         }
 
-        // FUNGSI UTAMA AI DETEKSI GERAKAN JARI TANGAN
-        function onHandTrackingResults(results) {
+        // FIX LOGIKA UTAMA: LOW PASS FILTER + DEBOUNCE TIMER
+        function onHandTrackingResultsWithFilter(results) {
             if (isCaptured) return;
 
-            // Bersihkan kanvas layar atas setiap frame berganti
             drawCtx.clearRect(0, 0, drawCanvas.width, drawCanvas.height);
             redrawStoredLines();
 
             if (results.multiHandLandmarks && results.multiHandLandmarks.length > 0) {
                 const landmarks = results.multiHandLandmarks[0];
                 
-                // Titik landmark nomor 8 adalah Ujung Jari Telunjuk (Index Finger Tip)
                 const indexTip = landmarks[8]; 
-                // Titik landmark nomor 5 adalah Pangkal Jari Telunjuk
                 const indexBase = landmarks[5];
-                // Titik landmark nomor 12 adalah Ujung Jari Tengah (Untuk validasi mode angkat kuas)
                 const middleTip = landmarks[12];
 
-                // Konversi koordinat rasio normalisasi MediaPipe ke koordinat pixel kanvas (Efek Mirror Aktif)
-                const x = (1 - indexTip.x) * drawCanvas.width;
-                const y = indexTip.y * drawCanvas.height;
+                // Hitung Koordinat Raw Mentah AI
+                const rawX = (1 - indexTip.x) * drawCanvas.width;
+                const rawY = indexTip.y * drawCanvas.height;
 
-                // LOGIKA ATURAN KUAS: Jari telunjuk harus tegak lurus ke atas lebih tinggi dari pangkalnya
-                const isDrawingMode = (indexTip.y < indexBase.y) && (middleTip.y > indexBase.y);
+                // Aturan Cek Apakah Jari Telunjuk Berdiri Tegak Sendirian (Mode Menggambar)
+                const isFingerPointingUp = (indexTip.y < indexBase.y) && (middleTip.y > indexBase.y);
 
-                if (isDrawingMode) {
-                    // Beri indikator lingkaran kuas kecil warna pink yang sedang aktif di ujung jari
-                    drawCtx.beginPath();
-                    drawCtx.arc(x, y, 6, 0, 2 * Math.PI);
-                    drawCtx.fillStyle = '#ff7675';
-                    drawCtx.fill();
+                if (isFingerPointingUp) {
+                    // Validasi Debounce Buffer: Naikkan angka frame terverifikasi
+                    drawValidationCounter++;
 
-                    if (!lastHandPresent) {
-                        currentPath = [];
-                        drawingLines.push(currentPath);
+                    if (drawValidationCounter >= FRAME_VALIDATION_THRESHOLD) {
+                        // --- ALGORITMA LOW-PASS EXPONENTIAL FILTER ---
+                        let targetX = rawX;
+                        let targetY = rawY;
+
+                        if (lastFilteredX !== null && lastFilteredY !== null) {
+                            // Campur 60% posisi lama dan 40% posisi baru untuk meredam getaran jitter
+                            targetX = (lastFilteredX * 0.6) + (rawX * 0.4);
+                            targetY = (lastFilteredY * 0.6) + (rawY * 0.4);
+                        }
+
+                        // Simpan posisi terfilter saat ini untuk iterasi berikutnya
+                        lastFilteredX = targetX;
+                        lastFilteredY = targetY;
+
+                        // Tampilkan kursor penunjuk pink yang tenang
+                        drawCtx.open;
+                        drawCtx.beginPath();
+                        drawCtx.arc(targetX, targetY, 6, 0, 2 * Math.PI);
+                        drawCtx.fillStyle = '#ff7675';
+                        drawCtx.fill();
+
+                        if (!lastHandPresent) {
+                            currentPath = [];
+                            drawingLines.push(currentPath);
+                        }
+                        currentPath.push({ x: targetX, y: targetY });
+                        lastHandPresent = true;
                     }
-                    currentPath.push({ x: x, y: y });
-                    lastHandPresent = true;
                 } else {
-                    // Mode angkat kuas (Jari dikepalkan atau dibuka full)
+                    // Reset Counter validasi jika jari diturunkan / telapak tangan dibuka
+                    drawValidationCounter = 0;
                     lastHandPresent = false;
+                    lastFilteredX = null;
+                    lastFilteredY = null;
                 }
             } else {
+                drawValidationCounter = 0;
                 lastHandPresent = false;
+                lastFilteredX = null;
+                lastFilteredY = null;
             }
         }
 
-        // Menggambar ulang seluruh histori coretan kuas tersimpan ke layar
         function redrawStoredLines() {
             drawCtx.lineWidth = 5;
             drawCtx.lineCap = 'round';
             drawCtx.lineJoin = 'round';
-            drawCtx.strokeStyle = '#ff9ff3'; // Warna Pink Neon Cantik khas Photobox
-            
-            // Efek glow lampu neon
+            drawCtx.strokeStyle = '#ff9ff3'; 
             drawCtx.shadowColor = '#ff4757';
             drawCtx.shadowBlur = 4;
 
@@ -939,19 +958,18 @@
                 }
                 drawCtx.stroke();
             }
-            
-            // Matikan efek glow untuk elemen lain
             drawCtx.shadowBlur = 0; 
         }
 
-        // Fungsi Tombol Reset Hapus Layar
         function clearDrawingCanvas() {
             drawingLines = [];
             currentPath = [];
+            lastFilteredX = null;
+            lastFilteredY = null;
+            drawValidationCounter = 0;
             drawCtx.clearRect(0, 0, drawCanvas.width, drawCanvas.height);
         }
 
-        // PROSES SNAP JEPRET FOTO: MENGGABUNGKAN KAMERA DAN KANVAS CORETAN JADI 1 FILE
         function capturePhotoboxFrame() {
             isCaptured = true;
             const canvas = document.getElementById('hidden-canvas');
@@ -964,13 +982,11 @@
             canvas.width = w;
             canvas.height = h;
 
-            // 1. Gambar Video Kamera Webcam Terbalik (Mirror Effect)
             ctx.translate(w, 0);
             ctx.scale(-1, 1);
             ctx.drawImage(videoElement, 0, 0, w, h);
-            ctx.setTransform(1, 0, 0, 1, 0, 0); // Reset transformasi matriks
+            ctx.setTransform(1, 0, 0, 1, 0, 0); 
 
-            // 2. Gambar Lapisan Guratan Tangan Tepat di Atasnya
             ctx.lineWidth = 6;
             ctx.lineCap = 'round';
             ctx.lineJoin = 'round';
@@ -978,7 +994,6 @@
             ctx.shadowColor = '#ff4757';
             ctx.shadowBlur = 6;
 
-            // Konversi skala coretan dari koordinat monitor ke koordinat resolusi foto asli
             const scaleX = w / drawCanvas.width;
             const scaleY = h / drawCanvas.height;
 
@@ -994,7 +1009,6 @@
             }
             ctx.shadowBlur = 0;
 
-            // Kunci Gambar Menjadi Base64 Data URL
             lastCapturedDataURL = canvas.toDataURL('image/jpeg', 0.95);
             previewRender.src = lastCapturedDataURL;
             previewRender.style.display = 'block';
@@ -1010,6 +1024,7 @@
             previewRender.src = '';
             lastCapturedDataURL = null;
             isCaptured = false;
+            drawValidationCounter = 0;
 
             controlPanel.classList.remove('controls-active');
         }
@@ -1024,7 +1039,6 @@
             downloadLink.click();
             document.body.removeChild(downloadLink);
 
-            // Bersihkan juga coretan lama untuk sesi foto seru berikutnya
             clearDrawingCanvas();
             cancelAndRetakePhoto();
         }
