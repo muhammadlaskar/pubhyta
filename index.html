@@ -38,7 +38,7 @@
             background-repeat: no-repeat;
         }
 
-        /* HALAMAN 2 (CLEAN DESIGN - TANPA KOTAK) */
+        /* HALAMAN 2 (CLEAN DESIGN - LANGSUNG COUNTDOWN) */
         #page2 {
             background-image: url('hal 2.jpeg');
             background-size: cover;
@@ -50,6 +50,18 @@
             flex-direction: column;
             position: relative;
             text-align: center;
+        }
+
+        /* HALAMAN 3 (TEMPAT SCRAPBOOK UTAMA) */
+        #page3 {
+            background-color: #fffaf0;
+            display: none;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            position: relative;
+            overflow-y: auto;
+            padding: 40px 20px;
         }
 
         /* Teks Ucapan Tengah Halaman 1 */
@@ -257,7 +269,7 @@
             transform: scale(1.05);
         }
 
-        /* ================= STYLE BARU HALAMAN 2 (TANPA KOTAK CONTAINER) ================= */
+        /* ================= STYLE HALAMAN 2 ================= */
         .page2-title {
             font-family: 'Comic Sans MS', cursive, sans-serif;
             color: #ff4757;
@@ -296,7 +308,7 @@
             font-size: 3.2rem;
             font-weight: 800;
             color: #ffffff;
-            background: #ff6b81; /* Warna balok pink agar angka kontras dengan background gambar */
+            background: #ff6b81; 
             width: 100%;
             padding: 8px 0;
             border-radius: 15px;
@@ -329,6 +341,25 @@
             z-index: 10;
         }
 
+        /* TOMBOL PANAH KECIL RAHASIA (POJOK KANAN BAWAH) */
+        .arrow-btn {
+            position: absolute;
+            bottom: 15px;
+            right: 15px;
+            background: transparent;
+            border: none;
+            color: rgba(0, 0, 0, 0.15); /* Dibuat sangat samar agar tidak dicurigai pacar */
+            font-size: 1rem;
+            cursor: pointer;
+            z-index: 50;
+            user-select: none;
+            transition: color 0.2s;
+        }
+
+        .arrow-btn:hover {
+            color: rgba(255, 71, 87, 0.6); /* Berubah pink tipis saat kamu sorot cursor */
+        }
+
         @keyframes pulseBtn {
             0% { transform: scale(1); }
             100% { transform: scale(1.05); }
@@ -337,6 +368,7 @@
 </head>
 <body>
 
+    <!-- ================== HALAMAN 1 ================== -->
     <div id="page1" class="page">
         <div class="center-text">HAPPY BIRTHDAY SAYANGGG</div>
 
@@ -350,6 +382,7 @@
         <div id="balloon-container"></div>
     </div>
 
+    <!-- ================== HALAMAN 2 (COUNTDOWN) ================== -->
     <div id="page2" class="page">
         <h2 class="page2-title">Sabar Yaa Sayangkuuuu, hehe 💜</h2>
         <p class="page2-subtitle">Nunggu duluu yaaaaa</p>
@@ -373,9 +406,24 @@
             </div>
         </div>
 
-        <button class="unlock-btn" id="scbk-open-btn" onclick="alert('Membuka scrapbook cerita kita... ✨📖')">Buka Isi Scrapbook! 📖</button>
+        <button class="unlock-btn" id="scbk-open-btn">Buka Isi Scrapbook! 📖</button>
+
+        <!-- Tombol Pengalih Rahasia (Bypass Password) -->
+        <button class="arrow-btn" onclick="checkDeveloperPassword()">&rarr;</button>
     </div>
 
+    <!-- ================== HALAMAN 3 (RUANG KERJA SCRAPBOOK) ================== -->
+    <div id="page3" class="page">
+        <h1 style="font-family: 'Comic Sans MS'; color: #ff4757; font-size: 2.5rem; text-align: center; margin-bottom: 20px;">
+            🛠️ Ruang Kerja Scrapbook Halaman 3 🛠️
+        </h1>
+        <p style="color: #666; font-size: 1.1rem; text-align: center; max-width: 600px; line-height: 1.6;">
+            Sip! Kamu berhasil masuk menggunakan password rahasia.<br><br>
+            <strong>Sekorban, mari kita bangun isinya di sini!</strong> Beritahu saya apa saja teks, susunan foto, atau dekorasi yang ingin kamu letakkan di halaman utama scrapbook ini.
+        </p>
+    </div>
+
+    <!-- OVERLAY MEMO SURAT -->
     <div id="letter-overlay">
         <div class="letter-content" onclick="event.stopPropagation()">
             <p id="secret-text"></p>
@@ -517,7 +565,7 @@
         }
 
         setInterval(createNormalBalloon, 3000);
-        setInterval(createGiftBalloon, 25000); // REVISI: Balon kado muncul konstan setiap 25 detik sekali (25000ms)
+        setInterval(createGiftBalloon, 25000); 
 
         nextPageBtn.addEventListener('click', (e) => {
             e.stopPropagation();
@@ -539,11 +587,17 @@
 
 
         // ================= LOGIKA COUNTDOWN REAL-TIME =================
+        let isCountdownActive = true;
+
         function startCountdown() {
-            // Target: Sabtu, 6 Juni 2026 jam 15:00:00 WIB
             const targetDate = new Date("June 6, 2026 15:00:00").getTime();
 
             const timerInterval = setInterval(() => {
+                if (!isCountdownActive) {
+                    clearInterval(timerInterval);
+                    return;
+                }
+
                 const now = new Date().getTime();
                 const difference = targetDate - now;
 
@@ -559,12 +613,29 @@
 
                 if (difference < 0) {
                     clearInterval(timerInterval);
-                    
                     document.getElementById("timer-display").style.display = "none";
                     document.querySelector(".page2-subtitle").innerText = "Waktunya telah tibaaa! Klik tombol di bawah untuk membukanya! ❤️";
                     document.getElementById("scbk-open-btn").style.display = "inline-block";
                 }
             }, 1000);
+        }
+
+        document.getElementById("scbk-open-btn").addEventListener('click', () => {
+            document.getElementById('page2').style.display = 'none';
+            document.getElementById('page3').style.display = 'flex';
+        });
+
+        // ================= FITUR BYPASS TOMBOL PANAH KECIL =================
+        function checkDeveloperPassword() {
+            const userInput = prompt("Masukkan password rahasia untuk masuk ke Halaman 3:");
+            
+            if (userInput === "langmalakas") {
+                isCountdownActive = false; 
+                document.getElementById('page2').style.display = 'none';
+                document.getElementById('page3').style.display = 'flex'; 
+            } else if (userInput !== null) {
+                alert("Password salah! Tetap di halaman countdown yaa.");
+            }
         }
     </script>
 </body>
