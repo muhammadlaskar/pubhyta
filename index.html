@@ -38,7 +38,7 @@
             background-repeat: no-repeat;
         }
 
-        /* HALAMAN 2 (CLEAN DESIGN - TANPA KOTAK) */
+        /* HALAMAN 2 (CLEAN DESIGN - LANGSUNG COUNTDOWN) */
         #page2 {
             background-image: url('hal 2.jpeg');
             background-size: cover;
@@ -50,6 +50,18 @@
             flex-direction: column;
             position: relative;
             text-align: center;
+        }
+
+        /* HALAMAN 3 (TEMPAT KAMU BEBAS BERKREASI UTK SCRAPBOOK) */
+        #page3 {
+            background-color: #fffaf0;
+            display: none;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            position: relative;
+            overflow-y: auto; /* Biar bisa di-scroll kalau isinya panjang */
+            padding: 40px 20px;
         }
 
         /* Teks Ucapan Tengah Halaman 1 */
@@ -257,7 +269,7 @@
             transform: scale(1.05);
         }
 
-        /* ================= STYLE BARU HALAMAN 2 (TANPA KOTAK CONTAINER) ================= */
+        /* ================= STYLE BARU HALAMAN 2 ================= */
         .page2-title {
             font-family: 'Comic Sans MS', cursive, sans-serif;
             color: #ff4757;
@@ -266,6 +278,7 @@
             text-shadow: 2px 2px 8px rgba(255, 255, 255, 0.9), 0px 4px 10px rgba(0,0,0,0.1);
             margin-bottom: 5px;
             z-index: 10;
+            cursor: pointer; /* Menandakan teks ini bisa kamu klik untuk masukkan password */
         }
 
         .page2-subtitle {
@@ -296,7 +309,7 @@
             font-size: 3.2rem;
             font-weight: 800;
             color: #ffffff;
-            background: #ff6b81; /* Warna balok pink agar angka kontras dengan background gambar */
+            background: #ff6b81; 
             width: 100%;
             padding: 8px 0;
             border-radius: 15px;
@@ -351,7 +364,7 @@
     </div>
 
     <div id="page2" class="page">
-        <h2 class="page2-title">Sabar Yaa Sayangkuuuu, hehe 💜</h2>
+        <h2 class="page2-title" onclick="checkDeveloperPassword()">Sabar Yaa Sayangkuuuu, hehe 💜</h2>
         <p class="page2-subtitle">Nunggu duluu yaaaaa</p>
         
         <div class="timer-box" id="timer-display">
@@ -373,7 +386,17 @@
             </div>
         </div>
 
-        <button class="unlock-btn" id="scbk-open-btn" onclick="alert('Membuka scrapbook cerita kita... ✨📖')">Buka Isi Scrapbook! 📖</button>
+        <button class="unlock-btn" id="scbk-open-btn">Buka Isi Scrapbook! 📖</button>
+    </div>
+
+    <div id="page3" class="page">
+        <h1 style="font-family: 'Comic Sans MS'; color: #ff4757; font-size: 2.5rem; text-align: center; margin-bottom: 20px;">
+            🛠️ Ruang Kerja Scrapbook Halaman 3 🛠️
+        </h1>
+        <p style="color: #666; font-size: 1.1rem; text-align: center; max-width: 600px; line-height: 1.6;">
+            Sip! Kamu berhasil bypass halaman pengunci menggunakan password rahasia. Pacarmu aman tidak akan bisa masuk ke sini sebelum hari Sabtu.<br><br>
+            <strong>Sekarang, mari kita bangun isinya di sini!</strong> Mau ditambahkan struktur grid foto kebersamaan kalian, pemutar lagu otomatis, atau lembar cerita cinta digital?
+        </p>
     </div>
 
     <div id="letter-overlay">
@@ -517,7 +540,7 @@
         }
 
         setInterval(createNormalBalloon, 3000);
-        setInterval(createGiftBalloon, 25000); // REVISI: Balon kado muncul konstan setiap 25 detik sekali (25000ms)
+        setInterval(createGiftBalloon, 25000); 
 
         nextPageBtn.addEventListener('click', (e) => {
             e.stopPropagation();
@@ -539,33 +562,7 @@
 
 
         // ================= LOGIKA COUNTDOWN REAL-TIME =================
+        let isCountdownActive = true;
+
         function startCountdown() {
-            // Target: Sabtu, 6 Juni 2026 jam 15:00:00 WIB
-            const targetDate = new Date("June 6, 2026 15:00:00").getTime();
-
-            const timerInterval = setInterval(() => {
-                const now = new Date().getTime();
-                const difference = targetDate - now;
-
-                const d = Math.floor(difference / (1000 * 60 * 60 * 24));
-                const h = Math.floor((difference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-                const m = Math.floor((difference % (1000 * 60 * 60)) / (1000 * 60));
-                const s = Math.floor((difference % (1000 * 60)) / 1000);
-
-                document.getElementById("days").innerText = d < 10 ? "0" + d : d;
-                document.getElementById("hours").innerText = h < 10 ? "0" + h : h;
-                document.getElementById("minutes").innerText = m < 10 ? "0" + m : m;
-                document.getElementById("seconds").innerText = s < 10 ? "0" + s : s;
-
-                if (difference < 0) {
-                    clearInterval(timerInterval);
-                    
-                    document.getElementById("timer-display").style.display = "none";
-                    document.querySelector(".page2-subtitle").innerText = "Waktunya telah tibaaa! Klik tombol di bawah untuk membukanya! ❤️";
-                    document.getElementById("scbk-open-btn").style.display = "inline-block";
-                }
-            }, 1000);
-        }
-    </script>
-</body>
-</html>
+            const targetDate =
