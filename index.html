@@ -29,7 +29,7 @@
             display: none;
         }
 
-        /* HALAMAN 1 (Aktif di Awal) */
+        /* HALAMAN 1 */
         #page1 {
             display: block;
             background-image: url('BEBEK (1).jpg');
@@ -38,7 +38,7 @@
             background-repeat: no-repeat;
         }
 
-        /* HALAMAN 2 (Countdown) */
+        /* HALAMAN 2 */
         #page2 {
             background-image: url('hal 2.jpeg');
             background-size: cover;
@@ -52,7 +52,7 @@
             text-align: center;
         }
 
-        /* HALAMAN 3 (Tampilan Video Utama) */
+        /* HALAMAN 3 */
         #page3 {
             background-image: url('hal 3.png');
             background-size: cover;
@@ -64,149 +64,126 @@
             height: 100%;
         }
 
-        /* Teks Ucapan Tengah Halaman 1 */
-        .center-text {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            font-size: 2.8rem;
-            font-weight: bold;
-            color: #ffffff;
-            text-align: center;
-            z-index: 10;
-            pointer-events: none;
-            text-shadow: 2px 4px 10px rgba(0, 0, 0, 0.3);
-            font-family: 'Comic Sans MS', cursive, sans-serif;
-            width: 90%;
+        /* ================= STYLE BARU HALAMAN 4 (PHOTOBOX INTERAKTIF) ================= */
+        #page4 {
+            background-color: #fff0f3; /* Tema dasar pink pastel manis */
+            display: none; 
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-start;
+            position: relative;
+            padding: 30px 20px;
+            overflow-y: auto; /* Izinkan scroll jika hasil jepretan foto banyak */
         }
 
-        /* BINGKAI TEPI BUNGA */
-        .flower-border {
-            position: absolute;
-            top: 0;
-            left: 0;
+        .photobox-title {
+            font-family: 'Comic Sans MS', cursive, sans-serif;
+            color: #ff4d6d;
+            font-size: 2.2rem;
+            margin-bottom: 5px;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.05);
+            text-align: center;
+        }
+
+        .photobox-subtitle {
+            color: #5c5f62;
+            font-size: 1rem;
+            margin-bottom: 25px;
+            text-align: center;
+        }
+
+        /* Kotak Pembungkus Kamera Preview (Rasio Mandatori 16:9) */
+        .camera-container {
+            width: 100%;
+            max-width: 560px; /* Diatur ideal untuk HP dan Laptop */
+            aspect-ratio: 16 / 9;
+            background: #2b2b2b;
+            border-radius: 20px;
+            overflow: hidden;
+            position: relative;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+            border: 4px solid #ffb3c1;
+        }
+
+        /* Elemen Video Streaming Kamera */
+        #webcam-view {
             width: 100%;
             height: 100%;
-            pointer-events: none;
-            z-index: 15;
-            display: flex;
-            justify-content: space-between;
-            box-sizing: border-box;
+            object-fit: cover;
+            transform: scaleX(-1); /* Efek Mirror/Cermin agar natural saat berkaca */
+            display: block;
         }
 
-        .flower-row {
-            position: absolute;
-            left: 0;
+        /* Area Menu Tombol Kontrol */
+        .control-area {
+            margin: 20px 0 30px 0;
+            display: flex;
+            gap: 15px;
+        }
+
+        .btn-action {
+            padding: 12px 28px;
+            font-size: 1rem;
+            font-weight: bold;
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            transition: transform 0.2s, background 0.2s;
+        }
+
+        .btn-action:active { transform: scale(0.95); }
+
+        .btn-start { background-color: #6c5ce7; color: white; }
+        .btn-capture { background-color: #ff4757; color: white; display: none; } /* Muncul jika kamera aktif */
+
+        /* Area Grid Galeri untuk Hasil Jepretan */
+        .gallery-title {
+            font-family: 'Comic Sans MS', cursive, sans-serif;
+            color: #ff758f;
+            font-size: 1.4rem;
+            margin-bottom: 15px;
+        }
+
+        .photo-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+            gap: 20px;
             width: 100%;
-            display: flex;
-            justify-content: space-around;
-            padding: 10px 0;
+            max-width: 800px;
+            padding-bottom: 40px;
         }
-        .flower-row.top { top: 0; }
-        .flower-row.bottom { bottom: 0; }
 
-        .flower-column {
-            position: absolute;
-            top: 60px;
-            bottom: 60px;
+        .photo-card {
+            background: white;
+            padding: 10px;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+            border: 2px solid #ffe5ec;
             display: flex;
             flex-direction: column;
-            justify-content: space-around;
-        }
-        .flower-column.left { left: 15px; }
-        .flower-column.right { right: 15px; }
-
-        .flower-border span {
-            display: inline-block;
-            font-size: 35px;
-            animation: spinFlower 6s linear infinite;
-            user-select: none;
+            align-items: center;
         }
 
-        @keyframes spinFlower {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
-
-        /* CONTAINER BALON */
-        #balloon-container {
-            position: absolute;
+        .photo-card img {
             width: 100%;
-            height: 100%;
-            overflow: hidden;
-            top: 0;
-            left: 0;
+            aspect-ratio: 16 / 9;
+            object-fit: cover;
+            border-radius: 10px;
+            margin-bottom: 10px;
         }
 
-        /* STYLE BALON */
-        .balloon {
-            position: absolute;
-            width: 90px;
-            height: 115px;
-            border-radius: 50% 50% 50% 50% / 40% 40% 60% 60%;
-            bottom: -300px;
+        .btn-download {
+            background-color: #2ed573;
+            color: white;
+            padding: 6px 15px;
+            font-size: 0.85rem;
+            font-weight: bold;
+            border: none;
+            border-radius: 15px;
             cursor: pointer;
-            z-index: 5;
-            transform-origin: bottom center;
-            transition: transform 0.15s ease-out, opacity 0.15s ease-out;
-        }
-
-        .balloon::before {
-            content: "";
-            position: absolute;
-            top: 12px;
-            left: 15px;
-            width: 25px;
-            height: 15px;
-            border-radius: 50%;
-            background: rgba(255, 255, 255, 0.6);
-            transform: rotate(-30deg);
-            pointer-events: none;
-        }
-
-        .balloon-string {
-            position: absolute;
-            bottom: -120px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 2px;
-            height: 120px;
-            background-color: rgba(255, 255, 255, 0.8);
-            pointer-events: none;
-        }
-
-        .scroll-icon {
-            position: absolute;
-            bottom: -145px;
-            left: 50%;
-            transform: translateX(-50%);
-            font-size: 22px;
-            z-index: 6;
-            animation: dangle 1.5s ease-in-out infinite alternate;
-            transform-origin: top center;
-            pointer-events: none;
-        }
-
-        @keyframes floatUpAnimation {
-            0% { transform: translateY(0) rotate(0deg); opacity: 1; }
-            85% { opacity: 1; }
-            100% { transform: translateY(-160vh) rotate(10deg); opacity: 0; }
-        }
-
-        .balloon.pop-animation {
-            animation: balloonPop 0.15s ease-out forwards !important;
-        }
-
-        @keyframes balloonPop {
-            0% { transform: scale(1); opacity: 1; }
-            50% { transform: scale(1.2); opacity: 0.5; }
-            100% { transform: scale(0); opacity: 0; }
-        }
-
-        @keyframes dangle {
-            0% { transform: translateX(-50%) rotate(-8deg); }
-            100% { transform: translateX(-50%) rotate(8deg); }
+            width: 100%;
+            text-align: center;
         }
 
         /* OVERLAY MEMO SURAT */
@@ -269,7 +246,7 @@
             transform: scale(1.05);
         }
 
-        /* STYLE COUNTDOWN HALAMAN 2 */
+        /* STYLE HALAMAN 2 UNTUK COUNTDOWN */
         .page2-title {
             font-family: 'Comic Sans MS', cursive, sans-serif;
             color: #ff4757;
@@ -341,7 +318,6 @@
             z-index: 10;
         }
 
-        /* TOMBOL PANAH RAHASIA DEVELOEPER */
         .arrow-btn {
             position: absolute;
             bottom: 15px;
@@ -356,11 +332,8 @@
             transition: color 0.2s;
         }
 
-        .arrow-btn:hover {
-            color: rgba(255, 71, 87, 0.6); 
-        }
+        .arrow-btn:hover { color: rgba(255, 71, 87, 0.6); }
 
-        /* OVERLAY PEMOSISIAN VIDEO HALAMAN 3 */
         .video-box-overlay {
             position: absolute;
             top: 49.5%;
@@ -371,7 +344,6 @@
             border-radius: 35px;
             overflow: hidden;
             z-index: 10;
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
         }
 
         .video-box-overlay video {
@@ -382,7 +354,6 @@
             background-color: #000;
         }
 
-        /* HITBOX TOMBOL NEXT TRANSPARAN */
         .fake-next-hitbox {
             position: absolute;
             bottom: 3.5%;
@@ -405,23 +376,22 @@
 </head>
 <body>
 
+    <!-- ================== HALAMAN 1 ================== -->
     <div id="page1" class="page">
         <div class="center-text">HAPPY BIRTHDAY SAYANGGG</div>
-
         <div class="flower-border">
             <div class="flower-row top" id="row-top"></div>
             <div class="flower-column left" id="col-left"></div>
             <div class="flower-column right" id="col-right"></div>
             <div class="flower-row bottom" id="row-bottom"></div>
         </div>
-
         <div id="balloon-container"></div>
     </div>
 
+    <!-- ================== HALAMAN 2 ================== -->
     <div id="page2" class="page">
         <h2 class="page2-title">Sabar Yaa Sayangkuuuu, hehe 💜</h2>
         <p class="page2-subtitle">Nunggu duluu yaaaaa</p>
-        
         <div class="timer-box" id="timer-display">
             <div class="time-segment">
                 <span class="time-number" id="days">00</span>
@@ -440,11 +410,11 @@
                 <span class="time-label">Detik</span>
             </div>
         </div>
-
         <button class="unlock-btn" id="scbk-open-btn">Buka Isi Scrapbook! 📖</button>
         <button class="arrow-btn" onclick="checkDeveloperPassword()">&rarr;</button>
     </div>
 
+    <!-- ================== HALAMAN 3 ================== -->
     <div id="page3" class="page">
         <div class="video-box-overlay">
             <video id="birthday-video" controls preload="auto">
@@ -456,6 +426,33 @@
         <button class="fake-next-hitbox" onclick="goToNextScrapbookPage()"></button>
     </div>
 
+    <!-- ================== HALAMAN 4 (ZONA KREASI PHOTOBOX 16:9) ================== -->
+    <div id="page4" class="page">
+        <h1 class="photobox-title">Our Photobox Space 📸✨</h1>
+        <p class="photobox-subtitle">Yuk ambil jepretan foto termanismu di sini sayang!</p>
+
+        <!-- Kotak Kamera -->
+        <div class="camera-container">
+            <video id="webcam-view" autoplay playsinline></video>
+        </div>
+
+        <!-- Tombol Kontrol -->
+        <div class="control-area">
+            <button id="btn-power-cam" class="btn-action btn-start" onclick="initiateWebcam()">Aktifkan Kamera</button>
+            <button id="btn-snap-cam" class="btn-action btn-capture" onclick="takeSnapshot()">Jepret! (16:9)</button>
+        </div>
+
+        <!-- Judul Galeri Hasil Foto -->
+        <h3 class="gallery-title">Hasil Foto Kita 🎞️</h3>
+        <div class="photo-grid" id="captured-gallery">
+            <!-- Tempat menampung foto hasil jepretan secara otomatis -->
+        </div>
+
+        <!-- Canvas Tersembunyi (Mesin Pemotong Gambar 16:9) -->
+        <canvas id="hidden-canvas" style="display:none;"></canvas>
+    </div>
+
+    <!-- OVERLAY MEMO SURAT -->
     <div id="letter-overlay">
         <div class="letter-content" onclick="event.stopPropagation()">
             <p id="secret-text"></p>
@@ -656,7 +653,6 @@
             document.getElementById('page3').style.display = 'flex';
         });
 
-        // ================= FITUR BYPASS PASSWORD RAHASIA =================
         function checkDeveloperPassword() {
             const userInput = prompt("Masukkan password rahasia untuk masuk ke Halaman 3:");
             
@@ -672,7 +668,98 @@
         function goToNextScrapbookPage() {
             const vid = document.getElementById('birthday-video');
             if(vid) vid.pause();
-            alert("Menuju ke halaman scrapbook berikutnya... ✨ (Silakan buat Halaman 4 nanti)");
+
+            document.getElementById('page3').style.display = 'none';
+            document.getElementById('page4').style.display = 'flex'; // Masuk ke Photobox Halaman 4
+        }
+
+
+        // ================= LOGIKA MESIN PHOTOBOX HALAMAN 4 =================
+        let videoStream = null;
+
+        // 1. Fungsi Mengaktifkan Akses Kamera Perangkat
+        function initiateWebcam() {
+            const videoElement = document.getElementById('webcam-view');
+            const startBtn = document.getElementById('btn-power-cam');
+            const snapBtn = document.getElementById('btn-snap-cam');
+
+            // Minta izin akses video dengan konfigurasi rasio ideal
+            navigator.mediaDevices.getUserMedia({ 
+                video: { 
+                    width: { ideal: 1280 },
+                    height: { ideal: 720 },
+                    aspectRatio: 1.7777777778 // Memaksa hardware memberikan rasio aspek 16:9
+                }, 
+                audio: false 
+            })
+            .then(function(stream) {
+                videoStream = stream;
+                videoElement.srcObject = stream;
+                
+                // Mengubah menu tombol kontainer
+                startBtn.style.display = 'none';
+                snapBtn.style.display = 'inline-block';
+            })
+            .catch(function(err) {
+                alert("Gagal mengakses kamera. Pastikan kamu memberikan izin akses kamera pada browsermu ya sayang! 💕");
+                console.log("Error kamera: " + err);
+            });
+        }
+
+        // 2. Fungsi Menangkap Gambar & Auto-Download Format 16:9
+        function takeSnapshot() {
+            const video = document.getElementById('webcam-view');
+            const canvas = document.getElementById('hidden-canvas');
+            const gallery = document.getElementById('captured-gallery');
+            const ctx = canvas.getContext('2d');
+
+            // Tentukan resolusi HD murni untuk hasil simpan (16:9)
+            const captureWidth = 1280;
+            const captureHeight = 720;
+            canvas.width = captureWidth;
+            canvas.height = captureHeight;
+
+            // Gambar frame video ke dalam canvas tersembunyi
+            // Gunakan pencerminan agar hasil foto searah dengan preview layar berkaca
+            ctx.translate(captureWidth, 0);
+            ctx.scale(-1, 1);
+            ctx.drawImage(video, 0, 0, captureWidth, captureHeight);
+
+            // Ekstrak data gambar dari canvas menjadi format URL Data Base64
+            const imageDataURL = canvas.toDataURL('image/jpeg', 0.9);
+
+            // --- SISTEM AUTO DOWNLOAD LANGSUNG KE FILE HP/LAPTOP ---
+            const fileLink = document.createElement('a');
+            fileLink.href = imageDataURL;
+            // Penamaan file unik otomatis menggunakan penanda waktu (timestamp)
+            fileLink.download = 'Photobox_Kita_' + Date.now() + '.jpg';
+            document.body.appendChild(fileLink);
+            fileLink.click(); // Jalankan pemicu klik download paksa
+            document.body.removeChild(fileLink); // Bersihkan kembali elemen link
+
+            // --- TAMPILKAN HASILNYA KE GRID GALERI BAWAH WEB ---
+            const card = document.createElement('div');
+            card.classList.add('photo-card');
+
+            const img = document.createElement('img');
+            img.src = imageDataURL;
+
+            const dlBtn = document.createElement('button');
+            dlBtn.classList.add('btn-download');
+            dlBtn.innerText = 'Tersimpan! ✨';
+            
+            // Pasang fungsi download manual cadangan jika auto-download bawaan diblokir browser tertentu
+            dlBtn.onclick = function() {
+                const manualLink = document.createElement('a');
+                manualLink.href = imageDataURL;
+                manualLink.download = 'Photobox_Kita_Manual.jpg';
+                manualLink.click();
+            };
+
+            card.appendChild(img);
+            card.appendChild(dlBtn);
+            // Masukkan foto baru ke urutan paling atas di galeri bawah
+            gallery.insertBefore(card, gallery.firstChild);
         }
     </script>
 </body>
