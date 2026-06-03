@@ -19,7 +19,7 @@
             background-color: #f7f1e3;
         }
 
-        /* SISTEM HALAMAN */
+        /* SISTEM MANAGEMENT HALAMAN */
         .page {
             position: absolute;
             top: 0;
@@ -27,18 +27,22 @@
             width: 100%;
             height: 100%;
             display: none;
+            overflow: hidden; /* Mengunci elemen dekorasi agar tidak saling mendorong keluar */
         }
 
-        /* HALAMAN 1 */
+        /* HALAMAN 1 (Aktif di Awal dengan Perbaikan Layout) */
         #page1 {
             display: block;
             background-image: url('BEBEK (1).jpg');
             background-size: cover;
             background-position: center;
             background-repeat: no-repeat;
+            position: absolute;
+            width: 100%;
+            height: 100%;
         }
 
-        /* HALAMAN 2 */
+        /* HALAMAN 2 (Countdown) */
         #page2 {
             background-image: url('hal 2.jpeg');
             background-size: cover;
@@ -52,9 +56,9 @@
             text-align: center;
         }
 
-        /* ================= STYLE HALAMAN 3 (BACKGROUND hal 3.png) ================= */
+        /* HALAMAN 3 (Tampilan Video Utama) */
         #page3 {
-            background-image: url('hal 3.png'); /* Menggunakan background pita & ceri */
+            background-image: url('hal 3.png');
             background-size: cover;
             background-position: center;
             background-repeat: no-repeat;
@@ -64,63 +68,36 @@
             height: 100%;
         }
 
-        /* Container Pemosisian Video agar Pas di Dalam Kotak Pink Gambar */
-        .video-box-overlay {
-            position: absolute;
-            /* Koordinat ini dihitung agar pas di tengah area kotak pink bawaan gambar */
-            top: 49.5%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            /* Menyesuaikan ukuran video dengan proporsi kotak pink (sekitar 38% dari lebar layar) */
-            width: 38.5%; 
-            aspect-ratio: 16 / 9;
-            border-radius: 35px; /* Menyesuaikan kebulatan sudut kotak pink */
-            overflow: hidden;
-            z-index: 10;
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+        /* HALAMAN 4 (Photobox Interaktif) */
+        #page4 {
+            background-color: #fff0f3; 
+            display: none; 
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-start;
+            position: relative;
+            padding: 30px 20px;
+            overflow-y: auto; 
         }
 
-        .video-box-overlay video {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            display: block;
-            background-color: #000;
-        }
-
-        /* Tombol Next Bawaan Gambar di bagian bawah (Area Interaktif) */
-        .fake-next-hitbox {
-            position: absolute;
-            bottom: 3.5%;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 110px;
-            height: 45px;
-            cursor: pointer;
-            z-index: 20;
-            background: transparent; /* Transparan karena tombol sudah ada di gambar */
-            border: none;
-            border-radius: 20px;
-        }
-
-        /* Teks Ucapan Tengah Halaman 1 */
+        /* FIX: Teks Ucapan Kembali Berada Tepat di Tengah Layar */
         .center-text {
             position: absolute;
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
-            font-size: 2.8rem;
+            font-size: 3.5rem; /* Ukuran proporsional besar estetik */
             font-weight: bold;
             color: #ffffff;
             text-align: center;
             z-index: 10;
             pointer-events: none;
-            text-shadow: 2px 4px 10px rgba(0, 0, 0, 0.3);
+            text-shadow: 2px 4px 10px rgba(0, 0, 0, 0.35);
             font-family: 'Comic Sans MS', cursive, sans-serif;
             width: 90%;
         }
 
-        /* BINGKAI TEPI BUNGA */
+        /* FIX: Bingkai Keliling Bunga Mengunci Tepi Layar Absolut */
         .flower-border {
             position: absolute;
             top: 0;
@@ -129,8 +106,6 @@
             height: 100%;
             pointer-events: none;
             z-index: 15;
-            display: flex;
-            justify-content: space-between;
             box-sizing: border-box;
         }
 
@@ -152,6 +127,7 @@
             display: flex;
             flex-direction: column;
             justify-content: space-around;
+            height: calc(100% - 120px);
         }
         .flower-column.left { left: 15px; }
         .flower-column.right { right: 15px; }
@@ -168,23 +144,24 @@
             100% { transform: rotate(360deg); }
         }
 
-        /* CONTAINER BALON */
+        /* FIX: Container Balon Independen Mencegah Balon Gepeng/Menjadi Garis */
         #balloon-container {
             position: absolute;
             width: 100%;
             height: 100%;
-            overflow: hidden;
             top: 0;
             left: 0;
+            overflow: hidden;
+            z-index: 5;
         }
 
-        /* STYLE BALON */
+        /* STYLE DETAILED BALON 3D GLOSSY */
         .balloon {
             position: absolute;
             width: 90px;
             height: 115px;
             border-radius: 50% 50% 50% 50% / 40% 40% 60% 60%;
-            bottom: -300px;
+            bottom: -200px;
             cursor: pointer;
             z-index: 5;
             transform-origin: bottom center;
@@ -230,7 +207,7 @@
         @keyframes floatUpAnimation {
             0% { transform: translateY(0) rotate(0deg); opacity: 1; }
             85% { opacity: 1; }
-            100% { transform: translateY(-160vh) rotate(10deg); opacity: 0; }
+            100% { transform: translateY(-130vh) rotate(10deg); opacity: 0; }
         }
 
         .balloon.pop-animation {
@@ -248,7 +225,7 @@
             100% { transform: translateX(-50%) rotate(8deg); }
         }
 
-        /* OVERLAY MEMO */
+        /* OVERLAY MEMO SURAT */
         #letter-overlay {
             position: fixed;
             top: 0;
@@ -394,8 +371,146 @@
             transition: color 0.2s;
         }
 
-        .arrow-btn:hover {
-            color: rgba(255, 71, 87, 0.6); 
+        .arrow-btn:hover { color: rgba(255, 71, 87, 0.6); }
+
+        /* OVERLAY VIDEO HALAMAN 3 */
+        .video-box-overlay {
+            position: absolute;
+            top: 49.5%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 38.5%; 
+            aspect-ratio: 16 / 9;
+            border-radius: 35px;
+            overflow: hidden;
+            z-index: 10;
+        }
+
+        .video-box-overlay video {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+            background-color: #000;
+        }
+
+        .fake-next-hitbox {
+            position: absolute;
+            bottom: 3.5%;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 110px;
+            height: 45px;
+            cursor: pointer;
+            z-index: 20;
+            background: transparent;
+            border: none;
+            border-radius: 20px;
+        }
+
+        /* STYLE PHOTOBOX HALAMAN 4 */
+        .photobox-title {
+            font-family: 'Comic Sans MS', cursive, sans-serif;
+            color: #ff4d6d;
+            font-size: 2.2rem;
+            margin-bottom: 5px;
+            text-align: center;
+        }
+
+        .photobox-subtitle {
+            color: #5c5f62;
+            font-size: 1rem;
+            margin-bottom: 25px;
+            text-align: center;
+        }
+
+        .camera-container {
+            width: 100%;
+            max-width: 560px; 
+            aspect-ratio: 16 / 9;
+            background: #2b2b2b;
+            border-radius: 20px;
+            overflow: hidden;
+            position: relative;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+            border: 4px solid #ffb3c1;
+        }
+
+        #webcam-view {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transform: scaleX(-1); 
+            display: block;
+        }
+
+        .control-area {
+            margin: 20px 0 30px 0;
+            display: flex;
+            gap: 15px;
+        }
+
+        .btn-action {
+            padding: 12px 28px;
+            font-size: 1rem;
+            font-weight: bold;
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            transition: transform 0.2s, background 0.2s;
+        }
+
+        .btn-action:active { transform: scale(0.95); }
+        .btn-start { background-color: #6c5ce7; color: white; }
+        .btn-capture { background-color: #ff4757; color: white; display: none; } 
+
+        .gallery-title {
+            font-family: 'Comic Sans MS', cursive, sans-serif;
+            color: #ff758f;
+            font-size: 1.4rem;
+            margin-bottom: 15px;
+        }
+
+        .photo-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+            gap: 20px;
+            width: 100%;
+            max-width: 800px;
+            padding-bottom: 40px;
+        }
+
+        .photo-card {
+            background: white;
+            padding: 10px;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+            border: 2px solid #ffe5ec;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .photo-card img {
+            width: 100%;
+            aspect-ratio: 16 / 9;
+            object-fit: cover;
+            border-radius: 10px;
+            margin-bottom: 10px;
+        }
+
+        .btn-download {
+            background-color: #2ed573;
+            color: white;
+            padding: 6px 15px;
+            font-size: 0.85rem;
+            font-weight: bold;
+            border: none;
+            border-radius: 15px;
+            cursor: pointer;
+            width: 100%;
+            text-align: center;
         }
 
         @keyframes pulseBtn {
@@ -447,16 +562,32 @@
     </div>
 
     <div id="page3" class="page">
-        
-        <div class="video-container-box video-box-overlay">
-            <video id="birthday-video" controls>
+        <div class="video-box-overlay">
+            <video id="birthday-video" controls preload="auto">
+                <source src="video-upload.mp4" type="video/mp4">
                 <source src="video-ultah.mp4" type="video/mp4">
-                <source src="https://drive.google.com/uc?export=download&id=1ci9uiSL6AkFV33tNYzIbLD7aD7M_fdVu" type="video/mp4">
                 Browser kamu tidak mendukung pemutar video HTML5.
             </video>
         </div>
-
         <button class="fake-next-hitbox" onclick="goToNextScrapbookPage()"></button>
+    </div>
+
+    <div id="page4" class="page">
+        <h1 class="photobox-title">Our Photobox Space 📸✨</h1>
+        <p class="photobox-subtitle">Yuk ambil jepretan foto termanismu di sini sayang!</p>
+
+        <div class="camera-container">
+            <video id="webcam-view" autoplay playsinline></video>
+        </div>
+
+        <div class="control-area">
+            <button id="btn-power-cam" class="btn-action btn-start" onclick="initiateWebcam()">Aktifkan Kamera</button>
+            <button id="btn-snap-cam" class="btn-action btn-capture" onclick="takeSnapshot()">Jepret! (16:9)</button>
+        </div>
+
+        <h3 class="gallery-title">Hasil Foto Kita 🎞️</h3>
+        <div class="photo-grid" id="captured-gallery"></div>
+        <canvas id="hidden-canvas" style="display:none;"></canvas>
     </div>
 
     <div id="letter-overlay">
@@ -477,6 +608,9 @@
 
             const horizontalCount = 12; 
             const verticalCount = 5;
+
+            // Bersihkan innerHTML sebelum diisi untuk menghindari duplikasi tumpukan bug
+            rowTop.innerHTML = ''; rowBottom.innerHTML = ''; colLeft.innerHTML = ''; colRight.innerHTML = '';
 
             for (let i = 0; i < horizontalCount; i++) {
                 rowTop.innerHTML += '<span>🌸</span>';
@@ -508,6 +642,8 @@
         const MAX_BALLOONS = 5; 
 
         function createNormalBalloon() {
+            // Jika halaman 1 sedang tidak aktif/tersembunyi, jangan spawn balon di background
+            if (document.getElementById('page1').style.display === 'none') return;
             if (container.children.length >= MAX_BALLOONS) return; 
 
             const balloon = document.createElement('div');
@@ -542,6 +678,7 @@
         }
 
         function createGiftBalloon() {
+            if (document.getElementById('page1').style.display === 'none') return;
             if (container.children.length >= MAX_BALLOONS) return;
 
             const balloon = document.createElement('div');
@@ -620,7 +757,6 @@
             }
         });
 
-
         // ================= LOGIKA COUNTDOWN REAL-TIME =================
         let isCountdownActive = true;
 
@@ -660,7 +796,6 @@
             document.getElementById('page3').style.display = 'flex';
         });
 
-        // ================= FITUR BYPASS PASSWORD RAHASIA =================
         function checkDeveloperPassword() {
             const userInput = prompt("Masukkan password rahasia untuk masuk ke Halaman 3:");
             
@@ -673,13 +808,86 @@
             }
         }
 
-        // Fungsi pemicu saat tombol "NEXT" di bawah video diklik
         function goToNextScrapbookPage() {
-            // Matikan video jika sedang terputar agar suaranya tidak bocor ke halaman berikutnya
             const vid = document.getElementById('birthday-video');
             if(vid) vid.pause();
 
-            alert("Menuju ke halaman scrapbook berikutnya... ✨ (Silakan buat Halaman 4 nanti)");
+            document.getElementById('page3').style.display = 'none';
+            document.getElementById('page4').style.display = 'flex'; 
+        }
+
+        // ================= LOGIKA PHOTOBOX HALAMAN 4 =================
+        let videoStream = null;
+
+        function initiateWebcam() {
+            const videoElement = document.getElementById('webcam-view');
+            const startBtn = document.getElementById('btn-power-cam');
+            const snapBtn = document.getElementById('btn-snap-cam');
+
+            navigator.mediaDevices.getUserMedia({ 
+                video: { 
+                    width: { ideal: 1280 },
+                    height: { ideal: 720 },
+                    aspectRatio: 1.7777777778 
+                }, 
+                audio: false 
+            })
+            .then(function(stream) {
+                videoStream = stream;
+                videoElement.srcObject = stream;
+                startBtn.style.display = 'none';
+                snapBtn.style.display = 'inline-block';
+            })
+            .catch(function(err) {
+                alert("Gagal mengakses kamera. Pastikan memberikan izin akses kamera ya sayang! 💕");
+                console.log(err);
+            });
+        }
+
+        function takeSnapshot() {
+            const video = document.getElementById('webcam-view');
+            const canvas = document.getElementById('hidden-canvas');
+            const gallery = document.getElementById('captured-gallery');
+            const ctx = canvas.getContext('2d');
+
+            const captureWidth = 1280;
+            const captureHeight = 720;
+            canvas.width = captureWidth;
+            canvas.height = captureHeight;
+
+            ctx.translate(captureWidth, 0);
+            ctx.scale(-1, 1);
+            ctx.drawImage(video, 0, 0, captureWidth, captureHeight);
+
+            const imageDataURL = canvas.toDataURL('image/jpeg', 0.9);
+
+            const fileLink = document.createElement('a');
+            fileLink.href = imageDataURL;
+            fileLink.download = 'Photobox_Kita_' + Date.now() + '.jpg';
+            document.body.appendChild(fileLink);
+            fileLink.click();
+            document.body.removeChild(fileLink);
+
+            const card = document.createElement('div');
+            card.classList.add('photo-card');
+
+            const img = document.createElement('img');
+            img.src = imageDataURL;
+
+            const dlBtn = document.createElement('button');
+            dlBtn.classList.add('btn-download');
+            dlBtn.innerText = 'Tersimpan! ✨';
+            
+            dlBtn.onclick = function() {
+                const manualLink = document.createElement('a');
+                manualLink.href = imageDataURL;
+                manualLink.download = 'Photobox_Kita_Manual.jpg';
+                manualLink.click();
+            };
+
+            card.appendChild(img);
+            card.appendChild(dlBtn);
+            gallery.insertBefore(card, gallery.firstChild);
         }
     </script>
 </body>
