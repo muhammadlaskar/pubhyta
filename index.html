@@ -72,7 +72,7 @@
             height: 100%;
         }
 
-        /* HALAMAN 4: SMART CANVAS PHOTOBOX */
+        /* HALAMAN 4: SMART CANVAS PHOTOBOX WITH COLOR PALETTE */
         #page4 {
             background-image: url('hal 4.png');
             background-size: 100% 100%;
@@ -84,17 +84,31 @@
             height: 100%;
         }
 
+        /* Kotak Tatakan Dasar Abu-abu Bawaan Gambar */
         .photobox-frame {
             position: absolute;
             top: 23%;       
             left: 27.2%;     
             width: 45.6%;    
             height: 45.5%;   
-            background: #2b2b2b;
+            background: #cbd5e1; /* Warna abu-abu mockup pengisi sisa tepi */
             border-radius: 14px; 
-            overflow: hidden;
-            box-shadow: inset 0 4px 10px rgba(0,0,0,0.5);
             z-index: 10;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            box-shadow: inset 0 4px 10px rgba(0,0,0,0.25);
+        }
+
+        /* FIX: Kontainer Inti Kamera Dikecilkan Agar Menyisakan Tepi Bingkai Abu-abu */
+        .camera-viewport {
+            width: 92%;  /* Menyisakan tepi kiri-kanan yang presisi manis */
+            height: 88%; /* Menyisakan tepi atas-bawah */
+            position: relative;
+            overflow: hidden;
+            border-radius: 8px;
+            background: #000000;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
         }
 
         #webcam-view {
@@ -126,27 +140,55 @@
             z-index: 12;
         }
 
-        .btn-clear-canvas {
+        /* WORKSPACE CORES & CONTROLS ATAS KAMERA */
+        .top-camera-controls {
             position: absolute;
-            top: 15px;
-            right: 15px;
-            background: rgba(0, 0, 0, 0.6);
-            color: white;
-            border: 2px solid rgba(255, 255, 255, 0.4);
-            width: 36px;
-            height: 36px;
+            top: 12px;
+            right: 12px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            z-index: 15;
+            background: rgba(0, 0, 0, 0.4);
+            padding: 6px 12px;
+            border-radius: 20px;
+            backdrop-filter: blur(4px);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+        }
+
+        /* Lingkaran Pilihan Warna yang Bisa Diklik Kursor Laptop */
+        .color-dot {
+            width: 20px;
+            height: 20px;
             border-radius: 50%;
             cursor: pointer;
-            z-index: 15;
+            border: 2px solid transparent;
+            transition: transform 0.2s, border 0.2s;
+        }
+        .color-dot:hover { transform: scale(1.2); }
+        .color-dot.active { border-color: #ffffff; transform: scale(1.15); }
+
+        .dot-pink { background-color: #ff9ff3; }
+        .dot-blue { background-color: #00cec9; }
+        .dot-yellow { background-color: #ffeaa7; }
+
+        /* Tombol Reset/Hapus Menggunakan Ikon Putar */
+        .btn-clear-canvas {
+            background: transparent;
+            color: white;
+            border: none;
+            font-size: 1.05rem;
+            cursor: pointer;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 1.1rem;
-            transition: background 0.2s, transform 0.1s;
+            transition: transform 0.2s;
+            margin-left: 4px;
+            user-select: none;
         }
-        .btn-clear-canvas:hover { background: rgba(255, 71, 87, 0.9); transform: rotate(-45deg); }
+        .btn-clear-canvas:hover { color: #ff7675; transform: rotate(-45deg); }
 
-        /* PANEL KONTROL NAVIGASI */
+        /* PANEL KONTROL NAVIGASI JEPRI */
         .photobox-controls {
             position: absolute;
             top: 76.8%;     
@@ -410,127 +452,6 @@
         }
 
         .next-btn:hover { background-color: #ff6b81; transform: scale(1.05); }
-
-        .page2-title {
-            font-family: 'Comic Sans MS', cursive, sans-serif;
-            color: #ff4757;
-            font-size: 3rem;
-            font-weight: bold;
-            text-shadow: 2px 2px 8px rgba(255, 255, 255, 0.9), 0px 4px 10px rgba(0,0,0,0.1);
-            margin-bottom: 5px;
-            z-index: 10;
-        }
-
-        .page2-subtitle {
-            color: #4b5563;
-            font-size: 1.2rem;
-            font-weight: bold;
-            text-shadow: 1px 1px 4px rgba(255, 255, 255, 0.8);
-            margin-bottom: 40px;
-            z-index: 10;
-        }
-
-        .timer-box {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            gap: 25px;
-            z-index: 10;
-        }
-
-        .time-segment {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            width: 85px;
-        }
-
-        .time-number {
-            font-size: 3.2rem;
-            font-weight: 800;
-            color: #ffffff;
-            background: #ff6b81; 
-            width: 100%;
-            padding: 8px 0;
-            border-radius: 15px;
-            box-shadow: 0 8px 20px rgba(255, 107, 129, 0.3);
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        }
-
-        .time-label {
-            font-size: 0.95rem;
-            font-weight: bold;
-            color: #2c2c54;
-            margin-top: 10px;
-            text-transform: uppercase;
-            text-shadow: 1px 1px 4px rgba(255, 255, 255, 0.8);
-        }
-
-        .unlock-btn {
-            display: none;
-            margin-top: 40px;
-            padding: 15px 45px;
-            background-color: #2ed573;
-            color: white;
-            font-size: 1.3rem;
-            font-weight: bold;
-            border: none;
-            border-radius: 30px;
-            cursor: pointer;
-            box-shadow: 0 6px 20px rgba(46, 213, 115, 0.4);
-            animation: pulseBtn 1.5s infinite alternate;
-            z-index: 10;
-        }
-
-        .arrow-btn {
-            position: absolute;
-            bottom: 15px;
-            right: 15px;
-            background: transparent;
-            border: none;
-            color: rgba(0, 0, 0, 0.15); 
-            font-size: 1rem;
-            cursor: pointer;
-            z-index: 50;
-            user-select: none;
-            transition: color 0.2s;
-        }
-
-        .arrow-btn:hover { color: rgba(255, 71, 87, 0.6); }
-
-        .video-box-overlay {
-            position: absolute;
-            top: 49.5%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            width: 38.5%; 
-            aspect-ratio: 16 / 9;
-            border-radius: 35px;
-            overflow: hidden;
-            z-index: 10;
-        }
-
-        .video-box-overlay video {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            display: block;
-            background-color: #000;
-        }
-
-        .fake-next-hitbox {
-            position: absolute;
-            bottom: 3.5%;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 110px;
-            height: 45px;
-            cursor: pointer;
-            z-index: 20;
-            background: transparent;
-            border: none;
-            border-radius: 20px;
-        }
     </style>
 </head>
 <body>
@@ -583,10 +504,18 @@
 
     <div id="page4" class="page">
         <div class="photobox-frame">
-            <video id="webcam-view" autoplay playsinline></video>
-            <canvas id="drawing-canvas"></canvas>
-            <img id="photo-preview-render" alt="Hasil Foto">
-            <button class="btn-clear-canvas" title="Hapus Gambar" onclick="clearDrawingCanvas()">🔄</button>
+            <div class="camera-viewport">
+                <video id="webcam-view" autoplay playsinline></video>
+                <canvas id="drawing-canvas"></canvas>
+                <img id="photo-preview-render" alt="Hasil Foto">
+
+                <div class="top-camera-controls" id="floating-menu">
+                    <div class="color-dot dot-pink active" onclick="changeBrushColor('#ff9ff3', this)"></div>
+                    <div class="color-dot dot-blue" onclick="changeBrushColor('#00cec9', this)"></div>
+                    <div class="color-dot dot-yellow" onclick="changeBrushColor('#ffeaa7', this)"></div>
+                    <button class="btn-clear-canvas" title="Hapus Semua" onclick="clearDrawingCanvas()">🔄</button>
+                </div>
+            </div>
         </div>
 
         <div class="photobox-controls" id="control-panel-wrapper">
@@ -815,21 +744,21 @@
             initiateSmartPhotoboxHalaman4();
         }
 
-        // ================== UTAMA: SMART CANVAS DENGAN ANTI-JITTER FILTER ==================
+        // ================== LOGIKA PHOTOBOX + MULTI COLOR STABILIZER ==================
         let lastCapturedDataURL = null;
         let isCaptured = false;
         
         let drawingLines = []; 
         let currentPath = [];
         let lastHandPresent = false;
-
-        // Variabel Penyimpanan Koordinat Sebelumnya untuk Keperluan Low-Pass Filter
         let lastFilteredX = null;
         let lastFilteredY = null;
-
-        // Debounce Buffer Counter (Mencegah Telunjuk Respon Seketika Tanpa Niat)
         let drawValidationCounter = 0;
-        const FRAME_VALIDATION_THRESHOLD = 9; // Harus 9 frame tegak lurus berturut-turut (~0.3 detik)
+        const FRAME_VALIDATION_THRESHOLD = 9; 
+
+        // Warna default kuas (Pink Neon)
+        let currentBrushColor = '#ff9ff3'; 
+        let currentShadowColor = '#ff4757';
 
         const videoElement = document.getElementById('webcam-view');
         const drawCanvas = document.getElementById('drawing-canvas');
@@ -870,7 +799,21 @@
             redrawStoredLines();
         }
 
-        // FIX LOGIKA UTAMA: LOW PASS FILTER + DEBOUNCE TIMER
+        // FUNGSI GANTI WARNA KUAS VIA CURSOR LAPTOP
+        function changeBrushColor(hexColor, element) {
+            currentBrushColor = hexColor;
+            
+            // Mengatur bayangan neon agar senada dengan warna inti kuas
+            if (hexColor === '#00cec9') currentShadowColor = '#00aec9';
+            else if (hexColor === '#ffeaa7') currentShadowColor = '#fdcb6e';
+            else currentShadowColor = '#ff4757';
+
+            // Reset indikator bulatan aktif di menu atas
+            const dots = document.querySelectorAll('.color-dot');
+            dots.forEach(dot => dot.classList.remove('active'));
+            element.classList.add('active');
+        }
+
         function onHandTrackingResultsWithFilter(results) {
             if (isCaptured) return;
 
@@ -884,48 +827,40 @@
                 const indexBase = landmarks[5];
                 const middleTip = landmarks[12];
 
-                // Hitung Koordinat Raw Mentah AI
                 const rawX = (1 - indexTip.x) * drawCanvas.width;
                 const rawY = indexTip.y * drawCanvas.height;
 
-                // Aturan Cek Apakah Jari Telunjuk Berdiri Tegak Sendirian (Mode Menggambar)
                 const isFingerPointingUp = (indexTip.y < indexBase.y) && (middleTip.y > indexBase.y);
 
                 if (isFingerPointingUp) {
-                    // Validasi Debounce Buffer: Naikkan angka frame terverifikasi
                     drawValidationCounter++;
 
                     if (drawValidationCounter >= FRAME_VALIDATION_THRESHOLD) {
-                        // --- ALGORITMA LOW-PASS EXPONENTIAL FILTER ---
                         let targetX = rawX;
                         let targetY = rawY;
 
                         if (lastFilteredX !== null && lastFilteredY !== null) {
-                            // Campur 60% posisi lama dan 40% posisi baru untuk meredam getaran jitter
                             targetX = (lastFilteredX * 0.6) + (rawX * 0.4);
                             targetY = (lastFilteredY * 0.6) + (rawY * 0.4);
                         }
 
-                        // Simpan posisi terfilter saat ini untuk iterasi berikutnya
                         lastFilteredX = targetX;
                         lastFilteredY = targetY;
 
-                        // Tampilkan kursor penunjuk pink yang tenang
-                        drawCtx.open;
                         drawCtx.beginPath();
                         drawCtx.arc(targetX, targetY, 6, 0, 2 * Math.PI);
-                        drawCtx.fillStyle = '#ff7675';
+                        drawCtx.fillStyle = currentBrushColor; // Mengikuti warna palet terpilih
                         drawCtx.fill();
 
                         if (!lastHandPresent) {
                             currentPath = [];
-                            drawingLines.push(currentPath);
+                            // Simpan juga informasi kode warna khusus pada goresan line baru ini
+                            drawingLines.push({ points: currentPath, color: currentBrushColor, shadow: currentShadowColor });
                         }
                         currentPath.push({ x: targetX, y: targetY });
                         lastHandPresent = true;
                     }
                 } else {
-                    // Reset Counter validasi jika jari diturunkan / telapak tangan dibuka
                     drawValidationCounter = 0;
                     lastHandPresent = false;
                     lastFilteredX = null;
@@ -943,14 +878,16 @@
             drawCtx.lineWidth = 5;
             drawCtx.lineCap = 'round';
             drawCtx.lineJoin = 'round';
-            drawCtx.strokeStyle = '#ff9ff3'; 
-            drawCtx.shadowColor = '#ff4757';
-            drawCtx.shadowBlur = 4;
 
             for (let i = 0; i < drawingLines.length; i++) {
-                const path = drawingLines[i];
+                const lineData = drawingLines[i];
+                const path = lineData.points;
                 if (path.length < 2) continue;
                 
+                drawCtx.strokeStyle = lineData.color;
+                drawCtx.shadowColor = lineData.shadow;
+                drawCtx.shadowBlur = 4;
+
                 drawCtx.beginPath();
                 drawCtx.moveTo(path[0].x, path[0].y);
                 for (let j = 1; j < path.length; j++) {
@@ -975,6 +912,7 @@
             const canvas = document.getElementById('hidden-canvas');
             const previewRender = document.getElementById('photo-preview-render');
             const controlPanel = document.getElementById('control-panel-wrapper');
+            const floatingMenu = document.getElementById('floating-menu');
             const ctx = canvas.getContext('2d');
 
             const w = videoElement.videoWidth || 1280;
@@ -990,16 +928,19 @@
             ctx.lineWidth = 6;
             ctx.lineCap = 'round';
             ctx.lineJoin = 'round';
-            ctx.strokeStyle = '#ff9ff3';
-            ctx.shadowColor = '#ff4757';
-            ctx.shadowBlur = 6;
 
             const scaleX = w / drawCanvas.width;
             const scaleY = h / drawCanvas.height;
 
             for (let i = 0; i < drawingLines.length; i++) {
-                const path = drawingLines[i];
+                const lineData = drawingLines[i];
+                const path = lineData.points;
                 if (path.length < 2) continue;
+
+                ctx.strokeStyle = lineData.color;
+                ctx.shadowColor = lineData.shadow;
+                ctx.shadowBlur = 6;
+
                 ctx.beginPath();
                 ctx.moveTo(path[0].x * scaleX, path[0].y * scaleY);
                 for (let j = 1; j < path.length; j++) {
@@ -1014,11 +955,13 @@
             previewRender.style.display = 'block';
 
             controlPanel.classList.add('controls-active');
+            floatingMenu.style.display = 'none'; // Sembunyikan palet warna saat membeku
         }
 
         function cancelAndRetakePhoto() {
             const previewRender = document.getElementById('photo-preview-render');
             const controlPanel = document.getElementById('control-panel-wrapper');
+            const floatingMenu = document.getElementById('floating-menu');
 
             previewRender.style.display = 'none';
             previewRender.src = '';
@@ -1027,6 +970,7 @@
             drawValidationCounter = 0;
 
             controlPanel.classList.remove('controls-active');
+            floatingMenu.style.display = 'flex'; // Munculkan kembali palet warna
         }
 
         function saveAndResetForNext() {
