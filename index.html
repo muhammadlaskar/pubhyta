@@ -882,6 +882,7 @@
             redrawStoredLines();
         }
 
+        // PEMILIH WARNA
         function changeBrushColor(hexColor, element) {
             currentBrushColor = hexColor;
             if (hexColor === '#00cec9') currentShadowColor = '#00aec9';
@@ -984,7 +985,7 @@
             drawCtx.clearRect(0, 0, drawCanvas.width, drawCanvas.height);
         }
 
-        // PERBAIKAN UTAMA: KALIBRASI ULANG KETEBALAN GARIS JEPRI (DARI 16 DIKECILKAN MENJADI 9)
+        // FIX MODIFIKASI: KALIBRASI KETEBALAN GARIS DAN REDUKSI BLUR NEON AGAR TAJAM PAS DI JEPRET
         function capturePhotoboxFrame() {
             isCaptured = true;
             const canvas = document.getElementById('hidden-canvas');
@@ -1003,8 +1004,8 @@
             ctx.drawImage(videoElement, 0, 0, w, h);
             ctx.setTransform(1, 0, 0, 1, 0, 0); 
 
-            // KALIBRASI SCALING BARU: Disetel ke 9 agar ketebalan pas, tajam, dan proporsional di file asli
-            ctx.lineWidth = 9; 
+            // KALIBRASI FIX: Ketebalan disetel ke 7.5 dan blur reduksi ke 2 agar garis padat, solid, & tidak meleleh blur
+            ctx.lineWidth = 7.5; 
             ctx.lineCap = 'round';
             ctx.lineJoin = 'round';
 
@@ -1018,7 +1019,7 @@
 
                 ctx.strokeStyle = lineData.color;
                 ctx.shadowColor = lineData.shadow;
-                ctx.shadowBlur = 10; // Reduksi sedikit intensitas glow agar seimbang dengan garis 9px
+                ctx.shadowBlur = 2; // Memotong bias gradasi samping agar garis tidak blur melebar
 
                 ctx.beginPath();
                 ctx.moveTo(path[0].x * scaleX, path[0].y * scaleY);
