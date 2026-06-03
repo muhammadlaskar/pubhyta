@@ -23,7 +23,7 @@
             background-color: #f7f1e3;
         }
 
-        /* SISTEM MANAGEMENT HALAMAN */
+        /* SYSTEM CORE NAVIGATION */
         .page {
             position: absolute;
             top: 0;
@@ -34,232 +34,16 @@
             overflow: hidden;
         }
 
-        /* HALAMAN 1 */
+        /* ================== GLOBAL DECORATIONS (HALAMAN 1) ================== */
         #page1 {
             display: block;
             background-image: url('BEBEK (1).jpg');
             background-size: cover;
             background-position: center;
             background-repeat: no-repeat;
-            position: absolute;
-            width: 100%;
-            height: 100%;
         }
 
-        /* HALAMAN 2 */
-        #page2 {
-            background-image: url('hal 2.jpeg');
-            background-size: cover;
-            background-position: center;
-            background-repeat: no-repeat;
-            display: none; 
-            justify-content: center;
-            align-items: center;
-            flex-direction: column;
-            position: relative;
-            text-align: center;
-        }
-
-        /* HALAMAN 3 */
-        #page3 {
-            background-image: url('hal 3.png');
-            background-size: cover;
-            background-position: center;
-            background-repeat: no-repeat;
-            display: none;
-            position: relative;
-            width: 100%;
-            height: 100%;
-        }
-
-        /* HALAMAN 4: SMART CANVAS PHOTOBOX WITH COLOR PALETTE */
-        #page4 {
-            background-image: url('hal 4.png');
-            background-size: 100% 100%;
-            background-position: center;
-            background-repeat: no-repeat;
-            display: none; 
-            position: absolute;
-            width: 100%;
-            height: 100%;
-        }
-
-        /* Kotak Tatakan Dasar Abu-abu Bawaan Gambar */
-        .photobox-frame {
-            position: absolute;
-            top: 23%;       
-            left: 27.2%;     
-            width: 45.6%;    
-            height: 45.5%;   
-            background: #cbd5e1; /* Warna abu-abu mockup pengisi sisa tepi */
-            border-radius: 14px; 
-            z-index: 10;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            box-shadow: inset 0 4px 10px rgba(0,0,0,0.25);
-        }
-
-        /* FIX: Kontainer Inti Kamera Dikecilkan Agar Menyisakan Tepi Bingkai Abu-abu */
-        .camera-viewport {
-            width: 92%;  /* Menyisakan tepi kiri-kanan yang presisi manis */
-            height: 88%; /* Menyisakan tepi atas-bawah */
-            position: relative;
-            overflow: hidden;
-            border-radius: 8px;
-            background: #000000;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
-        }
-
-        #webcam-view {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            transform: scaleX(-1); 
-            display: block;
-        }
-
-        #drawing-canvas {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: 11;
-            pointer-events: none; 
-        }
-
-        #photo-preview-render {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            display: none;
-            z-index: 12;
-        }
-
-        /* WORKSPACE CORES & CONTROLS ATAS KAMERA */
-        .top-camera-controls {
-            position: absolute;
-            top: 12px;
-            right: 12px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            z-index: 15;
-            background: rgba(0, 0, 0, 0.4);
-            padding: 6px 12px;
-            border-radius: 20px;
-            backdrop-filter: blur(4px);
-            border: 1px solid rgba(255, 255, 255, 0.15);
-        }
-
-        /* Lingkaran Pilihan Warna yang Bisa Diklik Kursor Laptop */
-        .color-dot {
-            width: 20px;
-            height: 20px;
-            border-radius: 50%;
-            cursor: pointer;
-            border: 2px solid transparent;
-            transition: transform 0.2s, border 0.2s;
-        }
-        .color-dot:hover { transform: scale(1.2); }
-        .color-dot.active { border-color: #ffffff; transform: scale(1.15); }
-
-        .dot-pink { background-color: #ff9ff3; }
-        .dot-blue { background-color: #00cec9; }
-        .dot-yellow { background-color: #ffeaa7; }
-
-        /* Tombol Reset/Hapus Menggunakan Ikon Putar */
-        .btn-clear-canvas {
-            background: transparent;
-            color: white;
-            border: none;
-            font-size: 1.05rem;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: transform 0.2s;
-            margin-left: 4px;
-            user-select: none;
-        }
-        .btn-clear-canvas:hover { color: #ff7675; transform: rotate(-45deg); }
-
-        /* PANEL KONTROL NAVIGASI JEPRI */
-        .photobox-controls {
-            position: absolute;
-            top: 76.8%;     
-            left: 50%;
-            transform: translateX(-50%);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 35px;      
-            z-index: 20;
-            width: auto;
-        }
-
-        .btn-snap-circle {
-            width: 44px;
-            height: 44px;
-            border-radius: 50%;
-            background: rgba(255, 255, 255, 0.1);
-            border: 3px solid #ffffff;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: background 0.2s, transform 0.1s;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.2);
-        }
-
-        .btn-snap-circle::after {
-            content: "";
-            width: 26px;
-            height: 26px;
-            background: #ffffff;
-            border-radius: 50%;
-            display: block;
-        }
-
-        .btn-snap-circle:hover { background: rgba(255, 255, 255, 0.35); }
-        .btn-snap-circle:active { transform: scale(0.90); }
-
-        .btn-side-nav {
-            padding: 7px 18px;
-            font-size: 0.85rem;
-            font-weight: bold;
-            color: #ffffff;
-            border: none;
-            border-radius: 20px;
-            cursor: pointer;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.15);
-            transition: opacity 0.2s, transform 0.2s;
-            opacity: 0;
-            visibility: hidden;
-        }
-
-        .btn-side-nav:active { transform: scale(0.95); }
-        .btn-nav-cancel { background-color: #e74c3c; }
-        .btn-nav-cancel:hover { background-color: #ff7675; }
-        .btn-nav-next { background-color: #2ecc71; }
-        .btn-nav-next:hover { background-color: #55efc4; }
-
-        .controls-active .btn-side-nav {
-            opacity: 1;
-            visibility: visible;
-        }
-
-        .controls-active .btn-snap-circle {
-            opacity: 0.2;
-            pointer-events: none;
-        }
-
-        /* TEXT UTAMA & FLOWERS */
-        .center-text {
+        #page1 .center-text {
             position: absolute;
             top: 50%;
             left: 50%;
@@ -275,7 +59,7 @@
             width: 90%;
         }
 
-        .flower-border {
+        #page1 .flower-border {
             position: absolute;
             top: 0;
             left: 0;
@@ -285,7 +69,7 @@
             z-index: 15;
         }
 
-        .flower-row {
+        #page1 .flower-row {
             position: absolute;
             left: 0;
             width: 100%;
@@ -293,10 +77,10 @@
             justify-content: space-around;
             padding: 10px 0;
         }
-        .flower-row.top { top: 0; }
-        .flower-row.bottom { bottom: 0; }
+        #page1 .flower-row.top { top: 0; }
+        #page1 .flower-row.bottom { bottom: 0; }
 
-        .flower-column {
+        #page1 .flower-column {
             position: absolute;
             top: 60px;
             bottom: 60px;
@@ -305,10 +89,10 @@
             justify-content: space-around;
             height: calc(100% - 120px);
         }
-        .flower-column.left { left: 15px; }
-        .flower-column.right { right: 15px; }
+        #page1 .flower-column.left { left: 15px; }
+        #page1 .flower-column.right { right: 15px; }
 
-        .flower-border span {
+        #page1 .flower-border span {
             display: inline-block;
             font-size: 35px;
             animation: spinFlower 6s linear infinite;
@@ -397,6 +181,321 @@
             100% { transform: translateX(-50%) rotate(8deg); }
         }
 
+        /* ================== FIX STYLING HALAMAN 2 (COUNTDOWN) ================== */
+        #page2 {
+            background-image: url('hal 2.jpeg');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            display: none; 
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+        }
+
+        #page2 .page2-title {
+            font-family: 'Comic Sans MS', cursive, sans-serif;
+            color: #ff4757;
+            font-size: 3rem;
+            font-weight: bold;
+            text-shadow: 2px 2px 8px rgba(255, 255, 255, 0.9), 0px 4px 10px rgba(0,0,0,0.1);
+            margin-bottom: 5px;
+            z-index: 10;
+        }
+
+        #page2 .page2-subtitle {
+            color: #4b5563;
+            font-size: 1.2rem;
+            font-weight: bold;
+            text-shadow: 1px 1px 4px rgba(255, 255, 255, 0.8);
+            margin-bottom: 40px;
+            z-index: 10;
+        }
+
+        #page2 .timer-box {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 25px;
+            z-index: 10;
+        }
+
+        #page2 .time-segment {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 85px;
+        }
+
+        #page2 .time-number {
+            font-size: 3.2rem;
+            font-weight: 800;
+            color: #ffffff;
+            background: #ff6b81; 
+            width: 100%;
+            padding: 8px 0;
+            border-radius: 15px;
+            box-shadow: 0 8px 20px rgba(255, 107, 129, 0.3);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        #page2 .time-label {
+            font-size: 0.95rem;
+            font-weight: bold;
+            color: #2c2c54;
+            margin-top: 10px;
+            text-transform: uppercase;
+            text-shadow: 1px 1px 4px rgba(255, 255, 255, 0.8);
+        }
+
+        #page2 .unlock-btn {
+            display: none;
+            margin-top: 40px;
+            padding: 15px 45px;
+            background-color: #2ed573;
+            color: white;
+            font-size: 1.3rem;
+            font-weight: bold;
+            border: none;
+            border-radius: 30px;
+            cursor: pointer;
+            box-shadow: 0 6px 20px rgba(46, 213, 115, 0.4);
+            animation: pulseBtn 1.5s infinite alternate;
+            z-index: 10;
+        }
+
+        #page2 .arrow-btn {
+            position: absolute;
+            bottom: 15px;
+            right: 15px;
+            background: transparent;
+            border: none;
+            color: rgba(0, 0, 0, 0.15); 
+            font-size: 1rem;
+            cursor: pointer;
+            z-index: 50;
+            user-select: none;
+            transition: color 0.2s;
+        }
+        #page2 .arrow-btn:hover { color: rgba(255, 71, 87, 0.6); }
+
+        /* ================== FIX STYLING HALAMAN 3 (VIDEO THEME) ================== */
+        #page3 {
+            background-image: url('hal 3.png');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            display: none;
+            position: absolute;
+            width: 100%;
+            height: 100%;
+        }
+
+        #page3 .video-box-overlay {
+            position: absolute;
+            top: 49.5%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 38.5%; 
+            aspect-ratio: 16 / 9;
+            border-radius: 35px;
+            overflow: hidden;
+            z-index: 12; /* Dinaikkan z-index agar berada di atas layer dasar */
+            box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+        }
+
+        #page3 .video-box-overlay video {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+            background-color: #000;
+        }
+
+        #page3 .fake-next-hitbox {
+            position: absolute;
+            bottom: 3.5%;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 110px;
+            height: 45px;
+            cursor: pointer;
+            z-index: 25; /* Ditambah tinggi z-index agar bebas di klik kursor */
+            background: transparent;
+            border: none;
+            border-radius: 20px;
+        }
+
+        /* ================== HALAMAN 4 (PHOTOBOX MODULAR) ================== */
+        #page4 {
+            background-image: url('hal 4.png');
+            background-size: 100% 100%;
+            background-position: center;
+            background-repeat: no-repeat;
+            display: none; 
+            position: absolute;
+            width: 100%;
+            height: 100%;
+        }
+
+        #page4 .photobox-frame {
+            position: absolute;
+            top: 23%;       
+            left: 27.2%;     
+            width: 45.6%;    
+            height: 45.5%;   
+            background: #cbd5e1; 
+            border-radius: 14px; 
+            z-index: 10;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            box-shadow: inset 0 4px 10px rgba(0,0,0,0.25);
+        }
+
+        #page4 .camera-viewport {
+            width: 92%;  
+            height: 88%; 
+            position: relative;
+            overflow: hidden;
+            border-radius: 8px;
+            background: #000000;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+        }
+
+        #page4 #webcam-view {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transform: scaleX(-1); 
+            display: block;
+        }
+
+        #page4 #drawing-canvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 11;
+            pointer-events: none; 
+        }
+
+        #page4 #photo-preview-render {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: none;
+            z-index: 12;
+        }
+
+        #page4 .top-camera-controls {
+            position: absolute;
+            top: 12px;
+            right: 12px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            z-index: 15;
+            background: rgba(0, 0, 0, 0.4);
+            padding: 6px 12px;
+            border-radius: 20px;
+            backdrop-filter: blur(4px);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+        }
+
+        #page4 .color-dot {
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            cursor: pointer;
+            border: 2px solid transparent;
+            transition: transform 0.2s, border 0.2s;
+        }
+        #page4 .color-dot:hover { transform: scale(1.2); }
+        #page4 .color-dot.active { border-color: #ffffff; transform: scale(1.15); }
+        #page4 .dot-pink { background-color: #ff9ff3; }
+        #page4 .dot-blue { background-color: #00cec9; }
+        #page4 .dot-yellow { background-color: #ffeaa7; }
+
+        #page4 .btn-clear-canvas {
+            background: transparent;
+            color: white;
+            border: none;
+            font-size: 1.05rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: transform 0.2s;
+            margin-left: 4px;
+        }
+        #page4 .btn-clear-canvas:hover { color: #ff7675; transform: rotate(-45deg); }
+
+        #page4 .photobox-controls {
+            position: absolute;
+            top: 76.8%;     
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 35px;      
+            z-index: 20;
+            width: auto;
+        }
+
+        #page4 .btn-snap-circle {
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.1);
+            border: 3px solid #ffffff;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background 0.2s, transform 0.1s;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+        }
+        #page4 .btn-snap-circle::after {
+            content: "";
+            width: 26px;
+            height: 26px;
+            background: #ffffff;
+            border-radius: 50%;
+            display: block;
+        }
+        #page4 .btn-snap-circle:hover { background: rgba(255, 255, 255, 0.35); }
+        #page4 .btn-snap-circle:active { transform: scale(0.90); }
+
+        #page4 .btn-side-nav {
+            padding: 7px 18px;
+            font-size: 0.85rem;
+            font-weight: bold;
+            color: #ffffff;
+            border: none;
+            border-radius: 20px;
+            cursor: pointer;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+            transition: opacity 0.2s, transform 0.2s;
+            opacity: 0;
+            visibility: hidden;
+        }
+        #page4 .btn-side-nav:active { transform: scale(0.95); }
+        #page4 .btn-nav-cancel { background-color: #e74c3c; }
+        #page4 .btn-nav-cancel:hover { background-color: #ff7675; }
+        #page4 .btn-nav-next { background-color: #2ecc71; }
+        #page4 .btn-nav-next:hover { background-color: #55efc4; }
+
+        #page4 .controls-active .btn-side-nav { opacity: 1; visibility: visible; }
+        #page4 .controls-active .btn-snap-circle { opacity: 0.2; pointer-events: none; }
+
+        /* UTILS OVERLAYS REUSABLE */
         #letter-overlay {
             position: fixed;
             top: 0;
@@ -426,16 +525,9 @@
         }
 
         #letter-overlay.show .letter-content { transform: scale(1); }
-
-        .letter-content p {
-            font-size: 1.3rem;
-            color: #2c2c54;
-            line-height: 1.6;
-            font-weight: bold;
-        }
-
+        .letter-content p { font-size: 1.3rem; color: #2c2c54; line-height: 1.6; font-weight: bold; }
         .hint { margin-top: 20px; font-size: 0.9rem; color: #ff9ff3; font-weight: normal; }
-
+        
         .next-btn {
             display: none; 
             margin: 25px auto 0 auto;
@@ -448,10 +540,14 @@
             font-weight: bold;
             cursor: pointer;
             box-shadow: 0 5px 15px rgba(255, 71, 87, 0.4);
-            transition: transform 0.2s, background-color 0.2s;
+            transition: transform 0.2s;
         }
-
         .next-btn:hover { background-color: #ff6b81; transform: scale(1.05); }
+
+        @keyframes pulseBtn {
+            0% { transform: scale(1); }
+            100% { transform: scale(1.05); }
+        }
     </style>
 </head>
 <body>
@@ -523,7 +619,6 @@
             <div class="btn-snap-circle" onclick="capturePhotoboxFrame()"></div>
             <button class="btn-side-nav btn-nav-next" onclick="saveAndResetForNext()">Next</button>
         </div>
-
         <canvas id="hidden-canvas" style="display:none;"></canvas>
     </div>
 
@@ -536,7 +631,7 @@
     </div>
 
     <script>
-        // GENERATOR BINGKAI BUNGA TEPI HALAMAN
+        // GENERATOR FLOWER BOUNDS
         function generateFlowerBorder() {
             const rowTop = document.getElementById('row-top');
             const rowBottom = document.getElementById('row-bottom');
@@ -558,7 +653,7 @@
         }
         generateFlowerBorder();
 
-        // LOGIKA BALON
+        // BALON MANAGER
         const container = document.getElementById('balloon-container');
         const overlay = document.getElementById('letter-overlay');
         const secretText = document.getElementById('secret-text');
@@ -649,7 +744,6 @@
                 setTimeout(() => {
                     if (balloon.dataset.message) {
                         secretText.innerText = balloon.dataset.message;
-                        
                         if (balloon.dataset.type === "gift") {
                             nextPageBtn.style.display = "block";
                             closeHint.style.display = "none";
@@ -657,17 +751,13 @@
                             nextPageBtn.style.display = "none";
                             closeHint.style.display = "block";
                         }
-
                         overlay.style.display = 'flex';
                         setTimeout(() => overlay.classList.add('show'), 10);
                     }
                     balloon.remove(); 
                 }, 150);
             });
-
-            balloon.addEventListener('animationend', () => {
-                balloon.remove();
-            });
+            balloon.addEventListener('animationend', () => { balloon.remove(); });
         }
 
         setInterval(createNormalBalloon, 3000);
@@ -689,7 +779,7 @@
             }
         });
 
-        // COUNTDOWN HALAMAN 2
+        // TIMING SYSTEM
         let isCountdownActive = true;
         function startCountdown() {
             const targetDate = new Date("June 6, 2026 15:00:00").getTime();
@@ -716,7 +806,7 @@
                 if (difference < 0) {
                     clearInterval(timerInterval);
                     document.getElementById("timer-display").style.display = "none";
-                    document.querySelector(".page2-subtitle").innerText = "Waktunya telah tibaaa! Klik tombol di bawah untuk membukanya! ❤️";
+                    document.querySelector("#page2 .page2-subtitle").innerText = "Waktunya telah tibaaa! Klik tombol di bawah untuk membukanya! ❤️";
                     document.getElementById("scbk-open-btn").style.display = "inline-block";
                 }
             }, 1000);
@@ -724,7 +814,7 @@
 
         document.getElementById("scbk-open-btn").addEventListener('click', () => {
             document.getElementById('page2').style.display = 'none';
-            document.getElementById('page3').style.display = 'flex';
+            document.getElementById('page3').style.display = 'block';
         });
 
         function checkDeveloperPassword() {
@@ -732,7 +822,7 @@
             if (userInput === "langmalakas") {
                 isCountdownActive = false; 
                 document.getElementById('page2').style.display = 'none';
-                document.getElementById('page3').style.display = 'flex'; 
+                document.getElementById('page3').style.display = 'block'; 
             }
         }
 
@@ -744,10 +834,9 @@
             initiateSmartPhotoboxHalaman4();
         }
 
-        // ================== LOGIKA PHOTOBOX + MULTI COLOR STABILIZER ==================
+        // ================== MACHINE LEARNING ENGINE (HALAMAN 4) ==================
         let lastCapturedDataURL = null;
         let isCaptured = false;
-        
         let drawingLines = []; 
         let currentPath = [];
         let lastHandPresent = false;
@@ -756,7 +845,6 @@
         let drawValidationCounter = 0;
         const FRAME_VALIDATION_THRESHOLD = 9; 
 
-        // Warna default kuas (Pink Neon)
         let currentBrushColor = '#ff9ff3'; 
         let currentShadowColor = '#ff4757';
 
@@ -799,17 +887,13 @@
             redrawStoredLines();
         }
 
-        // FUNGSI GANTI WARNA KUAS VIA CURSOR LAPTOP
         function changeBrushColor(hexColor, element) {
             currentBrushColor = hexColor;
-            
-            // Mengatur bayangan neon agar senada dengan warna inti kuas
             if (hexColor === '#00cec9') currentShadowColor = '#00aec9';
             else if (hexColor === '#ffeaa7') currentShadowColor = '#fdcb6e';
             else currentShadowColor = '#ff4757';
 
-            // Reset indikator bulatan aktif di menu atas
-            const dots = document.querySelectorAll('.color-dot');
+            const dots = document.querySelectorAll('#page4 .color-dot');
             dots.forEach(dot => dot.classList.remove('active'));
             element.classList.add('active');
         }
@@ -822,7 +906,6 @@
 
             if (results.multiHandLandmarks && results.multiHandLandmarks.length > 0) {
                 const landmarks = results.multiHandLandmarks[0];
-                
                 const indexTip = landmarks[8]; 
                 const indexBase = landmarks[5];
                 const middleTip = landmarks[12];
@@ -849,12 +932,11 @@
 
                         drawCtx.beginPath();
                         drawCtx.arc(targetX, targetY, 6, 0, 2 * Math.PI);
-                        drawCtx.fillStyle = currentBrushColor; // Mengikuti warna palet terpilih
+                        drawCtx.fillStyle = currentBrushColor;
                         drawCtx.fill();
 
                         if (!lastHandPresent) {
                             currentPath = [];
-                            // Simpan juga informasi kode warna khusus pada goresan line baru ini
                             drawingLines.push({ points: currentPath, color: currentBrushColor, shadow: currentShadowColor });
                         }
                         currentPath.push({ x: targetX, y: targetY });
@@ -955,7 +1037,7 @@
             previewRender.style.display = 'block';
 
             controlPanel.classList.add('controls-active');
-            floatingMenu.style.display = 'none'; // Sembunyikan palet warna saat membeku
+            floatingMenu.style.display = 'none'; 
         }
 
         function cancelAndRetakePhoto() {
@@ -970,7 +1052,7 @@
             drawValidationCounter = 0;
 
             controlPanel.classList.remove('controls-active');
-            floatingMenu.style.display = 'flex'; // Munculkan kembali palet warna
+            floatingMenu.style.display = 'flex'; 
         }
 
         function saveAndResetForNext() {
