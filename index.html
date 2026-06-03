@@ -543,6 +543,11 @@
             transition: transform 0.2s;
         }
         .next-btn:hover { background-color: #ff6b81; transform: scale(1.05); }
+
+        @keyframes pulseBtn {
+            0% { transform: scale(1); }
+            100% { transform: scale(1.05); }
+        }
     </style>
 </head>
 <body>
@@ -882,7 +887,6 @@
             redrawStoredLines();
         }
 
-        // PEMILIH WARNA
         function changeBrushColor(hexColor, element) {
             currentBrushColor = hexColor;
             if (hexColor === '#00cec9') currentShadowColor = '#00aec9';
@@ -985,7 +989,7 @@
             drawCtx.clearRect(0, 0, drawCanvas.width, drawCanvas.height);
         }
 
-        // FIX MODIFIKASI: KALIBRASI KETEBALAN GARIS DAN REDUKSI BLUR NEON AGAR TAJAM PAS DI JEPRET
+        // PERBAIKAN FINAL: MENYESUAIKAN SKALA KETEBALAN GARIS DAN MEMOTONG TOTAL EFEK SHADOW AGAR TAJAM, PADAT, & ANTI-MELEBAR
         function capturePhotoboxFrame() {
             isCaptured = true;
             const canvas = document.getElementById('hidden-canvas');
@@ -1004,8 +1008,8 @@
             ctx.drawImage(videoElement, 0, 0, w, h);
             ctx.setTransform(1, 0, 0, 1, 0, 0); 
 
-            // KALIBRASI FIX: Ketebalan disetel ke 7.5 dan blur reduksi ke 2 agar garis padat, solid, & tidak meleleh blur
-            ctx.lineWidth = 7.5; 
+            // KALIBRASI SCALING FINAL: Disetel ke 7.3 agar ketebalan pas, tajam, solid, & proporsional di file asli
+            ctx.lineWidth = 7.3; 
             ctx.lineCap = 'round';
             ctx.lineJoin = 'round';
 
@@ -1019,7 +1023,7 @@
 
                 ctx.strokeStyle = lineData.color;
                 ctx.shadowColor = lineData.shadow;
-                ctx.shadowBlur = 2; // Memotong bias gradasi samping agar garis tidak blur melebar
+                ctx.shadowBlur = 0; // MEMOTONG TOTAL efek glow agar garis tidak memiliki bias gradasi melebar/leleh
 
                 ctx.beginPath();
                 ctx.moveTo(path[0].x * scaleX, path[0].y * scaleY);
@@ -1028,7 +1032,7 @@
                 }
                 ctx.stroke();
             }
-            ctx.shadowBlur = 0;
+            ctx.shadowBlur = 0; // Pastikan dimatikan total
 
             lastCapturedDataURL = canvas.toDataURL('image/jpeg', 0.95);
             previewRender.src = lastCapturedDataURL;
