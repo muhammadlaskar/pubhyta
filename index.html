@@ -4,6 +4,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Happy Birthday Sayang! 🎈</title>
+    
+    <script src="https://cdn.jsdelivr.net/npm/@mediapipe/camera_utils/camera_utils.js" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@mediapipe/hands/hands.js" crossorigin="anonymous"></script>
+
     <style>
         * {
             box-sizing: border-box;
@@ -68,10 +72,10 @@
             height: 100%;
         }
 
-        /* ================== SOLUSI FIX POSISI PRESETS: HALAMAN 4 ================== */
+        /* ================== HALAMAN 4: SMART SMART CANVAS PHOTOBOX ================== */
         #page4 {
             background-image: url('hal 4.png');
-            background-size: 100% 100%; /* Mengunci background agar skalanya pas mengikuti window */
+            background-size: 100% 100%;
             background-position: center;
             background-repeat: no-repeat;
             display: none; 
@@ -80,15 +84,15 @@
             height: 100%;
         }
 
-        /* Pembungkus Frame Kamera Diatur Mengikuti Garis Kotak Abu-Abu Secara Presisi */
+        /* Bingkai Kamera Tetap Presisi Sesuai Gambar Pendukung */
         .photobox-frame {
             position: absolute;
-            top: 23%;       /* Batas atas kotak abu-abu template */
-            left: 27.2%;     /* Batas kiri kotak abu-abu template */
-            width: 45.6%;    /* Lebar total kotak abu-abu template */
-            height: 45.5%;   /* Tinggi total kotak abu-abu template */
+            top: 23%;       
+            left: 27.2%;     
+            width: 45.6%;    
+            height: 45.5%;   
             background: #2b2b2b;
-            border-radius: 14px; /* Menyesuaikan kelembutan sudut bingkai */
+            border-radius: 14px; 
             overflow: hidden;
             box-shadow: inset 0 4px 10px rgba(0,0,0,0.5);
             z-index: 10;
@@ -98,10 +102,22 @@
             width: 100%;
             height: 100%;
             object-fit: cover;
-            transform: scaleX(-1); /* Mirror view */
+            transform: scaleX(-1); /* Efek Mirror Kamera */
             display: block;
         }
 
+        /* Tumpukan Kanvas Gambar Transparan Tepat di Atas Layar Kamera */
+        #drawing-canvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 11;
+            pointer-events: none; /* Biar tidak mengganggu klik sistem */
+        }
+
+        /* Layar Rendering Hasil Freeze Gambar */
         #photo-preview-render {
             position: absolute;
             top: 0;
@@ -113,21 +129,41 @@
             z-index: 12;
         }
 
-        /* PANEL KONTROL NAVIGASI (Ditempatkan di area tombol bawah) */
+        /* Tombol Khusus untuk Reset/Hapus Semua Gambar Coretan Tangan */
+        .btn-clear-canvas {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background: rgba(0, 0, 0, 0.6);
+            color: white;
+            border: 2px solid rgba(255, 255, 255, 0.4);
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            cursor: pointer;
+            z-index: 15;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.1rem;
+            transition: background 0.2s, transform 0.1s;
+        }
+        .btn-clear-canvas:hover { background: rgba(255, 71, 87, 0.9); transform: rotate(-45deg); }
+
+        /* PANEL KONTROL JEPRI & NAVIGASI */
         .photobox-controls {
             position: absolute;
-            top: 76.8%;     /* Diturunkan tepat sejajar di area lingkaran putih kecil */
+            top: 76.8%;     
             left: 50%;
             transform: translateX(-50%);
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 35px;      /* Jarak seimbang untuk tombol Batal & Next */
+            gap: 35px;      
             z-index: 20;
             width: auto;
         }
 
-        /* Tombol Jepret Disesuaikan Ukurannya Agar Pas Masuk Lingkaran Putih */
         .btn-snap-circle {
             width: 44px;
             height: 44px;
@@ -154,7 +190,6 @@
         .btn-snap-circle:hover { background: rgba(255, 255, 255, 0.35); }
         .btn-snap-circle:active { transform: scale(0.90); }
 
-        /* Desain Tombol Samping Kiri & Kanan */
         .btn-side-nav {
             padding: 7px 18px;
             font-size: 0.85rem;
@@ -175,7 +210,6 @@
         .btn-nav-next { background-color: #2ecc71; }
         .btn-nav-next:hover { background-color: #55efc4; }
 
-        /* Status Muncul Ketika Foto Diambil */
         .controls-active .btn-side-nav {
             opacity: 1;
             visibility: visible;
@@ -186,7 +220,7 @@
             pointer-events: none;
         }
 
-        /* LAIN-LAIN */
+        /* TEXT UTAMA & FLOWERS */
         .center-text {
             position: absolute;
             top: 50%;
@@ -312,9 +346,7 @@
             100% { transform: translateY(-130vh) rotate(10deg); opacity: 0; }
         }
 
-        .balloon.pop-animation {
-            animation: balloonPop 0.15s ease-out forwards !important;
-        }
+        .balloon.pop-animation { animation: balloonPop 0.15s ease-out forwards !important; }
 
         @keyframes balloonPop {
             0% { transform: scale(1); opacity: 1; }
@@ -381,10 +413,7 @@
             transition: transform 0.2s, background-color 0.2s;
         }
 
-        .next-btn:hover {
-            background-color: #ff6b81;
-            transform: scale(1.05);
-        }
+        .next-btn:hover { background-color: #ff6b81; transform: scale(1.05); }
 
         .page2-title {
             font-family: 'Comic Sans MS', cursive, sans-serif;
@@ -551,7 +580,6 @@
             <video id="birthday-video" controls preload="auto">
                 <source src="video-upload.mp4" type="video/mp4">
                 <source src="video-ultah.mp4" type="video/mp4">
-                Browser kamu tidak mendukung pemutar video HTML5.
             </video>
         </div>
         <button class="fake-next-hitbox" onclick="goToNextScrapbookPage()"></button>
@@ -560,7 +588,9 @@
     <div id="page4" class="page">
         <div class="photobox-frame">
             <video id="webcam-view" autoplay playsinline></video>
+            <canvas id="drawing-canvas"></canvas>
             <img id="photo-preview-render" alt="Hasil Foto">
+            <button class="btn-clear-canvas" title="Hapus Gambar" onclick="clearDrawingCanvas()">🔄</button>
         </div>
 
         <div class="photobox-controls" id="control-panel-wrapper">
@@ -786,46 +816,186 @@
             if(vid) vid.pause();
             document.getElementById('page3').style.display = 'none';
             document.getElementById('page4').style.display = 'block'; 
-            initiateWebcamHalaman4();
+            initiateSmartPhotoboxHalaman4();
         }
 
-        // PHOTOBOX HALAMAN 4
-        let videoStream = null;
+        // ================== CORE LOGIC: HAND TRACKING CANVAS DRAWING ==================
         let lastCapturedDataURL = null;
+        let isCaptured = false;
+        
+        // Memori array untuk menampung seluruh titik koordinat guratan gambar
+        let drawingLines = []; 
+        let currentPath = [];
+        let lastHandPresent = false;
 
-        function initiateWebcamHalaman4() {
-            const videoElement = document.getElementById('webcam-view');
-            navigator.mediaDevices.getUserMedia({ 
-                video: { 
-                    width: { ideal: 1280 },
-                    height: { ideal: 720 }
-                }, 
-                audio: false 
-            })
-            .then(function(stream) {
-                videoStream = stream;
-                videoElement.srcObject = stream;
-            })
-            .catch(function(err) {
-                console.log(err);
+        const videoElement = document.getElementById('webcam-view');
+        const drawCanvas = document.getElementById('drawing-canvas');
+        const drawCtx = drawCanvas.getContext('2d');
+
+        function initiateSmartPhotoboxHalaman4() {
+            // Sinkronkan resolusi kanvas gambar internal agar pas dengan ukuran kotak
+            resizeDrawingCanvas();
+            window.addEventListener('resize', resizeDrawingCanvas);
+
+            // Setup Sistem Kecerdasan Buatan MediaPipe Hands
+            const hands = new Hands({
+                locateFile: (file) => `https://cdn.jsdelivr.net/npm/@mediapipe/hands/${file}`
             });
+
+            hands.setOptions({
+                maxNumHands: 1,
+                modelComplexity: 1,
+                minDetectionConfidence: 0.62,
+                minTrackingConfidence: 0.62
+            });
+
+            hands.onResults(onHandTrackingResults);
+
+            // Hubungkan kamera sistem
+            const camera = new Camera(videoElement, {
+                onFrame: async () => {
+                    if (!isCaptured) {
+                        await hands.send({ image: videoElement });
+                    }
+                },
+                width: 1280,
+                height: 720
+            });
+            camera.start();
         }
 
+        function resizeDrawingCanvas() {
+            drawCanvas.width = drawCanvas.clientWidth;
+            drawCanvas.height = drawCanvas.clientHeight;
+            redrawStoredLines();
+        }
+
+        // FUNGSI UTAMA AI DETEKSI GERAKAN JARI TANGAN
+        function onHandTrackingResults(results) {
+            if (isCaptured) return;
+
+            // Bersihkan kanvas layar atas setiap frame berganti
+            drawCtx.clearRect(0, 0, drawCanvas.width, drawCanvas.height);
+            redrawStoredLines();
+
+            if (results.multiHandLandmarks && results.multiHandLandmarks.length > 0) {
+                const landmarks = results.multiHandLandmarks[0];
+                
+                // Titik landmark nomor 8 adalah Ujung Jari Telunjuk (Index Finger Tip)
+                const indexTip = landmarks[8]; 
+                // Titik landmark nomor 5 adalah Pangkal Jari Telunjuk
+                const indexBase = landmarks[5];
+                // Titik landmark nomor 12 adalah Ujung Jari Tengah (Untuk validasi mode angkat kuas)
+                const middleTip = landmarks[12];
+
+                // Konversi koordinat rasio normalisasi MediaPipe ke koordinat pixel kanvas (Efek Mirror Aktif)
+                const x = (1 - indexTip.x) * drawCanvas.width;
+                const y = indexTip.y * drawCanvas.height;
+
+                // LOGIKA ATURAN KUAS: Jari telunjuk harus tegak lurus ke atas lebih tinggi dari pangkalnya
+                const isDrawingMode = (indexTip.y < indexBase.y) && (middleTip.y > indexBase.y);
+
+                if (isDrawingMode) {
+                    // Beri indikator lingkaran kuas kecil warna pink yang sedang aktif di ujung jari
+                    drawCtx.beginPath();
+                    drawCtx.arc(x, y, 6, 0, 2 * Math.PI);
+                    drawCtx.fillStyle = '#ff7675';
+                    drawCtx.fill();
+
+                    if (!lastHandPresent) {
+                        currentPath = [];
+                        drawingLines.push(currentPath);
+                    }
+                    currentPath.push({ x: x, y: y });
+                    lastHandPresent = true;
+                } else {
+                    // Mode angkat kuas (Jari dikepalkan atau dibuka full)
+                    lastHandPresent = false;
+                }
+            } else {
+                lastHandPresent = false;
+            }
+        }
+
+        // Menggambar ulang seluruh histori coretan kuas tersimpan ke layar
+        function redrawStoredLines() {
+            drawCtx.lineWidth = 5;
+            drawCtx.lineCap = 'round';
+            drawCtx.lineJoin = 'round';
+            drawCtx.strokeStyle = '#ff9ff3'; // Warna Pink Neon Cantik khas Photobox
+            
+            // Efek glow lampu neon
+            drawCtx.shadowColor = '#ff4757';
+            drawCtx.shadowBlur = 4;
+
+            for (let i = 0; i < drawingLines.length; i++) {
+                const path = drawingLines[i];
+                if (path.length < 2) continue;
+                
+                drawCtx.beginPath();
+                drawCtx.moveTo(path[0].x, path[0].y);
+                for (let j = 1; j < path.length; j++) {
+                    drawCtx.lineTo(path[j].x, path[j].y);
+                }
+                drawCtx.stroke();
+            }
+            
+            // Matikan efek glow untuk elemen lain
+            drawCtx.shadowBlur = 0; 
+        }
+
+        // Fungsi Tombol Reset Hapus Layar
+        function clearDrawingCanvas() {
+            drawingLines = [];
+            currentPath = [];
+            drawCtx.clearRect(0, 0, drawCanvas.width, drawCanvas.height);
+        }
+
+        // PROSES SNAP JEPRET FOTO: MENGGABUNGKAN KAMERA DAN KANVAS CORETAN JADI 1 FILE
         function capturePhotoboxFrame() {
-            const video = document.getElementById('webcam-view');
+            isCaptured = true;
             const canvas = document.getElementById('hidden-canvas');
             const previewRender = document.getElementById('photo-preview-render');
             const controlPanel = document.getElementById('control-panel-wrapper');
             const ctx = canvas.getContext('2d');
 
-            canvas.width = video.videoWidth || 1280;
-            canvas.height = video.videoHeight || 720;
+            const w = videoElement.videoWidth || 1280;
+            const h = videoElement.videoHeight || 720;
+            canvas.width = w;
+            canvas.height = h;
 
-            ctx.translate(canvas.width, 0);
+            // 1. Gambar Video Kamera Webcam Terbalik (Mirror Effect)
+            ctx.translate(w, 0);
             ctx.scale(-1, 1);
-            ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+            ctx.drawImage(videoElement, 0, 0, w, h);
+            ctx.setTransform(1, 0, 0, 1, 0, 0); // Reset transformasi matriks
 
-            lastCapturedDataURL = canvas.toDataURL('image/jpeg', 0.9);
+            // 2. Gambar Lapisan Guratan Tangan Tepat di Atasnya
+            ctx.lineWidth = 6;
+            ctx.lineCap = 'round';
+            ctx.lineJoin = 'round';
+            ctx.strokeStyle = '#ff9ff3';
+            ctx.shadowColor = '#ff4757';
+            ctx.shadowBlur = 6;
+
+            // Konversi skala coretan dari koordinat monitor ke koordinat resolusi foto asli
+            const scaleX = w / drawCanvas.width;
+            const scaleY = h / drawCanvas.height;
+
+            for (let i = 0; i < drawingLines.length; i++) {
+                const path = drawingLines[i];
+                if (path.length < 2) continue;
+                ctx.beginPath();
+                ctx.moveTo(path[0].x * scaleX, path[0].y * scaleY);
+                for (let j = 1; j < path.length; j++) {
+                    ctx.lineTo(path[j].x * scaleX, path[j].y * scaleY);
+                }
+                ctx.stroke();
+            }
+            ctx.shadowBlur = 0;
+
+            // Kunci Gambar Menjadi Base64 Data URL
+            lastCapturedDataURL = canvas.toDataURL('image/jpeg', 0.95);
             previewRender.src = lastCapturedDataURL;
             previewRender.style.display = 'block';
 
@@ -839,6 +1009,7 @@
             previewRender.style.display = 'none';
             previewRender.src = '';
             lastCapturedDataURL = null;
+            isCaptured = false;
 
             controlPanel.classList.remove('controls-active');
         }
@@ -848,11 +1019,13 @@
 
             const downloadLink = document.createElement('a');
             downloadLink.href = lastCapturedDataURL;
-            downloadLink.download = 'Photobox_Kita_' + Date.now() + '.jpg';
+            downloadLink.download = 'Photobox_Art_Kita_' + Date.now() + '.jpg';
             document.body.appendChild(downloadLink);
             downloadLink.click();
             document.body.removeChild(downloadLink);
 
+            // Bersihkan juga coretan lama untuk sesi foto seru berikutnya
+            clearDrawingCanvas();
             cancelAndRetakePhoto();
         }
     </script>
