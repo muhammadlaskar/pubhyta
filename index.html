@@ -957,7 +957,7 @@
         }
 
         function redrawStoredLines() {
-            drawCtx.lineWidth = 5;
+            drawCtx.lineWidth = 5; // Nilasi ketebalan kuas standar monitor (5px)
             drawCtx.lineCap = 'round';
             drawCtx.lineJoin = 'round';
 
@@ -989,7 +989,7 @@
             drawCtx.clearRect(0, 0, drawCanvas.width, drawCanvas.height);
         }
 
-        // FIX PROSES SNAP INDEPENDEN: MENGUNCI NILAI PIXEL STATIS TANPA PERKALIAN MONITOR AGAR HASILNYA 100% IDENTIK
+        // PERBAIKAN MUTLAK: IMPLEMENTASI DYNAMIC SCALING RATIO PIXEL BERDASARKAN MONITOR LAYAR NYATA
         function capturePhotoboxFrame() {
             isCaptured = true;
             const canvas = document.getElementById('hidden-canvas');
@@ -1008,13 +1008,14 @@
             ctx.drawImage(videoElement, 0, 0, w, h);
             ctx.setTransform(1, 0, 0, 1, 0, 0); 
 
-            // KALIBRASI FIX TOTAL: Mengunci ketebalan di 11.5 dan sebaran pendaran neon di 16 (Tanpa rumus pengali layar monitor)
-            ctx.lineWidth = 11.5; 
             ctx.lineCap = 'round';
             ctx.lineJoin = 'round';
 
-            const scaleX = w / drawCanvas.width;
-            const scaleY = h / drawCanvas.height;
+            // HITUNG RATIO SKALA SCALING MATEMATIS AKTIF (UKURAN NYATA KAMERA / UKURAN MONITOR BROWSER)
+            const scaleRatioX = w / drawCanvas.width;
+
+            // Mengalikan secara dinamis nilai dasar monitor (5px) dengan rasio skala saat jepret dibuka
+            ctx.lineWidth = 5 * scaleRatioX; 
 
             for (let i = 0; i < drawingLines.length; i++) {
                 const lineData = drawingLines[i];
@@ -1023,16 +1024,18 @@
 
                 ctx.strokeStyle = lineData.color;
                 ctx.shadowColor = lineData.shadow;
-                ctx.shadowBlur = 16; // Pendaran lampu neon dikunci sempurna mengikuti besaran 1280px
+                
+                // Menyelaraskan sebaran bias blur lampu neon secara otomatis mengikuti rasio ketebalan garis baru
+                ctx.shadowBlur = 4 * scaleRatioX; 
 
                 ctx.beginPath();
-                ctx.moveTo(path[0].x * scaleX, path[0].y * scaleY);
+                ctx.moveTo(path[0].x * scaleRatioX, path[0].y * scaleRatioX);
                 for (let j = 1; j < path.length; j++) {
-                    ctx.lineTo(path[j].x * scaleX, path[j].y * scaleY);
+                    ctx.lineTo(path[j].x * scaleRatioX, path[j].y * scaleRatioX);
                 }
                 ctx.stroke();
             }
-            ctx.shadowBlur = 0;
+            ctx.shadowBlur = 0; 
 
             lastCapturedDataURL = canvas.toDataURL('image/jpeg', 0.95);
             previewRender.src = lastCapturedDataURL;
