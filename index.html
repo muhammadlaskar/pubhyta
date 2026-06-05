@@ -59,8 +59,7 @@
             width: 90%;
         }
 
-        /* PERBAIKAN STYLING: Memastikan Frame Bingkai Bunga Sakura Tetap Muncul Kokoh */
-        .flower-border {
+        #page1 .flower-border {
             position: absolute;
             top: 0;
             left: 0;
@@ -70,7 +69,7 @@
             z-index: 15;
         }
 
-        .flower-row {
+        #page1 .flower-row {
             position: absolute;
             left: 0;
             width: 100%;
@@ -78,10 +77,10 @@
             justify-content: space-around;
             padding: 10px 0;
         }
-        .flower-row.top { top: 0; }
-        .flower-row.bottom { bottom: 0; }
+        #page1 .flower-row.top { top: 0; }
+        #page1 .flower-row.bottom { bottom: 0; }
 
-        .flower-column {
+        #page1 .flower-column {
             position: absolute;
             top: 60px;
             bottom: 60px;
@@ -90,10 +89,10 @@
             justify-content: space-around;
             height: calc(100% - 120px);
         }
-        .flower-column.left { left: 15px; }
-        .flower-column.right { right: 15px; }
+        #page1 .flower-column.left { left: 15px; }
+        #page1 .flower-column.right { right: 15px; }
 
-        .flower-border span {
+        #page1 .flower-border span {
             display: inline-block;
             font-size: 35px;
             animation: spinFlower 6s linear infinite;
@@ -266,20 +265,21 @@
             z-index: 10;
         }
 
-        #page2 .arrow-btn {
+        /* PERBAIKAN STYLING: Tombol Navigasi Rahasia Dibuat Menjadi Elemen Tombol Klik */
+        #page2 .secret-navigation-btn {
             position: absolute;
             bottom: 15px;
             right: 15px;
             background: transparent;
             border: none;
-            color: rgba(0, 0, 0, 0.15); 
+            color: rgba(0, 0, 0, 0.15); /* Transparan lembut mengunci desain */
             font-size: 1rem;
             cursor: pointer;
             z-index: 50;
             user-select: none;
             transition: color 0.2s;
         }
-        #page2 .arrow-btn:hover { color: rgba(255, 71, 87, 0.6); }
+        #page2 .secret-navigation-btn:hover { color: rgba(255, 71, 87, 0.6); /* Warna cerah saat hover */ }
 
         /* ================== HALAMAN 3 (MINI GAME CLAW MACHINE) ================== */
         #page3 {
@@ -665,6 +665,11 @@
             transition: transform 0.2s;
         }
         .next-btn:hover { background-color: #ff6b81; transform: scale(1.05); }
+
+        @keyframes pulseBtn {
+            0% { transform: scale(1); }
+            100% { transform: scale(1.05); }
+        }
     </style>
 </head>
 <body>
@@ -702,7 +707,7 @@
             </div>
         </div>
         <button class="unlock-btn" id="scbk-open-btn">Buka Isi Scrapbook! 📖</button>
-        <button class="arrow-btn" onclick="checkDeveloperPassword()">&rarr;</button>
+        <button class="secret-navigation-btn" onclick="checkDeveloperPassword()">&rarr;</button>
     </div>
 
     <div id="page3" class="page">
@@ -761,7 +766,7 @@
     </div>
 
     <script>
-        // FIX GENERATOR FLOWER BOUNDS (Dipindahkan ke bawah agar dieksekusi setelah elemen DOM lengkap)
+        // GENERATOR FLOWER BOUNDS (Pastikan dipanggil di akhir biar DOM lengkap)
         function generateFlowerBorder() {
             const rowTop = document.getElementById('row-top');
             const rowBottom = document.getElementById('row-bottom');
@@ -837,7 +842,6 @@
             container.appendChild(balloon);
         }
 
-        // FIX TOTAL: Mengubah sistem verifikasi agar Balon Emas hadiah dipastikan terbang naik secara konsisten
         function createGiftBalloon() {
             if (document.getElementById('page1').style.display === 'none') return;
             if (container.children.length >= MAX_BALLOONS) return;
@@ -892,9 +896,9 @@
             balloon.addEventListener('animationend', () => { balloon.remove(); });
         }
 
-        // Jalankan interval pemanggilan balon
+        // PERBAIKAN: Interval dipercepat ke 7 detik agar cepat terdeteksi saat tes
         setInterval(createNormalBalloon, 3000);
-        setInterval(createGiftBalloon, 7000); // FIX: Interval dipercepat ke 7 detik agar cepat terdeteksi saat tes
+        setInterval(createGiftBalloon, 7000); 
 
         nextPageBtn.addEventListener('click', (e) => {
             e.stopPropagation();
@@ -951,6 +955,16 @@
             activateClawMachineKeyboardSystem();
         });
 
+        function checkDeveloperPassword() {
+            const userInput = prompt("Masukkan password rahasia untuk masuk ke Halaman 3:");
+            if (userInput === "langmalakas") {
+                isCountdownActive = false; 
+                document.getElementById('page2').style.display = 'none';
+                document.getElementById('page3').style.display = 'block'; 
+                activateClawMachineKeyboardSystem();
+            }
+        }
+
         function goToNextScrapbookPage() {
             document.getElementById('page3').style.display = 'none';
             document.getElementById('page4').style.display = 'block'; 
@@ -985,7 +999,7 @@
             const floor = document.getElementById('hardware-prizes-floor');
             floor.innerHTML = ''; 
 
-            // FIX: Mengacak susunan item agar bertumpuk natural acak (Scatter Layout)
+            // Mengacak susunan item agar bertumpuk natural acak (Scatter Layout)
             prizePoolData.forEach((item, index) => {
                 const element = document.createElement('span');
                 element.classList.add('prize-item');
@@ -1376,7 +1390,7 @@
             cancelAndRetakePhoto();
         }
 
-        // INIT TRIGGER DEKORASI AWAL (Pastikan dipanggil di akhir window load biar aman anti-bug)
+        // INIT TRIGGER AWAL: Pastikan dipanggil di akhir window load biar aman anti-bug
         window.addEventListener('load', () => {
             generateFlowerBorder();
         });
