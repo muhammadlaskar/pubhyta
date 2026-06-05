@@ -280,7 +280,7 @@
         }
         #page2 .arrow-btn:hover { color: rgba(255, 71, 87, 0.6); }
 
-        /* ================== HALAMAN 3 (VIDEO THEME) ================== */
+        /* ================== HALAMAN 3 (MINI GAME CLAW MACHINE) ================== */
         #page3 {
             background-image: url('hal 3.png');
             background-size: cover;
@@ -292,42 +292,175 @@
             height: 100%;
         }
 
-        #page3 .video-box-overlay {
+        .claw-header-text {
             position: absolute;
-            top: 49.5%;
+            top: 4%;
+            left: 50%;
+            transform: translateX(-50%);
+            font-family: 'Comic Sans MS', cursive, sans-serif;
+            font-size: 1.8rem;
+            color: #d11244;
+            text-shadow: 1px 2px 4px rgba(255,255,255,0.8);
+            z-index: 30;
+            text-align: center;
+            width: 100%;
+            font-weight: bold;
+        }
+
+        .claw-machine-container {
+            position: absolute;
+            top: 48%;
             left: 50%;
             transform: translate(-50%, -50%);
             width: 38.5%; 
-            aspect-ratio: 16 / 9;
-            border-radius: 35px;
+            height: 64%;
+            background: rgba(255, 230, 235, 0.85);
+            border: 8px solid #ff758f;
+            border-radius: 25px;
             overflow: hidden;
-            z-index: 12; 
-            box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+            z-index: 12;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.2), inset 0 0 20px rgba(255,255,255,0.6);
         }
 
-        #page3 .video-box-overlay video {
+        .claw-rail {
+            position: absolute;
+            top: 0;
+            left: 0;
             width: 100%;
-            height: 100%;
-            object-fit: cover;
-            display: block;
-            background-color: #000;
+            height: 6px;
+            background: #b2bec3;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
         }
 
-        #page3 .fake-next-hitbox {
+        .claw-string-cable {
+            position: absolute;
+            top: 6px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 4px;
+            height: 40px; 
+            background: #636e72;
+            transition: height 0.1s linear;
+        }
+
+        .claw-head {
+            position: absolute;
+            bottom: -22px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 44px;
+            height: 25px;
+            background: #74b9ff;
+            border-radius: 6px 6px 0 0;
+            border: 2px solid #0984e3;
+        }
+
+        .claw-arm {
+            position: absolute;
+            bottom: -20px;
+            width: 8px;
+            height: 24px;
+            background: #95a5a6;
+            border-radius: 4px;
+            transform-origin: top center;
+            transition: transform 0.2s;
+        }
+        .claw-arm.left { left: 4px; transform: rotate(-25deg); }
+        .claw-arm.right { right: 4px; transform: rotate(25deg); }
+
+        .claw-grabbing .claw-arm.left { transform: rotate(5deg); }
+        .claw-grabbing .claw-arm.right { transform: rotate(-5deg); }
+
+        .items-pool-floor {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 75px;
+            background: rgba(255, 182, 193, 0.4);
+            border-top: 3px dashed #ff758f;
+            display: flex;
+            flex-wrap: wrap;
+            align-items: flex-end;
+            justify-content: space-around;
+            padding: 0 10px 5px 10px;
+        }
+
+        .prize-item {
+            font-size: 2.1rem;
+            cursor: pointer;
+            user-select: none;
+            transition: transform 0.2s, bottom 0.1s linear, left 0.1s linear;
+            display: inline-block;
+            position: relative;
+            z-index: 14;
+            animation: jitterItem 4s infinite alternate ease-in-out;
+        }
+        
+        @keyframes jitterItem {
+            0% { transform: translateY(0) rotate(-2deg); }
+            100% { transform: translateY(-3px) rotate(2deg); }
+        }
+
+        .prize-chute-hole {
+            position: absolute;
+            bottom: 0;
+            left: 15px;
+            width: 65px;
+            height: 55px;
+            background: #2d3436;
+            border-radius: 10px 10px 0 0;
+            border: 3px solid #ff758f;
+            z-index: 15;
+            box-shadow: inset 0 5px 10px rgba(0,0,0,0.6);
+        }
+
+        .claw-stats-badge {
+            position: absolute;
+            bottom: 19%;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #ff4757;
+            color: white;
+            font-weight: bold;
+            padding: 6px 20px;
+            border-radius: 20px;
+            font-size: 1rem;
+            z-index: 25;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+        }
+
+        #claw-next-gate-btn {
             position: absolute;
             bottom: 3.5%;
             left: 50%;
             transform: translateX(-50%);
             width: 110px;
             height: 45px;
-            cursor: pointer;
-            z-index: 25; 
-            background: transparent;
+            cursor: not-allowed;
+            z-index: 26;
+            background: rgba(0,0,0,0.1);
             border: none;
             border-radius: 20px;
+            font-weight: bold;
+            color: rgba(255,255,255,0.4);
+            transition: all 0.3s;
         }
 
-        /* ================== HALAMAN 4 (PHOTOBOX MODULAR) ================== */
+        #claw-next-gate-btn.unlocked {
+            background: #2ed573;
+            color: white;
+            cursor: pointer;
+            box-shadow: 0 5px 20px rgba(46, 213, 115, 0.5);
+            animation: pulseGate 1.5s infinite alternate;
+        }
+
+        @keyframes pulseGate {
+            0% { transform: translateX(-50%) scale(1); }
+            100% { transform: translateX(-50%) scale(1.06); }
+        }
+
+        /* ================== HALAMAN 4 ================== */
         #page4 {
             background-image: url('hal 4.png');
             background-size: 100% 100%;
@@ -543,11 +676,6 @@
             transition: transform 0.2s;
         }
         .next-btn:hover { background-color: #ff6b81; transform: scale(1.05); }
-
-        @keyframes pulseBtn {
-            0% { transform: scale(1); }
-            100% { transform: scale(1.05); }
-        }
     </style>
 </head>
 <body>
@@ -589,13 +717,26 @@
     </div>
 
     <div id="page3" class="page">
-        <div class="video-box-overlay">
-            <video id="birthday-video" controls preload="auto">
-                <source src="video-upload.mp4" type="video/mp4">
-                <source src="video-ultah.mp4" type="video/mp4">
-            </video>
+        <h3 class="claw-header-text">🕹️ Tangkap Kado Hubungan Kita! 🧸</h3>
+        
+        <div class="claw-machine-container">
+            <div class="claw-rail"></div>
+            
+            <div class="claw-string-cable" id="hardware-claw-cable" style="left: 50%;">
+                <div class="claw-head">
+                    <div class="claw-arm left"></div>
+                    <div class="claw-arm right"></div>
+                </div>
+            </div>
+
+            <div class="prize-chute-hole"></div>
+
+            <div class="items-pool-floor" id="hardware-prizes-floor">
+                </div>
         </div>
-        <button class="fake-next-hitbox" onclick="goToNextScrapbookPage()"></button>
+
+        <div class="claw-stats-badge">Sisa Nyawa Main: <span id="claw-lives-counter">10</span> 🔥</div>
+        <button id="claw-next-gate-btn" onclick="enterPhotoboxPage4()">NEXT</button>
     </div>
 
     <div id="page4" class="page">
@@ -815,31 +956,214 @@
         document.getElementById("scbk-open-btn").addEventListener('click', () => {
             document.getElementById('page2').style.display = 'none';
             document.getElementById('page3').style.display = 'block';
+            activateClawMachineKeyboardSystem();
         });
 
         function checkDeveloperPassword() {
             const userInput = prompt("Masukkan password rahasia untuk masuk ke Halaman 3:");
-            if (userInput === "langmalakas") {
+            if (userInput === "mahalkita") {
                 isCountdownActive = false; 
                 document.getElementById('page2').style.display = 'none';
                 document.getElementById('page3').style.display = 'block'; 
+                activateClawMachineKeyboardSystem();
             }
         }
 
         function goToNextScrapbookPage() {
-            const vid = document.getElementById('birthday-video');
-            if(vid) vid.pause();
             document.getElementById('page3').style.display = 'none';
             document.getElementById('page4').style.display = 'block'; 
             initiateSmartPhotoboxHalaman4();
         }
 
+
+        // ================== LOGIKA UTAMA GAME CLAW MACHINE ==================
+        let clawLives = 10;
+        let isClawMoving = false;
+        let isPasswordUnlocked = false;
+
+        // Komposisi 15 barang sesuai spesifikasi: 5 kado (4 zonk, 1 tas pink), 7 bola (nyawa), 3 kotak (2 zonk, 1 kunci rahasia)
+        const prizePoolData = [
+            { name: "Kado Zonk 🎁", type: "gift-zonk", emoji: "🎁" },
+            { name: "Kado Zonk 🎁", type: "gift-zonk", emoji: "🎁" },
+            { name: "Kado Zonk 🎁", type: "gift-zonk", emoji: "🎁" },
+            { name: "Kado Zonk 🎁", type: "gift-zonk", emoji: "🎁" },
+            { name: "Tas Pink Cantik! 🛍️", type: "gift-tas", emoji: "🛍️" },
+            { name: "Sisa Nyawa +1 🔮", type: "ball-live", emoji: "🔮" },
+            { name: "Sisa Nyawa +1 🔮", type: "ball-live", emoji: "🔮" },
+            { name: "Sisa Nyawa +1 🔮", type: "ball-live", emoji: "🔮" },
+            { name: "Sisa Nyawa +1 🔮", type: "ball-live", emoji: "🔮" },
+            { name: "Sisa Nyawa +1 🔮", type: "ball-live", emoji: "🔮" },
+            { name: "Sisa Nyawa +1 🔮", type: "ball-live", emoji: "🔮" },
+            { name: "Sisa Nyawa +1 🔮", type: "ball-live", emoji: "🔮" },
+            { name: "Kotak Zonk 📦", type: "box-zonk", emoji: "📦" },
+            { name: "Kotak Zonk 📦", type: "box-zonk", emoji: "📦" },
+            { name: "Kunci Password Rahasia! 🔑", type: "box-key", emoji: "🔑" }
+        ];
+
+        function activateClawMachineKeyboardSystem() {
+            const floor = document.getElementById('hardware-prizes-floor');
+            floor.innerHTML = ''; 
+
+            prizePoolData.forEach((item, index) => {
+                const element = document.createElement('span');
+                element.classList.add('prize-item');
+                element.id = `prize-${index}`;
+                element.innerText = item.emoji;
+                element.setAttribute('data-index', index);
+                floor.appendChild(element);
+            });
+
+            window.addEventListener('keydown', handleClawMachineKeyboardControl);
+        }
+
+        function handleClawMachineKeyboardControl(e) {
+            if (document.getElementById('page3').style.display !== 'block' || isClawMoving) return;
+
+            const cable = document.getElementById('hardware-claw-cable');
+            let currentLeftPosition = parseFloat(cable.style.left);
+
+            if (e.key === "ArrowLeft") {
+                if (currentLeftPosition > 12) {
+                    cable.style.left = (currentLeftPosition - 4) + "%";
+                }
+            } else if (e.key === "ArrowRight") {
+                if (currentLeftPosition < 88) {
+                    cable.style.left = (currentLeftPosition + 4) + "%";
+                }
+            } else if (e.key === "ArrowDown" || e.key === " ") {
+                e.preventDefault();
+                triggerClawDropMechanism(); 
+            }
+        }
+
+        function triggerClawDropMechanism() {
+            isClawMoving = true;
+            const cable = document.getElementById('hardware-claw-cable');
+            const machine = document.querySelector('.claw-machine-container');
+            const currentHorizontalLeft = parseFloat(cable.style.left);
+
+            cable.style.height = "240px";
+            
+            setTimeout(() => {
+                machine.classList.add('claw-grabbing');
+
+                const items = document.querySelectorAll('.prize-item');
+                let caughtItemElement = null;
+                let minimumDeltaDistance = 999;
+
+                items.forEach(el => {
+                    const elementLeftPercent = (el.offsetLeft / machine.clientWidth) * 100;
+                    const distanceDelta = Math.abs(elementLeftPercent - currentHorizontalLeft);
+
+                    if (distanceDelta < minimumDeltaDistance && distanceDelta < 12) {
+                        minimumDeltaDistance = distanceDelta;
+                        caughtItemElement = el;
+                    }
+                });
+
+                if (caughtItemElement) {
+                    setTimeout(() => {
+                        caughtItemElement.style.position = "absolute";
+                        caughtItemElement.style.bottom = "auto";
+                        caughtItemElement.style.top = "20px";
+                        caughtItemElement.style.left = "50%";
+                        caughtItemElement.style.transform = "translateX(-50%)";
+                        cable.appendChild(caughtItemElement);
+                        
+                        cable.style.height = "40px";
+
+                        setTimeout(() => {
+                            cable.style.transition = "left 1s ease-in-out";
+                            cable.style.left = "16%";
+
+                            setTimeout(() => {
+                                machine.classList.remove('claw-grabbing');
+                                caughtItemElement.style.top = "180px";
+                                caughtItemElement.style.opacity = "0";
+                                caughtItemElement.style.transition = "top 0.5s ease-in, opacity 0.5s ease";
+
+                                setTimeout(() => {
+                                    const poolIndex = caughtItemElement.getAttribute('data-index');
+                                    processClawGachaResult(prizePoolData[poolIndex]);
+
+                                    caughtItemElement.remove();
+                                    cable.style.transition = "none";
+                                    cable.style.left = "50%";
+                                    isClawMoving = false;
+                                }, 500);
+                            }, 1000);
+                        }, 600);
+                    }, 300);
+                } else {
+                    setTimeout(() => {
+                        cable.style.height = "40px";
+                        setTimeout(() => {
+                            machine.classList.remove('claw-grabbing');
+                            reduceClawLifeCounter(); 
+                            isClawMoving = false;
+                        }, 500);
+                    }, 500);
+                }
+            }, 600);
+        }
+
+        function processClawGachaResult(item) {
+            if (!item) return;
+
+            if (item.type === "gift-zonk" || item.type === "box-zonk") {
+                alert(`📦 Hasil: ${item.name}\n\nYah zonk, belum beruntung! Coba bidik barang lainnya yaa sayangkuuu! 💜`);
+                reduceClawLifeCounter();
+            } 
+            else if (item.type === "ball-live") {
+                clawLives += 2; 
+                document.getElementById('claw-lives-counter').innerText = clawLives;
+                alert(`🔮 Hasil: ${item.name}\n\nWih hoki! Kamu dapet tambahan +2 Kesempatan Bermain lagi sayang, mantap! 🎉`);
+            } 
+            else if (item.type === "gift-tas") {
+                alert(`🛍️ Hasil: ${item.name}\n\nCiyeee dapet hadiah TAS PINK! Lucu banget pasti pas kamu pakai nanti! Hadiah fisiknya menyusul pas kita ketemu yaa, sekarang lanjut cari kuncinya dulu sayang! 💕`);
+            } 
+            else if (item.type === "box-key") {
+                isPasswordUnlocked = true;
+                const gateBtn = document.getElementById('claw-next-gate-btn');
+                gateBtn.classList.add('unlocked');
+                gateBtn.style.cursor = "pointer";
+
+                // Menampilkan notifikasi persis seperti requesmu
+                alert(`yayy dapet kodenyaa ✨\n\nKodenya adalah: "mahalkita"\n\nSekarang gerbang menuju Photobox Halaman Terakhir sudah terbuka! Klik tombol "NEXT" di bawah untuk meluncur! 😍⭐`);
+            }
+        }
+
+        function reduceClawLifeCounter() {
+            clawLives--;
+            document.getElementById('claw-lives-counter').innerText = clawLives;
+
+            if (clawLives <= 0 && !isPasswordUnlocked) {
+                alert("Game Over! Sisa nyawa main habis. Tapi tenang sayang, aku kasih bonus +5 nyawa lagi gratis biar kamu menang! Hehe 💜");
+                clawLives = 5;
+                document.getElementById('claw-lives-counter').innerText = clawLives;
+            }
+        }
+
+        function enterPhotoboxPage4() {
+            if (!isPasswordUnlocked) {
+                alert("Pintu terkunci! Kamu harus mendapatkan 'Kotak Kunci 🔑' di dalam mesin capit terlebih dahulu sayang!");
+                return;
+            }
+            window.removeEventListener('keydown', handleClawMachineKeyboardControl);
+            goToNextScrapbookPage(); 
+        }
+
+
         // ================== MACHINE LEARNING ENGINE (HALAMAN 4) ==================
-        let lastCapturedDataURL = null;
+        const videoElement = document.getElementById('webcam-view');
+        const drawCanvas = document.getElementById('drawing-canvas');
+        const drawCtx = drawCanvas.getContext('2d');
         let isCaptured = false;
+        let lastHandPresent = false;
+
+        let lastCapturedDataURL = null;
         let drawingLines = []; 
         let currentPath = [];
-        let lastHandPresent = false;
         let lastFilteredX = null;
         let lastFilteredY = null;
         let drawValidationCounter = 0;
@@ -847,10 +1171,6 @@
 
         let currentBrushColor = '#ff9ff3'; 
         let currentShadowColor = '#ff4757';
-
-        const videoElement = document.getElementById('webcam-view');
-        const drawCanvas = document.getElementById('drawing-canvas');
-        const drawCtx = drawCanvas.getContext('2d');
 
         function initiateSmartPhotoboxHalaman4() {
             resizeDrawingCanvas();
@@ -957,7 +1277,7 @@
         }
 
         function redrawStoredLines() {
-            drawCtx.lineWidth = 5; // Nilasi ketebalan kuas standar monitor (5px)
+            drawCtx.lineWidth = 5; 
             drawCtx.lineCap = 'round';
             drawCtx.lineJoin = 'round';
 
@@ -989,7 +1309,6 @@
             drawCtx.clearRect(0, 0, drawCanvas.width, drawCanvas.height);
         }
 
-        // PERBAIKAN MUTLAK: IMPLEMENTASI DYNAMIC SCALING RATIO PIXEL BERDASARKAN MONITOR LAYAR NYATA
         function capturePhotoboxFrame() {
             isCaptured = true;
             const canvas = document.getElementById('hidden-canvas');
@@ -1011,10 +1330,7 @@
             ctx.lineCap = 'round';
             ctx.lineJoin = 'round';
 
-            // HITUNG RATIO SKALA SCALING MATEMATIS AKTIF (UKURAN NYATA KAMERA / UKURAN MONITOR BROWSER)
             const scaleRatioX = w / drawCanvas.width;
-
-            // Mengalikan secara dinamis nilai dasar monitor (5px) dengan rasio skala saat jepret dibuka
             ctx.lineWidth = 5 * scaleRatioX; 
 
             for (let i = 0; i < drawingLines.length; i++) {
@@ -1024,8 +1340,6 @@
 
                 ctx.strokeStyle = lineData.color;
                 ctx.shadowColor = lineData.shadow;
-                
-                // Menyelaraskan sebaran bias blur lampu neon secara otomatis mengikuti rasio ketebalan garis baru
                 ctx.shadowBlur = 4 * scaleRatioX; 
 
                 ctx.beginPath();
