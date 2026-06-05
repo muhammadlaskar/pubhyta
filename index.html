@@ -280,9 +280,9 @@
         }
         #page2 .arrow-btn:hover { color: rgba(255, 71, 87, 0.6); }
 
-        /* ================== HALAMAN 3 (MINI GAME CLAW MACHINE) ================== */
+        /* ================== UPDATE FIX TOTAL: HALAMAN 3 (MINI GAME MOCKUP) ================== */
         #page3 {
-            background-image: url('hal 3.png');
+            background-image: url('halaman 3.JPG'); /* Menggunakan background baru pesananmu */
             background-size: cover;
             background-position: center;
             background-repeat: no-repeat;
@@ -314,12 +314,12 @@
             transform: translate(-50%, -50%);
             width: 38.5%; 
             height: 64%;
-            background: rgba(255, 230, 235, 0.85);
+            background: rgba(255, 235, 240, 0.65); /* Transparan lembut menyatu mockup */
             border: 8px solid #ff758f;
             border-radius: 25px;
             overflow: hidden;
             z-index: 12;
-            box-shadow: 0 15px 35px rgba(0,0,0,0.2), inset 0 0 20px rgba(255,255,255,0.6);
+            box-shadow: 0 15px 35px rgba(0,0,0,0.2), inset 0 0 20px rgba(255,255,255,0.4);
         }
 
         .claw-rail {
@@ -329,7 +329,6 @@
             width: 100%;
             height: 6px;
             background: #b2bec3;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
         }
 
         .claw-string-cable {
@@ -371,35 +370,26 @@
         .claw-grabbing .claw-arm.left { transform: rotate(5deg); }
         .claw-grabbing .claw-arm.right { transform: rotate(-5deg); }
 
+        /* FIX: Area Lantai Penampung Tumpukan Acak Alami */
         .items-pool-floor {
             position: absolute;
             bottom: 0;
             left: 0;
             width: 100%;
-            height: 75px;
-            background: rgba(255, 182, 193, 0.4);
-            border-top: 3px dashed #ff758f;
-            display: flex;
-            flex-wrap: wrap;
-            align-items: flex-end;
-            justify-content: space-around;
-            padding: 0 10px 5px 10px;
+            height: 140px; /* Dipertinggi ruang tumpukan agar muat acak */
+            border-top: 2px dashed rgba(255, 117, 143, 0.3);
+            z-index: 13;
         }
 
+        /* FIX: Element Item Gacha Terposisi Secara Absolut Acak Bertumpuk */
         .prize-item {
             font-size: 2.1rem;
             cursor: pointer;
             user-select: none;
-            transition: transform 0.2s, bottom 0.1s linear, left 0.1s linear;
+            position: absolute;
             display: inline-block;
-            position: relative;
             z-index: 14;
-            animation: jitterItem 4s infinite alternate ease-in-out;
-        }
-        
-        @keyframes jitterItem {
-            0% { transform: translateY(0) rotate(-2deg); }
-            100% { transform: translateY(-3px) rotate(2deg); }
+            transition: top 0.1s linear, left 0.1s linear, transform 0.2s;
         }
 
         .prize-chute-hole {
@@ -719,7 +709,7 @@
     <div id="page3" class="page">
         <h3 class="claw-header-text">🕹️ Tangkap Kado Hubungan Kita! 🧸</h3>
         
-        <div class="claw-machine-container">
+        <div class="claw-machine-container" id="hardware-cabinet-box">
             <div class="claw-rail"></div>
             
             <div class="claw-string-cable" id="hardware-claw-cable" style="left: 50%;">
@@ -772,28 +762,6 @@
     </div>
 
     <script>
-        // GENERATOR FLOWER BOUNDS
-        function generateFlowerBorder() {
-            const rowTop = document.getElementById('row-top');
-            const rowBottom = document.getElementById('row-bottom');
-            const colLeft = document.getElementById('col-left');
-            const colRight = document.getElementById('col-right');
-            const horizontalCount = 12; 
-            const verticalCount = 5;
-
-            rowTop.innerHTML = ''; rowBottom.innerHTML = ''; colLeft.innerHTML = ''; colRight.innerHTML = '';
-
-            for (let i = 0; i < horizontalCount; i++) {
-                rowTop.innerHTML += '<span>🌸</span>';
-                rowBottom.innerHTML += '<span>🌸</span>';
-            }
-            for (let i = 0; i < verticalCount; i++) {
-                colLeft.innerHTML += '<span>🌸</span>';
-                colRight.innerHTML += '<span>🌸</span>';
-            }
-        }
-        generateFlowerBorder();
-
         // BALON MANAGER
         const container = document.getElementById('balloon-container');
         const overlay = document.getElementById('letter-overlay');
@@ -976,12 +944,11 @@
         }
 
 
-        // ================== LOGIKA UTAMA GAME CLAW MACHINE ==================
+        // ================== LOGIKA UTAMA ENGINE GAME CLAW MACHINE (RANDOM SCATTER & ENTER CAPIT) ==================
         let clawLives = 10;
         let isClawMoving = false;
         let isPasswordUnlocked = false;
 
-        // Komposisi 15 barang sesuai spesifikasi: 5 kado (4 zonk, 1 tas pink), 7 bola (nyawa), 3 kotak (2 zonk, 1 kunci rahasia)
         const prizePoolData = [
             { name: "Kado Zonk 🎁", type: "gift-zonk", emoji: "🎁" },
             { name: "Kado Zonk 🎁", type: "gift-zonk", emoji: "🎁" },
@@ -1004,18 +971,30 @@
             const floor = document.getElementById('hardware-prizes-floor');
             floor.innerHTML = ''; 
 
+            // FIX: Merender posisi item secara acak alami bertumpuk (Scatter Random Layout)
             prizePoolData.forEach((item, index) => {
                 const element = document.createElement('span');
                 element.classList.add('prize-item');
                 element.id = `prize-${index}`;
                 element.innerText = item.emoji;
                 element.setAttribute('data-index', index);
+
+                // Mengacak koordinat internal lantai mesin (Menghindari barisan kaku)
+                const randomXPercent = Math.random() * 70 + 18; // Rentang aman dari lubang keluar
+                const randomYBottomPixel = Math.random() * 40;  // Efek tinggi tumpukan acak berlapis
+                const randomRotateDegree = Math.random() * 60 - 30; // Kemiringan rotasi acak estetik
+
+                element.style.left = randomXPercent + "%";
+                element.style.bottom = randomYBottomPixel + "px";
+                element.style.transform = `rotate(${randomRotateDegree}deg)`;
+
                 floor.appendChild(element);
             });
 
             window.addEventListener('keydown', handleClawMachineKeyboardControl);
         }
 
+        // FIX: Mendukung kontrol klik tombol ENTER untuk mencapit barang
         function handleClawMachineKeyboardControl(e) {
             if (document.getElementById('page3').style.display !== 'block' || isClawMoving) return;
 
@@ -1030,7 +1009,7 @@
                 if (currentLeftPosition < 88) {
                     cable.style.left = (currentLeftPosition + 4) + "%";
                 }
-            } else if (e.key === "ArrowDown" || e.key === " ") {
+            } else if (e.key === "ArrowDown" || e.key === " " || e.key === "Enter") {
                 e.preventDefault();
                 triggerClawDropMechanism(); 
             }
@@ -1042,7 +1021,8 @@
             const machine = document.querySelector('.claw-machine-container');
             const currentHorizontalLeft = parseFloat(cable.style.left);
 
-            cable.style.height = "240px";
+            // Meluncur memanjang ke lantai kaca bawah
+            cable.style.height = "255px"; 
             
             setTimeout(() => {
                 machine.classList.add('claw-grabbing');
@@ -1052,10 +1032,11 @@
                 let minimumDeltaDistance = 999;
 
                 items.forEach(el => {
+                    // Kalkulasi pencarian target terdekat berdasarkan koordinat persentase horizontal bak mesin
                     const elementLeftPercent = (el.offsetLeft / machine.clientWidth) * 100;
                     const distanceDelta = Math.abs(elementLeftPercent - currentHorizontalLeft);
 
-                    if (distanceDelta < minimumDeltaDistance && distanceDelta < 12) {
+                    if (distanceDelta < minimumDeltaDistance && distanceDelta < 13) {
                         minimumDeltaDistance = distanceDelta;
                         caughtItemElement = el;
                     }
@@ -1063,22 +1044,23 @@
 
                 if (caughtItemElement) {
                     setTimeout(() => {
+                        // Kunci item ke kaitan capit gantry
                         caughtItemElement.style.position = "absolute";
                         caughtItemElement.style.bottom = "auto";
                         caughtItemElement.style.top = "20px";
                         caughtItemElement.style.left = "50%";
-                        caughtItemElement.style.transform = "translateX(-50%)";
+                        caughtItemElement.style.transform = "translateX(-50%) rotate(0deg)";
                         cable.appendChild(caughtItemElement);
                         
                         cable.style.height = "40px";
 
                         setTimeout(() => {
-                            cable.style.transition = "left 1s ease-in-out";
-                            cable.style.left = "16%";
+                            cable.style.transition = "left 1.2s ease-in-out";
+                            cable.style.left = "16%"; // Otomatis jalan geser ke lubang keluar kiri
 
                             setTimeout(() => {
                                 machine.classList.remove('claw-grabbing');
-                                caughtItemElement.style.top = "180px";
+                                caughtItemElement.style.top = "190px";
                                 caughtItemElement.style.opacity = "0";
                                 caughtItemElement.style.transition = "top 0.5s ease-in, opacity 0.5s ease";
 
@@ -1091,8 +1073,8 @@
                                     cable.style.left = "50%";
                                     isClawMoving = false;
                                 }, 500);
-                            }, 1000);
-                        }, 600);
+                            }, 1200);
+                        }, 700);
                     }, 300);
                 } else {
                     setTimeout(() => {
@@ -1102,9 +1084,9 @@
                             reduceClawLifeCounter(); 
                             isClawMoving = false;
                         }, 500);
-                    }, 500);
+                    }, 600);
                 }
-            }, 600);
+            }, 700);
         }
 
         function processClawGachaResult(item) {
@@ -1120,15 +1102,13 @@
                 alert(`🔮 Hasil: ${item.name}\n\nWih hoki! Kamu dapet tambahan +2 Kesempatan Bermain lagi sayang, mantap! 🎉`);
             } 
             else if (item.type === "gift-tas") {
-                alert(`🛍️ Hasil: ${item.name}\n\nCiyeee dapet hadiah TAS PINK! Lucu banget pasti pas kamu pakai nanti! Hadiah fisiknya menyusul pas kita ketemu yaa, sekarang lanjut cari kuncinya dulu sayang! 💕`);
+                alert(`🛍️ Hasil: ${item.name}\n\nCiyeee dapet kado TAS PINK! Lucu banget pasti pas kamu pakai nanti! Hadiah fisiknya menyusul pas kita ketemu yaa, sekarang lanjut cari kuncinya dulu sayang! 💕`);
             } 
             else if (item.type === "box-key") {
                 isPasswordUnlocked = true;
                 const gateBtn = document.getElementById('claw-next-gate-btn');
                 gateBtn.classList.add('unlocked');
-                gateBtn.style.cursor = "pointer";
 
-                // Menampilkan notifikasi persis seperti requesmu
                 alert(`yayy dapet kodenyaa ✨\n\nKodenya adalah: "mahalkita"\n\nSekarang gerbang menuju Photobox Halaman Terakhir sudah terbuka! Klik tombol "NEXT" di bawah untuk meluncur! 😍⭐`);
             }
         }
@@ -1138,7 +1118,7 @@
             document.getElementById('claw-lives-counter').innerText = clawLives;
 
             if (clawLives <= 0 && !isPasswordUnlocked) {
-                alert("Game Over! Sisa nyawa main habis. Tapi tenang sayang, aku kasih bonus +5 nyawa lagi gratis biar kamu menang! Hehe 💜");
+                alert("Game Over! Jangan sedih sayang, aku kasih bonus +5 nyawa main lagi gratis biar kamu menang! Hehe 💜");
                 clawLives = 5;
                 document.getElementById('claw-lives-counter').innerText = clawLives;
             }
@@ -1331,7 +1311,7 @@
             ctx.lineJoin = 'round';
 
             const scaleRatioX = w / drawCanvas.width;
-            ctx.lineWidth = 5 * scaleRatioX; 
+            ctx.lineWidth = 7.3; 
 
             for (let i = 0; i < drawingLines.length; i++) {
                 const lineData = drawingLines[i];
@@ -1340,7 +1320,7 @@
 
                 ctx.strokeStyle = lineData.color;
                 ctx.shadowColor = lineData.shadow;
-                ctx.shadowBlur = 4 * scaleRatioX; 
+                ctx.shadowBlur = 0; 
 
                 ctx.beginPath();
                 ctx.moveTo(path[0].x * scaleRatioX, path[0].y * scaleRatioX);
@@ -1373,6 +1353,15 @@
             controlPanel.classList.remove('controls-active');
             floatingMenu.style.display = 'flex'; 
         }
+
+        document.getElementById('next-page-btn').addEventListener('click', (e) => {
+            e.stopPropagation();
+            overlay.classList.remove('show');
+            overlay.style.display = 'none';
+            document.getElementById('page1').style.display = 'none';
+            document.getElementById('page2').style.display = 'flex';
+            startCountdown();
+        });
 
         function saveAndResetForNext() {
             if (!lastCapturedDataURL) return;
