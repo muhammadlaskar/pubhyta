@@ -1,1375 +1,1088 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Happy Birthday Sayang! 🎈</title>
-    
-    <script src="https://cdn.jsdelivr.net/npm/@mediapipe/camera_utils/camera_utils.js" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@mediapipe/hands/hands.js" crossorigin="anonymous"></script>
-
-    <style>
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-        }
-
-        body {
-            overflow: hidden;
-            height: 100vh;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            position: relative;
-            background-color: #f7f1e3;
-        }
-
-        /* SYSTEM CORE NAVIGATION */
-        .page {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            display: none;
-            overflow: hidden;
-        }
-
-        /* ================== GLOBAL DECORATIONS (HALAMAN 1) ================== */
-        #page1 {
-            display: block;
-            background-image: url('BEBEK (1).jpg');
-            background-size: cover;
-            background-position: center;
-            background-repeat: no-repeat;
-        }
-
-        #page1 .center-text {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            font-size: 3.5rem;
-            font-weight: bold;
-            color: #ffffff;
-            text-align: center;
-            z-index: 10;
-            pointer-events: none;
-            text-shadow: 2px 4px 10px rgba(0, 0, 0, 0.35);
-            font-family: 'Comic Sans MS', cursive, sans-serif;
-            width: 90%;
-        }
-
-        .flower-border {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            pointer-events: none;
-            z-index: 15;
-        }
-
-        .flower-row {
-            position: absolute;
-            left: 0;
-            width: 100%;
-            display: flex;
-            justify-content: space-around;
-            padding: 10px 0;
-        }
-        .flower-row.top { top: 0; }
-        .flower-row.bottom { bottom: 0; }
-
-        .flower-column {
-            position: absolute;
-            top: 60px;
-            bottom: 60px;
-            display: flex;
-            flex-direction: column;
-            justify-content: space-around;
-            height: calc(100% - 120px);
-        }
-        .flower-column.left { left: 15px; }
-        .flower-column.right { right: 15px; }
-
-        .flower-border span {
-            display: inline-block;
-            font-size: 35px;
-            animation: spinFlower 6s linear infinite;
-            user-select: none;
-        }
-
-        @keyframes spinFlower {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
-
-        #balloon-container {
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            top: 0;
-            left: 0;
-            overflow: hidden;
-            z-index: 5;
-        }
-
-        .balloon {
-            position: absolute;
-            width: 90px;
-            height: 115px;
-            border-radius: 50% 50% 50% 50% / 40% 40% 60% 60%;
-            bottom: -200px;
-            cursor: pointer;
-            z-index: 5;
-            transform-origin: bottom center;
-            transition: transform 0.15s ease-out, opacity 0.15s ease-out;
-        }
-
-        .balloon::before {
-            content: "";
-            position: absolute;
-            top: 12px;
-            left: 15px;
-            width: 25px;
-            height: 15px;
-            border-radius: 50%;
-            background: rgba(255, 255, 255, 0.6);
-            transform: rotate(-30deg);
-            pointer-events: none;
-        }
-
-        .balloon-string {
-            position: absolute;
-            bottom: -120px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 2px;
-            height: 120px;
-            background-color: rgba(255, 255, 255, 0.8);
-            pointer-events: none;
-        }
-
-        .scroll-icon {
-            position: absolute;
-            bottom: -145px;
-            left: 50%;
-            transform: translateX(-50%);
-            font-size: 22px;
-            z-index: 6;
-            animation: dangle 1.5s ease-in-out infinite alternate;
-            transform-origin: top center;
-            pointer-events: none;
-        }
-
-        @keyframes floatUpAnimation {
-            0% { transform: translateY(0) rotate(0deg); opacity: 1; }
-            85% { opacity: 1; }
-            100% { transform: translateY(-130vh) rotate(10deg); opacity: 0; }
-        }
-
-        .balloon.pop-animation { animation: balloonPop 0.15s ease-out forwards !important; }
-
-        @keyframes balloonPop {
-            0% { transform: scale(1); opacity: 1; }
-            50% { transform: scale(1.2); opacity: 0.5; }
-            100% { transform: scale(0); opacity: 0; }
-        }
-
-        @keyframes dangle {
-            0% { transform: translateX(-50%) rotate(-8deg); }
-            100% { transform: translateX(-50%) rotate(8deg); }
-        }
-
-        /* ================== HALAMAN 2 (COUNTDOWN) ================== */
-        #page2 {
-            background-image: url('hal 2.jpeg');
-            background-size: cover;
-            background-position: center;
-            background-repeat: no-repeat;
-            display: none; 
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            text-align: center;
-        }
-
-        #page2 .page2-title {
-            font-family: 'Comic Sans MS', cursive, sans-serif;
-            color: #ff4757;
-            font-size: 3rem;
-            font-weight: bold;
-            text-shadow: 2px 2px 8px rgba(255, 255, 255, 0.9), 0px 4px 10px rgba(0,0,0,0.1);
-            margin-bottom: 5px;
-            z-index: 10;
-        }
-
-        #page2 .page2-subtitle {
-            color: #4b5563;
-            font-size: 1.2rem;
-            font-weight: bold;
-            text-shadow: 1px 1px 4px rgba(255, 255, 255, 0.8);
-            margin-bottom: 40px;
-            z-index: 10;
-        }
-
-        #page2 .timer-box {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            gap: 25px;
-            z-index: 10;
-        }
-
-        #page2 .time-segment {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            width: 85px;
-        }
-
-        #page2 .time-number {
-            font-size: 3.2rem;
-            font-weight: 800;
-            color: #ffffff;
-            background: #ff6b81; 
-            width: 100%;
-            padding: 8px 0;
-            border-radius: 15px;
-            box-shadow: 0 8px 20px rgba(255, 107, 129, 0.3);
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        }
-
-        #page2 .time-label {
-            font-size: 0.95rem;
-            font-weight: bold;
-            color: #2c2c54;
-            margin-top: 10px;
-            text-transform: uppercase;
-            text-shadow: 1px 1px 4px rgba(255, 255, 255, 0.8);
-        }
-
-        #page2 .unlock-btn {
-            display: none;
-            margin-top: 40px;
-            padding: 15px 45px;
-            background-color: #2ed573;
-            color: white;
-            font-size: 1.3rem;
-            font-weight: bold;
-            border: none;
-            border-radius: 30px;
-            cursor: pointer;
-            box-shadow: 0 6px 20px rgba(46, 213, 115, 0.4);
-            animation: pulseBtn 1.5s infinite alternate;
-            z-index: 10;
-        }
-
-        #page2 .secret-navigation-btn {
-            position: absolute;
-            bottom: 15px;
-            right: 15px;
-            background: transparent;
-            border: none;
-            color: rgba(0, 0, 0, 0.15); 
-            font-size: 1rem;
-            cursor: pointer;
-            z-index: 50;
-            user-select: none;
-            transition: color 0.2s;
-        }
-        #page2 .secret-navigation-btn:hover { color: rgba(255, 71, 87, 0.6); }
-
-        /* ================== HALAMAN 3 (VIDEO FIX: GOOGLE DRIVE IFRAME COMPATIBLE) ================== */
-        #page3 {
-            background-image: url('hal 3.png');
-            background-size: cover;
-            background-position: center;
-            background-repeat: no-repeat;
-            display: none;
-            position: absolute;
-            width: 100%;
-            height: 100%;
-        }
-
-        #page3 .video-box-overlay {
-            position: absolute;
-            top: 49.5%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            width: 38.5%; 
-            aspect-ratio: 16 / 9;
-            border-radius: 35px;
-            overflow: hidden;
-            z-index: 12; 
-            box-shadow: 0 10px 30px rgba(0,0,0,0.15);
-            background-color: #000;
-        }
-
-        /* Mengganti tag video bawaan laptop dengan Iframe Embed Gdrive anti-bocor */
-        #page3 .video-box-overlay iframe {
-            width: 100%;
-            height: 100%;
-            border: none;
-            display: block;
-        }
-
-        #page3 .fake-next-hitbox {
-            position: absolute;
-            bottom: 3.5%;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 110px;
-            height: 45px;
-            cursor: pointer;
-            z-index: 25; 
-            background: transparent;
-            border: none;
-            border-radius: 20px;
-        }
-
-        /* ================== HALAMAN 3-B (MINI GAME CLAW MACHINE) ================== */
-        #page3b {
-            background-image: url('halaman 3.JPG'); 
-            background-size: cover;
-            background-position: center;
-            background-repeat: no-repeat;
-            display: none;
-            position: absolute;
-            width: 100%;
-            height: 100%;
-        }
-
-        .claw-header-text {
-            position: absolute;
-            top: 4%;
-            left: 50%;
-            transform: translateX(-50%);
-            font-family: 'Comic Sans MS', cursive, sans-serif;
-            font-size: 1.8rem;
-            color: #d11244;
-            text-shadow: 1px 2px 4px rgba(255,255,255,0.8);
-            z-index: 30;
-            text-align: center;
-            width: 100%;
-            font-weight: bold;
-        }
-
-        .claw-machine-container {
-            position: absolute;
-            top: 48%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            width: 38.5%; 
-            height: 64%;
-            background: rgba(255, 235, 240, 0.65); 
-            border: 8px solid #ff758f;
-            border-radius: 25px;
-            overflow: hidden;
-            z-index: 12;
-            box-shadow: 0 15px 35px rgba(0,0,0,0.2), inset 0 0 20px rgba(255,255,255,0.4);
-        }
-
-        .claw-rail {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 6px;
-            background: #b2bec3;
-        }
-
-        .claw-string-cable {
-            position: absolute;
-            top: 6px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 4px;
-            height: 40px; 
-            background: #636e72;
-            transition: height 0.1s linear;
-        }
-
-        .claw-head {
-            position: absolute;
-            bottom: -22px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 44px;
-            height: 25px;
-            background: #74b9ff;
-            border-radius: 6px 6px 0 0;
-            border: 2px solid #0984e3;
-        }
-
-        .claw-arm {
-            position: absolute;
-            bottom: -20px;
-            width: 8px;
-            height: 24px;
-            background: #95a5a6;
-            border-radius: 4px;
-            transform-origin: top center;
-            transition: transform 0.2s;
-        }
-        .claw-arm.left { left: 4px; transform: rotate(-25deg); }
-        .claw-arm.right { right: 4px; transform: rotate(25deg); }
-
-        .claw-grabbing .claw-arm.left { transform: rotate(5deg); }
-        .claw-grabbing .claw-arm.right { transform: rotate(-5deg); }
-
-        .items-pool-floor {
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            width: 100%;
-            height: 140px; 
-            border-top: 2px dashed rgba(255, 117, 143, 0.3);
-            z-index: 13;
-        }
-
-        .prize-item {
-            font-size: 2.1rem;
-            cursor: pointer;
-            user-select: none;
-            position: absolute;
-            display: inline-block;
-            z-index: 14;
-            transition: top 0.1s linear, left 0.1s linear, transform 0.2s;
-        }
-
-        .prize-chute-hole {
-            position: absolute;
-            bottom: 0;
-            left: 15px;
-            width: 65px;
-            height: 55px;
-            background: #2d3436;
-            border-radius: 10px 10px 0 0;
-            border: 3px solid #ff758f;
-            z-index: 15;
-            box-shadow: inset 0 5px 10px rgba(0,0,0,0.6);
-        }
-
-        .claw-stats-badge {
-            position: absolute;
-            bottom: 19%;
-            left: 50%;
-            transform: translateX(-50%);
-            background: #ff4757;
-            color: white;
-            font-weight: bold;
-            padding: 6px 20px;
-            border-radius: 20px;
-            font-size: 1rem;
-            z-index: 25;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.15);
-        }
-
-        #claw-next-gate-btn {
-            position: absolute;
-            bottom: 3.5%;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 110px;
-            height: 45px;
-            cursor: not-allowed;
-            z-index: 26;
-            background: rgba(0,0,0,0.1);
-            border: none;
-            border-radius: 20px;
-            font-weight: bold;
-            color: rgba(255,255,255,0.4);
-            transition: all 0.3s;
-        }
-
-        #claw-next-gate-btn.unlocked {
-            background: #2ed573;
-            color: white;
-            cursor: pointer;
-            box-shadow: 0 5px 20px rgba(46, 213, 115, 0.5);
-            animation: pulseGate 1.5s infinite alternate;
-        }
-
-        @keyframes pulseGate {
-            0% { transform: translateX(-50%) scale(1); }
-            100% { transform: translateX(-50%) scale(1.06); }
-        }
-
-        #prize-photo-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0,0,0,0.85);
-            backdrop-filter: blur(8px);
-            z-index: 200;
-            display: none;
-            justify-content: center;
-            align-items: center;
-            flex-direction: column;
-        }
-
-        .photo-prize-frame-content {
-            background: white;
-            padding: 20px;
-            border-radius: 20px;
-            max-width: 80%;
-            max-height: 70%;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            border: 4px solid #ff9ff3;
-        }
-
-        .photo-prize-frame-content img {
-            max-width: 100%;
-            max-height: 60vh;
-            object-fit: contain;
-            border-radius: 10px;
-        }
-
-        .btn-download-prize-photo {
-            margin-top: 20px;
-            padding: 12px 30px;
-            background-color: #ff4757;
-            color: white;
-            font-weight: bold;
-            font-size: 1.1rem;
-            border: none;
-            border-radius: 25px;
-            cursor: pointer;
-            box-shadow: 0 5px 15px rgba(255, 71, 87, 0.4);
-            transition: transform 0.2s;
-            text-decoration: none;
-            display: inline-block;
-        }
-        .btn-download-prize-photo:hover { transform: scale(1.05); background-color: #ff6b81; }
-
-        .btn-close-photo-overlay {
-            margin-top: 12px;
-            background: transparent;
-            color: rgba(255,255,255,0.6);
-            border: none;
-            cursor: pointer;
-            font-size: 0.95rem;
-        }
-        .btn-close-photo-overlay:hover { color: white; }
-
-        /* ================== HALAMAN 4 ================== */
-        #page4 {
-            background-image: url('hal 4.png');
-            background-size: 100% 100%;
-            background-position: center;
-            background-repeat: no-repeat;
-            display: none; 
-            position: absolute;
-            width: 100%;
-            height: 100%;
-        }
-
-        #page4 .photobox-frame {
-            position: absolute;
-            top: 23%;       
-            left: 27.2%;     
-            width: 45.6%;    
-            height: 45.5%;   
-            background: #cbd5e1; 
-            border-radius: 14px; 
-            z-index: 10;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            box-shadow: inset 0 4px 10px rgba(0,0,0,0.25);
-        }
-
-        #page4 .camera-viewport {
-            width: 92%;  
-            height: 88%; 
-            position: relative;
-            overflow: hidden;
-            border-radius: 8px;
-            background: #000000;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
-        }
-
-        #page4 #webcam-view {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            transform: scaleX(-1); 
-            display: block;
-        }
-
-        #page4 #drawing-canvas {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: 11;
-            pointer-events: none; 
-        }
-
-        #page4 #photo-preview-render {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            display: none;
-            z-index: 12;
-        }
-
-        #page4 .top-camera-controls {
-            position: absolute;
-            top: 12px;
-            right: 12px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            z-index: 15;
-            background: rgba(0, 0, 0, 0.4);
-            padding: 6px 12px;
-            border-radius: 20px;
-            backdrop-filter: blur(4px);
-            border: 1px solid rgba(255, 255, 255, 0.15);
-        }
-
-        #page4 .color-dot {
-            width: 20px;
-            height: 20px;
-            border-radius: 50%;
-            cursor: pointer;
-            border: 2px solid transparent;
-            transition: transform 0.2s, border 0.2s;
-        }
-        #page4 .color-dot:hover { transform: scale(1.2); }
-        #page4 .color-dot.active { border-color: #ffffff; transform: scale(1.15); }
-        #page4 .dot-pink { background-color: #ff9ff3; }
-        #page4 .dot-blue { background-color: #00cec9; }
-        #page4 .dot-yellow { background-color: #ffeaa7; }
-
-        #page4 .btn-clear-canvas {
-            background: transparent;
-            color: white;
-            border: none;
-            font-size: 1.05rem;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: transform 0.2s;
-            margin-left: 4px;
-        }
-        #page4 .btn-clear-canvas:hover { color: #ff7675; transform: rotate(-45deg); }
-
-        #page4 .photobox-controls {
-            position: absolute;
-            top: 76.8%;     
-            left: 50%;
-            transform: translateX(-50%);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 35px;      
-            z-index: 20;
-            width: auto;
-        }
-
-        #page4 .btn-snap-circle {
-            width: 44px;
-            height: 44px;
-            border-radius: 50%;
-            background: rgba(255, 255, 255, 0.1);
-            border: 3px solid #ffffff;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: background 0.2s, transform 0.1s;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.2);
-        }
-        #page4 .btn-snap-circle::after {
-            content: "";
-            width: 26px;
-            height: 26px;
-            background: #ffffff;
-            border-radius: 50%;
-            display: block;
-        }
-        #page4 .btn-snap-circle:hover { background: rgba(255, 255, 255, 0.35); }
-        #page4 .btn-snap-circle:active { transform: scale(0.90); }
-
-        #page4 .btn-side-nav {
-            padding: 7px 18px;
-            font-size: 0.85rem;
-            font-weight: bold;
-            color: #ffffff;
-            border: none;
-            border-radius: 20px;
-            cursor: pointer;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.15);
-            transition: opacity 0.2s, transform 0.2s;
-            opacity: 0;
-            visibility: hidden;
-        }
-        #page4 .btn-side-nav:active { transform: scale(0.95); }
-        #page4 .btn-nav-cancel { background-color: #e74c3c; }
-        #page4 .btn-nav-cancel:hover { background-color: #ff7675; }
-        #page4 .btn-nav-next { background-color: #2ecc71; }
-        #page4 .btn-nav-next:hover { background-color: #55efc4; }
-
-        #page4 .controls-active .btn-side-nav { opacity: 1; visibility: visible; }
-        #page4 .controls-active .btn-snap-circle { opacity: 0.2; pointer-events: none; }
-
-        /* UTILS OVERLAYS REUSABLE */
-        #letter-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.7);
-            backdrop-filter: blur(5px);
-            display: none;
-            justify-content: center;
-            align-items: center;
-            z-index: 100;
-            cursor: pointer;
-        }
-
-        .letter-content {
-            background: #fffdf0;
-            padding: 40px 30px;
-            border-radius: 20px;
-            max-width: 85%;
-            width: 450px;
-            text-align: center;
-            box-shadow: 0 15px 35px rgba(0,0,0,0.4);
-            border: 3px dashed #ff9ff3;
-            transform: scale(0.7);
-            transition: transform 0.3s ease;
-        }
-
-        #letter-overlay.show .letter-content { transform: scale(1); }
-        .letter-content p { font-size: 1.3rem; color: #2c2c54; line-height: 1.6; font-weight: bold; }
-        .hint { margin-top: 20px; font-size: 0.9rem; color: #ff9ff3; font-weight: normal; }
-        
-        .next-btn {
-            display: none; 
-            margin: 25px auto 0 auto;
-            padding: 12px 35px;
-            background-color: #ff4757;
-            color: white;
-            border: none;
-            border-radius: 25px;
-            font-size: 1.1rem;
-            font-weight: bold;
-            cursor: pointer;
-            box-shadow: 0 5px 15px rgba(255, 71, 87, 0.4);
-            transition: transform 0.2s;
-        }
-        .next-btn:hover { background-color: #ff6b81; transform: scale(1.05); }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Happy Birthday Sayang! 🎈</title>
+
+<script src="https://cdn.jsdelivr.net/npm/@mediapipe/camera_utils/camera_utils.js" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/@mediapipe/hands/hands.js" crossorigin="anonymous"></script>
+
+<style>
+* {
+box-sizing: border-box;
+margin: 0;
+padding: 0;
+}
+
+body {
+overflow: hidden;
+height: 100vh;
+font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+position: relative;
+background-color: #f7f1e3;
+}
+
+/* SYSTEM CORE NAVIGATION */
+.page {
+position: absolute;
+top: 0;
+left: 0;
+width: 100%;
+height: 100%;
+display: none;
+overflow: hidden;
+}
+
+/* ================== GLOBAL DECORATIONS (HALAMAN 1) ================== */
+#page1 {
+display: block;
+background-image: url('BEBEK (1).jpg');
+background-size: cover;
+background-position: center;
+background-repeat: no-repeat;
+}
+
+#page1 .center-text {
+position: absolute;
+top: 50%;
+left: 50%;
+transform: translate(-50%, -50%);
+font-size: 3.5rem;
+font-weight: bold;
+color: #ffffff;
+text-align: center;
+z-index: 10;
+pointer-events: none;
+text-shadow: 2px 4px 10px rgba(0, 0, 0, 0.35);
+font-family: 'Comic Sans MS', cursive, sans-serif;
+width: 90%;
+}
+
+#page1 .flower-border {
+position: absolute;
+top: 0;
+left: 0;
+width: 100%;
+height: 100%;
+pointer-events: none;
+z-index: 15;
+}
+
+#page1 .flower-row {
+position: absolute;
+left: 0;
+width: 100%;
+display: flex;
+justify-content: space-around;
+padding: 10px 0;
+}
+#page1 .flower-row.top { top: 0; }
+#page1 .flower-row.bottom { bottom: 0; }
+
+#page1 .flower-column {
+position: absolute;
+top: 60px;
+bottom: 60px;
+display: flex;
+flex-direction: column;
+justify-content: space-around;
+height: calc(100% - 120px);
+}
+#page1 .flower-column.left { left: 15px; }
+#page1 .flower-column.right { right: 15px; }
+
+#page1 .flower-border span {
+display: inline-block;
+font-size: 35px;
+animation: spinFlower 6s linear infinite;
+user-select: none;
+}
+
+@keyframes spinFlower {
+0% { transform: rotate(0deg); }
+100% { transform: rotate(360deg); }
+}
+
+#balloon-container {
+position: absolute;
+width: 100%;
+height: 100%;
+top: 0;
+left: 0;
+overflow: hidden;
+z-index: 5;
+}
+
+.balloon {
+position: absolute;
+width: 90px;
+height: 115px;
+border-radius: 50% 50% 50% 50% / 40% 40% 60% 60%;
+bottom: -200px;
+cursor: pointer;
+z-index: 5;
+transform-origin: bottom center;
+transition: transform 0.15s ease-out, opacity 0.15s ease-out;
+}
+
+.balloon::before {
+content: "";
+position: absolute;
+top: 12px;
+left: 15px;
+width: 25px;
+height: 15px;
+border-radius: 50%;
+background: rgba(255, 255, 255, 0.6);
+transform: rotate(-30deg);
+pointer-events: none;
+}
+
+.balloon-string {
+position: absolute;
+bottom: -120px;
+left: 50%;
+transform: translateX(-50%);
+width: 2px;
+height: 120px;
+background-color: rgba(255, 255, 255, 0.8);
+pointer-events: none;
+}
+
+.scroll-icon {
+position: absolute;
+bottom: -145px;
+left: 50%;
+transform: translateX(-50%);
+font-size: 22px;
+z-index: 6;
+animation: dangle 1.5s ease-in-out infinite alternate;
+transform-origin: top center;
+pointer-events: none;
+}
+
+@keyframes floatUpAnimation {
+0% { transform: translateY(0) rotate(0deg); opacity: 1; }
+85% { opacity: 1; }
+100% { transform: translateY(-130vh) rotate(10deg); opacity: 0; }
+}
+
+.balloon.pop-animation { animation: balloonPop 0.15s ease-out forwards !important; }
+
+@keyframes balloonPop {
+0% { transform: scale(1); opacity: 1; }
+50% { transform: scale(1.2); opacity: 0.5; }
+100% { transform: scale(0); opacity: 0; }
+}
+
+@keyframes dangle {
+0% { transform: translateX(-50%) rotate(-8deg); }
+100% { transform: translateX(-50%) rotate(8deg); }
+}
+
+/* ================== HALAMAN 2 (COUNTDOWN) ================== */
+#page2 {
+background-image: url('hal 2.jpeg');
+background-size: cover;
+background-position: center;
+background-repeat: no-repeat;
+display: none; 
+flex-direction: column;
+justify-content: center;
+align-items: center;
+text-align: center;
+}
+
+#page2 .page2-title {
+font-family: 'Comic Sans MS', cursive, sans-serif;
+color: #ff4757;
+font-size: 3rem;
+font-weight: bold;
+text-shadow: 2px 2px 8px rgba(255, 255, 255, 0.9), 0px 4px 10px rgba(0,0,0,0.1);
+margin-bottom: 5px;
+z-index: 10;
+}
+
+#page2 .page2-subtitle {
+color: #4b5563;
+font-size: 1.2rem;
+font-weight: bold;
+text-shadow: 1px 1px 4px rgba(255, 255, 255, 0.8);
+margin-bottom: 40px;
+z-index: 10;
+}
+
+#page2 .timer-box {
+display: flex;
+justify-content: center;
+align-items: center;
+gap: 25px;
+z-index: 10;
+}
+
+#page2 .time-segment {
+display: flex;
+flex-direction: column;
+align-items: center;
+width: 85px;
+}
+
+#page2 .time-number {
+font-size: 3.2rem;
+font-weight: 800;
+color: #ffffff;
+background: #ff6b81; 
+width: 100%;
+padding: 8px 0;
+border-radius: 15px;
+box-shadow: 0 8px 20px rgba(255, 107, 129, 0.3);
+font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+#page2 .time-label {
+font-size: 0.95rem;
+font-weight: bold;
+color: #2c2c54;
+margin-top: 10px;
+text-transform: uppercase;
+text-shadow: 1px 1px 4px rgba(255, 255, 255, 0.8);
+}
+
+#page2 .unlock-btn {
+display: none;
+margin-top: 40px;
+padding: 15px 45px;
+background-color: #2ed573;
+color: white;
+font-size: 1.3rem;
+font-weight: bold;
+border: none;
+border-radius: 30px;
+cursor: pointer;
+box-shadow: 0 6px 20px rgba(46, 213, 115, 0.4);
+animation: pulseBtn 1.5s infinite alternate;
+z-index: 10;
+}
+
+#page2 .arrow-btn {
+position: absolute;
+bottom: 15px;
+right: 15px;
+background: transparent;
+border: none;
+color: rgba(0, 0, 0, 0.15); 
+font-size: 1rem;
+cursor: pointer;
+z-index: 50;
+user-select: none;
+transition: color 0.2s;
+}
+#page2 .arrow-btn:hover { color: rgba(255, 71, 87, 0.6); }
+
+/* ================== HALAMAN 3 (VIDEO THEME) ================== */
+#page3 {
+background-image: url('hal 3.png');
+background-size: cover;
+background-position: center;
+background-repeat: no-repeat;
+display: none;
+position: absolute;
+width: 100%;
+height: 100%;
+}
+
+#page3 .video-box-overlay {
+position: absolute;
+top: 49.5%;
+left: 50%;
+transform: translate(-50%, -50%);
+width: 38.5%; 
+aspect-ratio: 16 / 9;
+border-radius: 35px;
+overflow: hidden;
+z-index: 12; 
+box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+}
+
+#page3 .video-box-overlay video {
+width: 100%;
+height: 100%;
+object-fit: cover;
+display: block;
+background-color: #000;
+}
+
+#page3 .fake-next-hitbox {
+position: absolute;
+bottom: 3.5%;
+left: 50%;
+transform: translateX(-50%);
+width: 110px;
+height: 45px;
+cursor: pointer;
+z-index: 25; 
+background: transparent;
+border: none;
+border-radius: 20px;
+}
+
+/* ================== HALAMAN 4 (PHOTOBOX MODULAR) ================== */
+#page4 {
+background-image: url('hal 4.png');
+background-size: 100% 100%;
+background-position: center;
+background-repeat: no-repeat;
+display: none; 
+position: absolute;
+width: 100%;
+height: 100%;
+}
+
+#page4 .photobox-frame {
+position: absolute;
+top: 23%;       
+left: 27.2%;     
+width: 45.6%;    
+height: 45.5%;   
+background: #cbd5e1; 
+border-radius: 14px; 
+z-index: 10;
+display: flex;
+justify-content: center;
+align-items: center;
+box-shadow: inset 0 4px 10px rgba(0,0,0,0.25);
+}
+
+#page4 .camera-viewport {
+width: 92%;  
+height: 88%; 
+position: relative;
+overflow: hidden;
+border-radius: 8px;
+background: #000000;
+box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+}
+
+#page4 #webcam-view {
+width: 100%;
+height: 100%;
+object-fit: cover;
+transform: scaleX(-1); 
+display: block;
+}
+
+#page4 #drawing-canvas {
+position: absolute;
+top: 0;
+left: 0;
+width: 100%;
+height: 100%;
+z-index: 11;
+pointer-events: none; 
+}
+
+#page4 #photo-preview-render {
+position: absolute;
+top: 0;
+left: 0;
+width: 100%;
+height: 100%;
+object-fit: cover;
+display: none;
+z-index: 12;
+}
+
+#page4 .top-camera-controls {
+position: absolute;
+top: 12px;
+right: 12px;
+display: flex;
+align-items: center;
+gap: 10px;
+z-index: 15;
+background: rgba(0, 0, 0, 0.4);
+padding: 6px 12px;
+border-radius: 20px;
+backdrop-filter: blur(4px);
+border: 1px solid rgba(255, 255, 255, 0.15);
+}
+
+#page4 .color-dot {
+width: 20px;
+height: 20px;
+border-radius: 50%;
+cursor: pointer;
+border: 2px solid transparent;
+transition: transform 0.2s, border 0.2s;
+}
+#page4 .color-dot:hover { transform: scale(1.2); }
+#page4 .color-dot.active { border-color: #ffffff; transform: scale(1.15); }
+#page4 .dot-pink { background-color: #ff9ff3; }
+#page4 .dot-blue { background-color: #00cec9; }
+#page4 .dot-yellow { background-color: #ffeaa7; }
+
+#page4 .btn-clear-canvas {
+background: transparent;
+color: white;
+border: none;
+font-size: 1.05rem;
+cursor: pointer;
+display: flex;
+align-items: center;
+justify-content: center;
+transition: transform 0.2s;
+margin-left: 4px;
+}
+#page4 .btn-clear-canvas:hover { color: #ff7675; transform: rotate(-45deg); }
+
+#page4 .photobox-controls {
+position: absolute;
+top: 76.8%;     
+left: 50%;
+transform: translateX(-50%);
+display: flex;
+align-items: center;
+justify-content: center;
+gap: 35px;      
+z-index: 20;
+width: auto;
+}
+
+#page4 .btn-snap-circle {
+width: 44px;
+height: 44px;
+border-radius: 50%;
+background: rgba(255, 255, 255, 0.1);
+border: 3px solid #ffffff;
+cursor: pointer;
+display: flex;
+align-items: center;
+justify-content: center;
+transition: background 0.2s, transform 0.1s;
+box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+}
+#page4 .btn-snap-circle::after {
+content: "";
+width: 26px;
+height: 26px;
+background: #ffffff;
+border-radius: 50%;
+display: block;
+}
+#page4 .btn-snap-circle:hover { background: rgba(255, 255, 255, 0.35); }
+#page4 .btn-snap-circle:active { transform: scale(0.90); }
+
+#page4 .btn-side-nav {
+padding: 7px 18px;
+font-size: 0.85rem;
+font-weight: bold;
+color: #ffffff;
+border: none;
+border-radius: 20px;
+cursor: pointer;
+box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+transition: opacity 0.2s, transform 0.2s;
+opacity: 0;
+visibility: hidden;
+}
+#page4 .btn-side-nav:active { transform: scale(0.95); }
+#page4 .btn-nav-cancel { background-color: #e74c3c; }
+#page4 .btn-nav-cancel:hover { background-color: #ff7675; }
+#page4 .btn-nav-next { background-color: #2ecc71; }
+#page4 .btn-nav-next:hover { background-color: #55efc4; }
+
+#page4 .controls-active .btn-side-nav { opacity: 1; visibility: visible; }
+#page4 .controls-active .btn-snap-circle { opacity: 0.2; pointer-events: none; }
+
+/* UTILS OVERLAYS REUSABLE */
+#letter-overlay {
+position: fixed;
+top: 0;
+left: 0;
+width: 100%;
+height: 100%;
+background: rgba(0, 0, 0, 0.7);
+backdrop-filter: blur(5px);
+display: none;
+justify-content: center;
+align-items: center;
+z-index: 100;
+cursor: pointer;
+}
+
+.letter-content {
+background: #fffdf0;
+padding: 40px 30px;
+border-radius: 20px;
+max-width: 85%;
+width: 450px;
+text-align: center;
+box-shadow: 0 15px 35px rgba(0,0,0,0.4);
+border: 3px dashed #ff9ff3;
+transform: scale(0.7);
+transition: transform 0.3s ease;
+}
+
+#letter-overlay.show .letter-content { transform: scale(1); }
+.letter-content p { font-size: 1.3rem; color: #2c2c54; line-height: 1.6; font-weight: bold; }
+.hint { margin-top: 20px; font-size: 0.9rem; color: #ff9ff3; font-weight: normal; }
+
+.next-btn {
+display: none; 
+margin: 25px auto 0 auto;
+padding: 12px 35px;
+background-color: #ff4757;
+color: white;
+border: none;
+border-radius: 25px;
+font-size: 1.1rem;
+font-weight: bold;
+cursor: pointer;
+box-shadow: 0 5px 15px rgba(255, 71, 87, 0.4);
+transition: transform 0.2s;
+}
+.next-btn:hover { background-color: #ff6b81; transform: scale(1.05); }
+
+@keyframes pulseBtn {
+0% { transform: scale(1); }
+100% { transform: scale(1.05); }
+}
+</style>
 </head>
 <body>
 
-    <div id="page1" class="page">
-        <div class="center-text">HAPPY BIRTHDAY SAYANGGG</div>
-        <div class="flower-border">
-            <div class="flower-row top" id="row-top"></div>
-            <div class="flower-column left" id="col-left"></div>
-            <div class="flower-column right" id="col-right"></div>
-            <div class="flower-row bottom" id="row-bottom"></div>
-        </div>
-        <div id="balloon-container"></div>
-    </div>
-
-    <div id="page2" class="page">
-        <h2 class="page2-title">Sabar Yaa Sayangkuuuu, hehe 💜</h2>
-        <p class="page2-subtitle">Nunggu duluu yaaaaa</p>
-        <div class="timer-box" id="timer-display">
-            <div class="time-segment">
-                <span class="time-number" id="days">00</span>
-                <span class="time-label">Hari</span>
-            </div>
-            <div class="time-segment">
-                <span class="time-number" id="hours">00</span>
-                <span class="time-label">Jam</span>
-            </div>
-            <div class="time-segment">
-                <span class="time-number" id="minutes">00</span>
-                <span class="time-label">Menit</span>
-            </div>
-            <div class="time-segment">
-                <span class="time-number" id="seconds">00</span>
-                <span class="time-label">Detik</span>
-            </div>
-        </div>
-        <button class="unlock-btn" id="scbk-open-btn">Buka Isi Scrapbook! 📖</button>
-        <button class="secret-navigation-btn" onclick="checkDeveloperPassword()">&rarr;</button>
-    </div>
-
-    <div id="page3" class="page">
-        <div class="video-box-overlay">
-            <iframe id="birthday-drive-iframe" src="https://drive.google.com/file/d/1GNi5CfTlbdglJ8uLj_UpPyDCqpm6-rkI/preview" allow="autoplay"></iframe>
-        </div>
-        <button class="fake-next-hitbox" onclick="goToClawMachinePage3B()"></button>
-    </div>
-
-    <div id="page3b" class="page">
-        <h3 class="claw-header-text">🕹️ Tangkap Kado Hubungan Kita! 🧸</h3>
-        
-        <div class="claw-machine-container" id="hardware-cabinet-box">
-            <div class="claw-rail"></div>
-            
-            <div class="claw-string-cable" id="hardware-claw-cable" style="left: 50%;">
-                <div class="claw-head">
-                    <div class="claw-arm left"></div>
-                    <div class="claw-arm right"></div>
-                </div>
-            </div>
-
-            <div class="prize-chute-hole"></div>
-
-            <div class="items-pool-floor" id="hardware-prizes-floor">
-                </div>
-        </div>
-
-        <div class="claw-stats-badge">Sisa Nyawa Main: <span id="claw-lives-counter">10</span> 🔥</div>
-        <button id="claw-next-gate-btn" onclick="enterPhotoboxPage4()">NEXT</button>
-    </div>
-
-    <div id="prize-photo-overlay">
-        <div class="photo-prize-frame-content">
-            <img id="prize-photo-img-tag" src="" alt="Hadiah Foto Kebersamaan">
-        </div>
-        <a id="prize-download-anchor-tag" href="" download="" class="btn-download-prize-photo">Download Foto Kebersamaan Kita 💖</a>
-        <button class="btn-close-photo-overlay" onclick="closePrizePhotoOverlay()">[ Tutup Tampilan ]</button>
-    </div>
-
-    <div id="page4" class="page">
-        <div class="photobox-frame">
-            <div class="camera-viewport">
-                <video id="webcam-view" autoplay playsinline></video>
-                <canvas id="drawing-canvas"></canvas>
-                <img id="photo-preview-render" alt="Hasil Foto">
-
-                <div class="top-camera-controls" id="floating-menu">
-                    <div class="color-dot dot-pink active" onclick="changeBrushColor('#ff9ff3', this)"></div>
-                    <div class="color-dot dot-blue" onclick="changeBrushColor('#00cec9', this)"></div>
-                    <div class="color-dot dot-yellow" onclick="changeBrushColor('#ffeaa7', this)"></div>
-                    <button class="btn-clear-canvas" title="Hapus Semua" onclick="clearDrawingCanvas()">🔄</button>
-                </div>
-            </div>
-        </div>
-
-        <div class="photobox-controls" id="control-panel-wrapper">
-            <button class="btn-side-nav btn-nav-cancel" onclick="cancelAndRetakePhoto()">Batal</button>
-            <div class="btn-snap-circle" onclick="capturePhotoboxFrame()"></div>
-            <button class="btn-side-nav btn-nav-next" onclick="saveAndResetForNext()">Next</button>
-        </div>
-        <canvas id="hidden-canvas" style="display:none;"></canvas>
-    </div>
-
-    <div id="letter-overlay">
-        <div class="letter-content" onclick="event.stopPropagation()">
-            <p id="secret-text"></p>
-            <button id="next-page-btn" class="next-btn">Next &rarr;</button>
-            <div class="hint" id="close-hint">Klik di mana saja untuk kembali</div>
-        </div>
-    </div>
-
-    <script>
-        // GENERATOR FLOWER BOUNDS
-        function generateFlowerBorder() {
-            const rowTop = document.getElementById('row-top');
-            const rowBottom = document.getElementById('row-bottom');
-            const colLeft = document.getElementById('col-left');
-            const colRight = document.getElementById('col-right');
-            const horizontalCount = 12; 
-            const verticalCount = 5;
-
-            if(!rowTop || !rowBottom || !colLeft || !colRight) return;
-            rowTop.innerHTML = ''; rowBottom.innerHTML = ''; colLeft.innerHTML = ''; colRight.innerHTML = '';
-
-            for (let i = 0; i < horizontalCount; i++) { rowTop.innerHTML += '<span>🌸</span>'; rowBottom.innerHTML += '<span>🌸</span>'; }
-            for (let i = 0; i < verticalCount; i++) { colLeft.innerHTML += '<span>🌸</span>'; colRight.innerHTML += '<span>🌸</span>'; }
-        }
-
-        // BALON MANAGER
-        const container = document.getElementById('balloon-container');
-        const overlay = document.getElementById('letter-overlay');
-        const secretText = document.getElementById('secret-text');
-        const nextPageBtn = document.getElementById('next-page-btn');
-        const closeHint = document.getElementById('close-hint');
-
-        const baseColors = ['#ff3838', '#ff1f5a', '#1e90ff', '#6c5ce7', '#ffa502', '#ff6b81', '#ff4757', '#2ed573', '#ff781f'];
-        const messages = [
-            "SELAMAT ULANG TAHUN YANG KE 21 SAYANGKUUUU, SEMOGAAA SEMUA YANG DI INGINKANN SAYANGKUUU CEPAT TERCAPAIII YAAAA. ❤️",
-            "SEMANGATTT TERUSSS ORANG HEBATKUUUU, DILANCARKANNN SEGAlANYAAAA",
-            "LOVEEE YOUUU, LOVEEE YOUUUU LOVEEE YOUUU, LOVEEEE YOUUU SOO MUCHHHH SAYANGGGGGGG. ❤️",
-            "SAYANGGG, KAMUU ORANGG HEBATTTT BANGETTTTTTT! ✨"
-        ];
-
-        let messageIndex = 0;
-        const MAX_BALLOONS = 5; 
-
-        function createNormalBalloon() {
-            if (document.getElementById('page1').style.display === 'none') return;
-            if (container.children.length >= MAX_BALLOONS) return; 
-
-            const balloon = document.createElement('div');
-            balloon.classList.add('balloon');
-            balloon.style.left = (Math.random() * 70 + 15) + '%';
-
-            const duration = Math.random() * 3 + 15;
-            balloon.style.animation = `floatUpAnimation ${duration}s linear forwards`;
-
-            const color = baseColors[Math.floor(Math.random() * baseColors.length)];
-            balloon.style.background = `radial-gradient(circle at 30% 30%, #ffffff 0%, ${color} 20%, #000000 100%)`;
-            balloon.style.boxShadow = `inset -10px -10px 20px rgba(0,0,0,0.4), 0px 12px 20px rgba(0,0,0,0.3)`;
-
-            const string = document.createElement('div');
-            string.classList.add('balloon-string');
-            balloon.appendChild(string);
-
-            const hasLetter = Math.random() < 0.5;
-            if (hasLetter) {
-                const scrollIcon = document.createElement('div');
-                scrollIcon.classList.add('scroll-icon');
-                scrollIcon.innerText = "📜";
-                balloon.appendChild(scrollIcon);
-                balloon.dataset.message = messages[messageIndex % messages.length];
-                balloon.dataset.type = "letter";
-                messageIndex++;
-            }
-            setupBalloonClick(balloon);
-            container.appendChild(balloon);
-        }
-
-        function createGiftBalloon() {
-            if (document.getElementById('page1').style.display === 'none') return;
-            if (container.children.length >= MAX_BALLOONS) return;
-
-            const balloon = document.createElement('div');
-            balloon.classList.add('balloon');
-            balloon.style.left = (Math.random() * 65 + 15) + '%';
-
-            const duration = Math.random() * 3 + 14;
-            balloon.style.animation = `floatUpAnimation ${duration}s linear forwards`;
-
-            balloon.style.background = `radial-gradient(circle at 30% 30%, #ffffff 0%, #ffd700 30%, #b8860b 100%)`;
-            balloon.style.boxShadow = `inset -10px -10px 20px rgba(0,0,0,0.4), 0px 12px 25px rgba(218, 165, 32, 0.5)`;
-
-            const string = document.createElement('div');
-            string.classList.add('balloon-string');
-            balloon.appendChild(string);
-
-            const giftIcon = document.createElement('div');
-            giftIcon.classList.add('scroll-icon');
-            giftIcon.innerText = "🎁";
-            balloon.appendChild(giftIcon);
-
-            balloon.dataset.message = "YAYYYYY, SELAMATTT SAYANGKUUUUU";
-            balloon.dataset.type = "gift";
-
-            setupBalloonClick(balloon);
-            container.appendChild(balloon);
-        }
-
-        function setupBalloonClick(balloon) {
-            balloon.addEventListener('click', (e) => {
-                e.stopPropagation();
-                balloon.classList.add('pop-animation');
-                setTimeout(() => {
-                    if (balloon.dataset.message) {
-                        secretText.innerText = balloon.dataset.message;
-                        if (balloon.dataset.type === "gift") {
-                            nextPageBtn.style.display = "block";
-                            closeHint.style.display = "none";
-                        } else {
-                            nextPageBtn.style.display = "none";
-                            closeHint.style.display = "block";
-                        }
-                        overlay.style.display = 'flex';
-                        setTimeout(() => overlay.classList.add('show'), 10);
-                    }
-                    balloon.remove(); 
-                }, 150);
-            });
-            balloon.addEventListener('animationend', () => { balloon.remove(); });
-        }
-
-        setInterval(createNormalBalloon, 3000);
-        setInterval(createGiftBalloon, 7000); 
-
-        // TIMING SYSTEM
-        let isCountdownActive = true;
-        function startCountdown() {
-            const targetDate = new Date("June 6, 2026 15:00:00").getTime();
-            const timerInterval = setInterval(() => {
-                if (!isCountdownActive) { clearInterval(timerInterval); return; }
-                const now = new Date().getTime();
-                const difference = targetDate - now;
-
-                const d = Math.floor(difference / (1000 * 60 * 60 * 24));
-                const h = Math.floor((difference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-                const m = Math.floor((difference % (1000 * 60 * 60)) / (1000 * 60));
-                const s = Math.floor((difference % (1000 * 60)) / 1000);
-
-                document.getElementById("days").innerText = d < 10 ? "0" + d : d;
-                document.getElementById("hours").innerText = h < 10 ? "0" + h : h;
-                document.getElementById("minutes").innerText = m < 10 ? "0" + m : m;
-                document.getElementById("seconds").innerText = s < 10 ? "0" + s : s;
-
-                if (difference < 0) {
-                    clearInterval(timerInterval);
-                    document.getElementById("timer-display").style.display = "none";
-                    document.querySelector("#page2 .page2-subtitle").innerText = "Waktunya telah tibaaa! Klik tombol di bawah untuk membukanya! ❤️";
-                    document.getElementById("scbk-open-btn").style.display = "inline-block";
-                }
-            }, 1000);
-        }
-
-        document.getElementById("scbk-open-btn").addEventListener('click', () => {
-            document.getElementById('page2').style.display = 'none';
-            document.getElementById('page3').style.display = 'block';
-        });
-
-        function checkDeveloperPassword() {
-            const userInput = prompt("Masukkan password rahasia untuk masuk ke Halaman 3:");
-            if (userInput === "mahalkita") {
-                isCountdownActive = false; 
-                document.getElementById('page2').style.display = 'none';
-                document.getElementById('page3').style.display = 'block'; 
-            }
-        }
-
-        // Navigasi lompat alur per halaman kado
-        function goToClawMachinePage3B() {
-            document.getElementById('page3').style.display = 'none';
-            document.getElementById('page3b').style.display = 'block';
-            activateClawMachineKeyboardSystem(); // Nyalakan sistem engine mini game
-        }
-
-        function goToNextScrapbookPage() {
-            document.getElementById('page3b').style.display = 'none';
-            document.getElementById('page4').style.display = 'block'; 
-            initiateSmartPhotoboxHalaman4();
-        }
-
-
-        // ================== HARDWARE CODE: CLAW MACHINE SYSTEM (.PNG STABLE VERSION) ==================
-        let clawLives = 10;
-        let isClawMoving = false;
-        let isPasswordUnlocked = false;
-
-        const prizePoolData = [
-            { name: "Kado Zonk 🎁", type: "gift-zonk", emoji: "🎁" },
-            { name: "Kado Zonk 🎁", type: "gift-zonk", emoji: "🎁" },
-            { name: "Kado Zonk 🎁", type: "gift-zonk", emoji: "🎁" },
-            { name: "Kado Zonk 🎁", type: "gift-zonk", emoji: "🎁" },
-            { name: "Tas Pink Cantik! 🛍️", type: "gift-tas", emoji: "🛍️" },
-            
-            // Mengunci 4 file berformat .png hasil editanmu di GitHub
-            { name: "Foto Kenangan 1 🔮", type: "ball-photo", emoji: "🔮", file: "bola1.png" },
-            { name: "Foto Kenangan 2 🔮", type: "ball-photo", emoji: "🔮", file: "bola2.png" },
-            { name: "Foto Kenangan 3 🔮", type: "ball-photo", emoji: "🔮", file: "bola3.png" },
-            { name: "Foto Kenangan 4 🔮", type: "ball-photo", emoji: "🔮", file: "bola4.png" },
-            
-            { name: "Kotak Zonk 📦", type: "box-zonk", emoji: "📦" },
-            { name: "Kotak Zonk 📦", type: "box-zonk", emoji: "📦" },
-            { name: "Kunci Password Rahasia! 🔑", type: "box-key", emoji: "🔑" }
-        ];
-
-        function activateClawMachineKeyboardSystem() {
-            const floor = document.getElementById('hardware-prizes-floor');
-            floor.innerHTML = ''; 
-
-            prizePoolData.forEach((item, index) => {
-                const element = document.createElement('span');
-                element.classList.add('prize-item');
-                element.id = `prize-${index}`;
-                element.innerText = item.emoji;
-                element.setAttribute('data-index', index);
-
-                const randomXPercent = Math.random() * 70 + 16; 
-                const randomYBottomPixel = Math.random() * 45;  
-                const randomRotateDegree = Math.random() * 60 - 30; 
-
-                element.style.left = randomXPercent + "%";
-                element.style.bottom = randomYBottomPixel + "px";
-                element.style.transform = `rotate(${randomRotateDegree}deg)`;
-
-                floor.appendChild(element);
-            });
-
-            window.addEventListener('keydown', handleClawMachineKeyboardControl);
-        }
-
-        function handleClawMachineKeyboardControl(e) {
-            if (document.getElementById('page3b').style.display !== 'block' || isClawMoving) return;
-
-            const cable = document.getElementById('hardware-claw-cable');
-            let currentLeftPosition = parseFloat(cable.style.left);
-
-            if (e.key === "ArrowLeft") {
-                if (currentLeftPosition > 12) { cable.style.left = (currentLeftPosition - 4) + "%"; }
-            } else if (e.key === "ArrowRight") {
-                if (currentLeftPosition < 88) { cable.style.left = (currentLeftPosition + 4) + "%"; }
-            } else if (e.key === "ArrowDown" || e.key === " " || e.key === "Enter") {
-                e.preventDefault();
-                triggerClawDropMechanism(); 
-            }
-        }
-
-        function triggerClawDropMechanism() {
-            isClawMoving = true;
-            const cable = document.getElementById('hardware-claw-cable');
-            const machine = document.querySelector('.claw-machine-container');
-            const currentHorizontalLeft = parseFloat(cable.style.left);
-
-            cable.style.height = "255px"; 
-            
-            setTimeout(() => {
-                machine.classList.add('claw-grabbing');
-                const items = document.querySelectorAll('.prize-item');
-                let caughtItemElement = null;
-                let minimumDeltaDistance = 999;
-
-                items.forEach(el => {
-                    const elementLeftPercent = (el.offsetLeft / machine.clientWidth) * 100;
-                    const distanceDelta = Math.abs(elementLeftPercent - currentHorizontalLeft);
-                    if (distanceDelta < minimumDeltaDistance && distanceDelta < 13) {
-                        minimumDeltaDistance = distanceDelta;
-                        caughtItemElement = el;
-                    }
-                });
-
-                if (caughtItemElement) {
-                    setTimeout(() => {
-                        caughtItemElement.style.position = "absolute";
-                        caughtItemElement.style.bottom = "auto";
-                        caughtItemElement.style.top = "20px";
-                        caughtItemElement.style.left = "50px";
-                        caughtItemElement.style.transform = "translateX(-50%) rotate(0deg)";
-                        cable.appendChild(caughtItemElement);
-                        cable.style.height = "40px";
-
-                        setTimeout(() => {
-                            cable.style.transition = "left 1.2s ease-in-out";
-                            cable.style.left = "16%"; 
-
-                            setTimeout(() => {
-                                machine.classList.remove('claw-grabbing');
-                                caughtItemElement.style.top = "190px";
-                                caughtItemElement.style.opacity = "0";
-                                caughtItemElement.style.transition = "top 0.5s ease-in, opacity 0.5s ease";
-
-                                setTimeout(() => {
-                                    const poolIndex = caughtItemElement.getAttribute('data-index');
-                                    processClawGachaResult(prizePoolData[poolIndex]);
-                                    caughtItemElement.remove();
-                                    cable.style.transition = "none";
-                                    cable.style.left = "50%";
-                                    isClawMoving = false;
-                                }, 500);
-                            }, 1200);
-                        }, 700);
-                    }, 300);
-                } else {
-                    setTimeout(() => {
-                        cable.style.height = "40px";
-                        setTimeout(() => {
-                            machine.classList.remove('claw-grabbing');
-                            reduceClawLifeCounter(); 
-                            isClawMoving = false;
-                        }, 500);
-                    }, 600);
-                }
-            }, 700);
-        }
-
-        function processClawGachaResult(item) {
-            if (!item) return;
-
-            if (item.type === "gift-zonk" || item.type === "box-zonk") {
-                alert(`📦 Hasil: ${item.name}\n\nYah zonk, belum beruntung! Coba lagi sayang! 💜`);
-                reduceClawLifeCounter();
-            } 
-            else if (item.type === "gift-tas") {
-                alert(`🛍️ Hasil: ${item.name}\n\nCiyeee dapet kado TAS PINK! Hadiah fisiknya menyusul pas kita ketemu yaa, sekarang lanjut cari kuncinya dulu sayang! 💕`);
-            } 
-            else if (item.type === "ball-photo") {
-                const photoOverlay = document.getElementById('prize-photo-overlay');
-                const imgTag = document.getElementById('prize-photo-img-tag');
-                const downloadAnchor = document.getElementById('prize-download-anchor-tag');
-
-                imgTag.src = item.file;
-                downloadAnchor.href = item.file;
-                downloadAnchor.download = "Foto_Kenangan_Kita_" + item.file;
-
-                isClawMoving = true; 
-                photoOverlay.style.display = "flex";
-            }
-            else if (item.type === "box-key") {
-                isPasswordUnlocked = true;
-                const gateBtn = document.getElementById('claw-next-gate-btn');
-                gateBtn.classList.add('unlocked');
-                alert(`yayy dapet kodenyaa ✨\n\nKodenya adalah: "mahalkita"\n\nSekarang gerbang menuju Photobox Halaman Terakhir sudah terbuka! Klik tombol "NEXT" di bawah untuk meluncur! 😍⭐`);
-            }
-        }
-
-        function closePrizePhotoOverlay() {
-            document.getElementById('prize-photo-overlay').style.display = "none";
-            isClawMoving = false; 
-        }
-
-        function reduceClawLifeCounter() {
-            clawLives--;
-            document.getElementById('claw-lives-counter').innerText = clawLives;
-            if (clawLives <= 0 && !isPasswordUnlocked) {
-                alert("Game Over! Jangan sedih sayang, aku kasih bonus +5 nyawa main lagi gratis biar kamu menang! Hehe 💜");
-                clawLives = 5;
-                document.getElementById('claw-lives-counter').innerText = clawLives;
-            }
-        }
-
-        function enterPhotoboxPage4() {
-            if (!isPasswordUnlocked) {
-                alert("Pintu terkunci! Kamu harus mendapatkan 'Kotak Kunci 🔑' di dalam mesin capit terlebih dahulu sayang!");
-                return;
-            }
-            window.removeEventListener('keydown', handleClawMachineKeyboardControl);
-            goToNextScrapbookPage(); 
-        }
-
-
-        // ================== MACHINE LEARNING ENGINE (HALAMAN 4) ==================
-        let drawingLines = []; 
-        let currentPath = [];
-        let lastFilteredX = null;
-        let lastFilteredY = null;
-        let drawValidationCounter = 0;
-        const FRAME_VALIDATION_THRESHOLD = 9; 
-        let currentBrushColor = '#ff9ff3'; 
-        let currentShadowColor = '#ff4757';
-
-        function initiateSmartPhotoboxHalaman4() {
-            resizeDrawingCanvas();
-            window.addEventListener('resize', resizeDrawingCanvas);
-
-            const hands = new Hands({
-                locateFile: (file) => `https://cdn.jsdelivr.net/npm/@mediapipe/hands/${file}`
-            });
-
-            hands.setOptions({ maxNumHands: 1, modelComplexity: 1, minDetectionConfidence: 0.65, minTrackingConfidence: 0.65 });
-            hands.onResults(onHandTrackingResultsWithFilter);
-
-            const camera = new Camera(videoElement, {
-                onFrame: async () => { if (!isCaptured) { await hands.send({ image: videoElement }); } },
-                width: 1280, height: 720
-            });
-            camera.start();
-        }
-
-        function resizeDrawingCanvas() { drawCanvas.width = drawCanvas.clientWidth; drawCanvas.height = drawCanvas.clientHeight; redrawStoredLines(); }
-
-        function changeBrushColor(hexColor, element) {
-            currentBrushColor = hexColor;
-            if (hexColor === '#00cec9') currentShadowColor = '#00aec9';
-            else if (hexColor === '#ffeaa7') currentShadowColor = '#fdcb6e';
-            else currentShadowColor = '#ff4757';
-
-            const dots = document.querySelectorAll('#page4 .color-dot');
-            dots.forEach(dot => dot.classList.remove('active'));
-            element.classList.add('active');
-        }
-
-        function onHandTrackingResultsWithFilter(results) {
-            if (isCaptured) return;
-            drawCtx.clearRect(0, 0, drawCanvas.width, drawCanvas.height);
-            redrawStoredLines();
-
-            if (results.multiHandLandmarks && results.multiHandLandmarks.length > 0) {
-                const landmarks = results.multiHandLandmarks[0];
-                const indexTip = landmarks[8]; const indexBase = landmarks[5]; const middleTip = landmarks[12];
-                const rawX = (1 - indexTip.x) * drawCanvas.width; const rawY = indexTip.y * drawCanvas.height;
-                const isFingerPointingUp = (indexTip.y < indexBase.y) && (middleTip.y > indexBase.y);
-
-                if (isFingerPointingUp) {
-                    drawValidationCounter++;
-                    if (drawValidationCounter >= FRAME_VALIDATION_THRESHOLD) {
-                        let targetX = rawX; let targetY = rawY;
-                        if (lastFilteredX !== null && lastFilteredY !== null) {
-                            targetX = (lastFilteredX * 0.6) + (rawX * 0.4); targetY = (lastFilteredY * 0.6) + (rawY * 0.4);
-                        }
-                        lastFilteredX = targetX; lastFilteredY = targetY;
-                        drawCtx.beginPath(); drawCtx.arc(targetX, targetY, 6, 0, 2 * Math.PI); drawCtx.fillStyle = currentBrushColor; drawCtx.fill();
-
-                        if (!lastHandPresent) { currentPath = []; drawingLines.push({ points: currentPath, color: currentBrushColor, shadow: currentShadowColor }); }
-                        currentPath.push({ x: targetX, y: targetY }); lastHandPresent = true;
-                    }
-                } else { drawValidationCounter = 0; lastHandPresent = false; lastFilteredX = null; lastFilteredY = null; }
-            } else { drawValidationCounter = 0; lastHandPresent = false; lastFilteredX = null; lastFilteredY = null; }
-        }
-
-        function redrawStoredLines() {
-            drawCtx.lineWidth = 5; drawCtx.lineCap = 'round'; drawCtx.lineJoin = 'round';
-            for (let i = 0; i < drawingLines.length; i++) {
-                const lineData = drawingLines[i]; const path = lineData.points; if (path.length < 2) continue;
-                drawCtx.strokeStyle = lineData.color; drawCtx.shadowColor = lineData.shadow; drawCtx.shadowBlur = 4;
-                drawCtx.beginPath(); drawCtx.moveTo(path[0].x, path[0].y);
-                for (let j = 1; j < path.length; j++) { drawCtx.lineTo(path[j].x, path[j].y); }
-                drawCtx.stroke();
-            }
-            drawCtx.shadowBlur = 0; 
-        }
-
-        function clearDrawingCanvas() { drawingLines = []; currentPath = []; lastFilteredX = null; lastFilteredY = null; drawValidationCounter = 0; drawCtx.clearRect(0, 0, drawCanvas.width, drawCanvas.height); }
-
-        function capturePhotoboxFrame() {
-            isCaptured = true;
-            const canvas = document.getElementById('hidden-canvas'); const previewRender = document.getElementById('photo-preview-render');
-            const controlPanel = document.getElementById('control-panel-wrapper'); const floatingMenu = document.getElementById('floating-menu');
-            const ctx = canvas.getContext('2d'); const w = videoElement.videoWidth || 1280; const h = videoElement.videoHeight || 720;
-            canvas.width = w; canvas.height = h;
-
-            ctx.translate(w, 0); ctx.scale(-1, 1); ctx.drawImage(videoElement, 0, 0, w, h); ctx.setTransform(1, 0, 0, 1, 0, 0); 
-            ctx.lineCap = 'round'; ctx.lineJoin = 'round';
-            const scaleRatioX = w / drawCanvas.width; ctx.lineWidth = 7.3; 
-
-            for (let i = 0; i < drawingLines.length; i++) {
-                const lineData = drawingLines[i]; const path = lineData.points; if (path.length < 2) continue;
-                ctx.strokeStyle = lineData.color; ctx.shadowColor = lineData.shadow; ctx.shadowBlur = 0; 
-                ctx.beginPath(); ctx.moveTo(path[0].x * scaleRatioX, path[0].y * scaleRatioX);
-                for (let j = 1; j < path.length; j++) { ctx.lineTo(path[j].x * scaleRatioX, path[j].y * scaleRatioX); }
-                ctx.stroke();
-            }
-            ctx.shadowBlur = 0; lastCapturedDataURL = canvas.toDataURL('image/jpeg', 0.95); previewRender.src = lastCapturedDataURL;
-            previewRender.style.display = 'block'; controlPanel.classList.add('controls-active'); floatingMenu.style.display = 'none'; 
-        }
-
-        function cancelAndRetakePhoto() {
-            const previewRender = document.getElementById('photo-preview-render'); const controlPanel = document.getElementById('control-panel-wrapper');
-            const floatingMenu = document.getElementById('floating-menu'); previewRender.style.display = 'none'; previewRender.src = '';
-            lastCapturedDataURL = null; isCaptured = false; drawValidationCounter = 0; controlPanel.classList.remove('controls-active'); floatingMenu.style.display = 'flex'; 
-        }
-
-        function saveAndResetForNext() {
-            if (!lastCapturedDataURL) return;
-            const downloadLink = document.createElement('a'); downloadLink.href = lastCapturedDataURL;
-            downloadLink.download = 'Photobox_Art_Kita_' + Date.now() + '.jpg'; document.body.appendChild(downloadLink);
-            downloadLink.click(); document.body.removeChild(downloadLink);
-            clearDrawingCanvas(); cancelAndRetakePhoto();
-        }
-
-        window.addEventListener('load', () => { generateFlowerBorder(); });
-    </script>
+<div id="page1" class="page">
+<div class="center-text">HAPPY BIRTHDAY SAYANGGG</div>
+<div class="flower-border">
+<div class="flower-row top" id="row-top"></div>
+<div class="flower-column left" id="col-left"></div>
+<div class="flower-column right" id="col-right"></div>
+<div class="flower-row bottom" id="row-bottom"></div>
+</div>
+<div id="balloon-container"></div>
+</div>
+
+<div id="page2" class="page">
+<h2 class="page2-title">Sabar Yaa Sayangkuuuu, hehe 💜</h2>
+<p class="page2-subtitle">Nunggu duluu yaaaaa</p>
+<div class="timer-box" id="timer-display">
+<div class="time-segment">
+<span class="time-number" id="days">00</span>
+<span class="time-label">Hari</span>
+</div>
+<div class="time-segment">
+<span class="time-number" id="hours">00</span>
+<span class="time-label">Jam</span>
+</div>
+<div class="time-segment">
+<span class="time-number" id="minutes">00</span>
+<span class="time-label">Menit</span>
+</div>
+<div class="time-segment">
+<span class="time-number" id="seconds">00</span>
+<span class="time-label">Detik</span>
+</div>
+</div>
+<button class="unlock-btn" id="scbk-open-btn">Buka Isi Scrapbook! 📖</button>
+<button class="arrow-btn" onclick="checkDeveloperPassword()">&rarr;</button>
+</div>
+
+<div id="page3" class="page">
+<div class="video-box-overlay">
+<video id="birthday-video" controls preload="auto">
+<source src="video-upload.mp4" type="video/mp4">
+<source src="video-ultah.mp4" type="video/mp4">
+</video>
+</div>
+<button class="fake-next-hitbox" onclick="goToNextScrapbookPage()"></button>
+</div>
+
+<div id="page4" class="page">
+<div class="photobox-frame">
+<div class="camera-viewport">
+<video id="webcam-view" autoplay playsinline></video>
+<canvas id="drawing-canvas"></canvas>
+<img id="photo-preview-render" alt="Hasil Foto">
+
+<div class="top-camera-controls" id="floating-menu">
+<div class="color-dot dot-pink active" onclick="changeBrushColor('#ff9ff3', this)"></div>
+<div class="color-dot dot-blue" onclick="changeBrushColor('#00cec9', this)"></div>
+<div class="color-dot dot-yellow" onclick="changeBrushColor('#ffeaa7', this)"></div>
+<button class="btn-clear-canvas" title="Hapus Semua" onclick="clearDrawingCanvas()">🔄</button>
+</div>
+</div>
+</div>
+
+<div class="photobox-controls" id="control-panel-wrapper">
+<button class="btn-side-nav btn-nav-cancel" onclick="cancelAndRetakePhoto()">Batal</button>
+<div class="btn-snap-circle" onclick="capturePhotoboxFrame()"></div>
+<button class="btn-side-nav btn-nav-next" onclick="saveAndResetForNext()">Next</button>
+</div>
+<canvas id="hidden-canvas" style="display:none;"></canvas>
+</div>
+
+<div id="letter-overlay">
+<div class="letter-content" onclick="event.stopPropagation()">
+<p id="secret-text"></p>
+<button id="next-page-btn" class="next-btn">Next &rarr;</button>
+<div class="hint" id="close-hint">Klik di mana saja untuk kembali</div>
+</div>
+</div>
+
+<script>
+// GENERATOR FLOWER BOUNDS
+function generateFlowerBorder() {
+const rowTop = document.getElementById('row-top');
+const rowBottom = document.getElementById('row-bottom');
+const colLeft = document.getElementById('col-left');
+const colRight = document.getElementById('col-right');
+const horizontalCount = 12; 
+const verticalCount = 5;
+
+rowTop.innerHTML = ''; rowBottom.innerHTML = ''; colLeft.innerHTML = ''; colRight.innerHTML = '';
+
+for (let i = 0; i < horizontalCount; i++) {
+rowTop.innerHTML += '<span>🌸</span>';
+rowBottom.innerHTML += '<span>🌸</span>';
+}
+for (let i = 0; i < verticalCount; i++) {
+colLeft.innerHTML += '<span>🌸</span>';
+colRight.innerHTML += '<span>🌸</span>';
+}
+}
+generateFlowerBorder();
+
+// BALON MANAGER
+const container = document.getElementById('balloon-container');
+const overlay = document.getElementById('letter-overlay');
+const secretText = document.getElementById('secret-text');
+const nextPageBtn = document.getElementById('next-page-btn');
+const closeHint = document.getElementById('close-hint');
+
+const baseColors = ['#ff3838', '#ff1f5a', '#1e90ff', '#6c5ce7', '#ffa502', '#ff6b81', '#ff4757', '#2ed573', '#ff781f'];
+const messages = [
+"SELAMAT ULANG TAHUN YANG KE 21 SAYANGKUUUU, SEMOGAAA SEMUA YANG DI INGINKANN SAYANGKUUU CEPAT TERCAPAIII YAAAA. ❤️",
+"SEMANGATTT TERUSSS ORANG HEBATKUUUU, DILANCARKANNN SEGAlANYAAAA",
+"LOVEEE YOUUU, LOVEEE YOUUUU LOVEEE YOUUU, LOVEEEE YOUUU SOO MUCHHHH SAYANGGGGGGG. ❤️",
+"SAYANGGG, KAMUU ORANGG HEBATTTT BANGETTTTTTT! ✨"
+];
+
+let messageIndex = 0;
+const MAX_BALLOONS = 5; 
+
+function createNormalBalloon() {
+if (document.getElementById('page1').style.display === 'none') return;
+if (container.children.length >= MAX_BALLOONS) return; 
+
+const balloon = document.createElement('div');
+balloon.classList.add('balloon');
+balloon.style.left = (Math.random() * 70 + 15) + '%';
+
+const duration = Math.random() * 3 + 15;
+balloon.style.animation = `floatUpAnimation ${duration}s linear forwards`;
+
+const color = baseColors[Math.floor(Math.random() * baseColors.length)];
+balloon.style.background = `radial-gradient(circle at 30% 30%, #ffffff 0%, ${color} 20%, #000000 100%)`;
+balloon.style.boxShadow = `inset -10px -10px 20px rgba(0,0,0,0.4), 0px 12px 20px rgba(0,0,0,0.3)`;
+
+const string = document.createElement('div');
+string.classList.add('balloon-string');
+balloon.appendChild(string);
+
+const hasLetter = Math.random() < 0.5;
+if (hasLetter) {
+const scrollIcon = document.createElement('div');
+scrollIcon.classList.add('scroll-icon');
+scrollIcon.innerText = "📜";
+balloon.appendChild(scrollIcon);
+
+balloon.dataset.message = messages[messageIndex % messages.length];
+balloon.dataset.type = "letter";
+messageIndex++;
+}
+
+setupBalloonClick(balloon);
+container.appendChild(balloon);
+}
+
+function createGiftBalloon() {
+if (document.getElementById('page1').style.display === 'none') return;
+if (container.children.length >= MAX_BALLOONS) return;
+
+const balloon = document.createElement('div');
+balloon.classList.add('balloon');
+balloon.style.left = (Math.random() * 70 + 15) + '%';
+
+const duration = Math.random() * 3 + 15;
+balloon.style.animation = `floatUpAnimation ${duration}s linear forwards`;
+
+balloon.style.background = `radial-gradient(circle at 30% 30%, #ffffff 0%, #ffd700 30%, #b8860b 100%)`;
+balloon.style.boxShadow = `inset -10px -10px 20px rgba(0,0,0,0.4), 0px 12px 25px rgba(218, 165, 32, 0.5)`;
+
+const string = document.createElement('div');
+string.classList.add('balloon-string');
+balloon.appendChild(string);
+
+const giftIcon = document.createElement('div');
+giftIcon.classList.add('scroll-icon');
+giftIcon.innerText = "🎁";
+balloon.appendChild(giftIcon);
+
+balloon.dataset.message = "YAYYYYY, SELAMATTT SAYANGKUUUUU";
+balloon.dataset.type = "gift";
+
+setupBalloonClick(balloon);
+container.appendChild(balloon);
+}
+
+function setupBalloonClick(balloon) {
+balloon.addEventListener('click', (e) => {
+e.stopPropagation();
+balloon.classList.add('pop-animation');
+
+setTimeout(() => {
+if (balloon.dataset.message) {
+secretText.innerText = balloon.dataset.message;
+if (balloon.dataset.type === "gift") {
+nextPageBtn.style.display = "block";
+closeHint.style.display = "none";
+} else {
+nextPageBtn.style.display = "none";
+closeHint.style.display = "block";
+}
+overlay.style.display = 'flex';
+setTimeout(() => overlay.classList.add('show'), 10);
+}
+balloon.remove(); 
+}, 150);
+});
+balloon.addEventListener('animationend', () => { balloon.remove(); });
+}
+
+setInterval(createNormalBalloon, 3000);
+setInterval(createGiftBalloon, 25000); 
+
+nextPageBtn.addEventListener('click', (e) => {
+e.stopPropagation();
+overlay.classList.remove('show');
+overlay.style.display = 'none';
+document.getElementById('page1').style.display = 'none';
+document.getElementById('page2').style.display = 'flex';
+startCountdown();
+});
+
+overlay.addEventListener('click', () => {
+if (nextPageBtn.style.display !== "block") {
+overlay.classList.remove('show');
+setTimeout(() => overlay.style.display = 'none', 300);
+}
+});
+
+// TIMING SYSTEM
+let isCountdownActive = true;
+function startCountdown() {
+const targetDate = new Date("June 6, 2026 15:00:00").getTime();
+
+const timerInterval = setInterval(() => {
+if (!isCountdownActive) {
+clearInterval(timerInterval);
+return;
+}
+
+const now = new Date().getTime();
+const difference = targetDate - now;
+
+const d = Math.floor(difference / (1000 * 60 * 60 * 24));
+const h = Math.floor((difference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+const m = Math.floor((difference % (1000 * 60 * 60)) / (1000 * 60));
+const s = Math.floor((difference % (1000 * 60)) / 1000);
+
+document.getElementById("days").innerText = d < 10 ? "0" + d : d;
+document.getElementById("hours").innerText = h < 10 ? "0" + h : h;
+document.getElementById("minutes").innerText = m < 10 ? "0" + m : m;
+document.getElementById("seconds").innerText = s < 10 ? "0" + s : s;
+
+if (difference < 0) {
+clearInterval(timerInterval);
+document.getElementById("timer-display").style.display = "none";
+document.querySelector("#page2 .page2-subtitle").innerText = "Waktunya telah tibaaa! Klik tombol di bawah untuk membukanya! ❤️";
+document.getElementById("scbk-open-btn").style.display = "inline-block";
+}
+}, 1000);
+}
+
+document.getElementById("scbk-open-btn").addEventListener('click', () => {
+document.getElementById('page2').style.display = 'none';
+document.getElementById('page3').style.display = 'block';
+});
+
+function checkDeveloperPassword() {
+const userInput = prompt("Masukkan password rahasia untuk masuk ke Halaman 3:");
+if (userInput === "langmalakas") {
+isCountdownActive = false; 
+document.getElementById('page2').style.display = 'none';
+document.getElementById('page3').style.display = 'block'; 
+}
+}
+
+function goToNextScrapbookPage() {
+const vid = document.getElementById('birthday-video');
+if(vid) vid.pause();
+document.getElementById('page3').style.display = 'none';
+document.getElementById('page4').style.display = 'block'; 
+initiateSmartPhotoboxHalaman4();
+}
+
+// ================== MACHINE LEARNING ENGINE (HALAMAN 4) ==================
+let lastCapturedDataURL = null;
+let isCaptured = false;
+let drawingLines = []; 
+let currentPath = [];
+let lastHandPresent = false;
+let lastFilteredX = null;
+let lastFilteredY = null;
+let drawValidationCounter = 0;
+const FRAME_VALIDATION_THRESHOLD = 9; 
+
+let currentBrushColor = '#ff9ff3'; 
+let currentShadowColor = '#ff4757';
+
+const videoElement = document.getElementById('webcam-view');
+const drawCanvas = document.getElementById('drawing-canvas');
+const drawCtx = drawCanvas.getContext('2d');
+
+function initiateSmartPhotoboxHalaman4() {
+resizeDrawingCanvas();
+window.addEventListener('resize', resizeDrawingCanvas);
+
+const hands = new Hands({
+locateFile: (file) => `https://cdn.jsdelivr.net/npm/@mediapipe/hands/${file}`
+});
+
+hands.setOptions({
+maxNumHands: 1,
+modelComplexity: 1,
+minDetectionConfidence: 0.65,
+minTrackingConfidence: 0.65
+});
+
+hands.onResults(onHandTrackingResultsWithFilter);
+
+const camera = new Camera(videoElement, {
+onFrame: async () => {
+if (!isCaptured) {
+await hands.send({ image: videoElement });
+}
+},
+width: 1280,
+height: 720
+});
+camera.start();
+}
+
+function resizeDrawingCanvas() {
+drawCanvas.width = drawCanvas.clientWidth;
+drawCanvas.height = drawCanvas.clientHeight;
+redrawStoredLines();
+}
+
+function changeBrushColor(hexColor, element) {
+currentBrushColor = hexColor;
+if (hexColor === '#00cec9') currentShadowColor = '#00aec9';
+else if (hexColor === '#ffeaa7') currentShadowColor = '#fdcb6e';
+else currentShadowColor = '#ff4757';
+
+const dots = document.querySelectorAll('#page4 .color-dot');
+dots.forEach(dot => dot.classList.remove('active'));
+element.classList.add('active');
+}
+
+function onHandTrackingResultsWithFilter(results) {
+if (isCaptured) return;
+
+drawCtx.clearRect(0, 0, drawCanvas.width, drawCanvas.height);
+redrawStoredLines();
+
+if (results.multiHandLandmarks && results.multiHandLandmarks.length > 0) {
+const landmarks = results.multiHandLandmarks[0];
+const indexTip = landmarks[8]; 
+const indexBase = landmarks[5];
+const middleTip = landmarks[12];
+
+const rawX = (1 - indexTip.x) * drawCanvas.width;
+const rawY = indexTip.y * drawCanvas.height;
+
+const isFingerPointingUp = (indexTip.y < indexBase.y) && (middleTip.y > indexBase.y);
+
+if (isFingerPointingUp) {
+drawValidationCounter++;
+
+if (drawValidationCounter >= FRAME_VALIDATION_THRESHOLD) {
+let targetX = rawX;
+let targetY = rawY;
+
+if (lastFilteredX !== null && lastFilteredY !== null) {
+targetX = (lastFilteredX * 0.6) + (rawX * 0.4);
+targetY = (lastFilteredY * 0.6) + (rawY * 0.4);
+}
+
+lastFilteredX = targetX;
+lastFilteredY = targetY;
+
+drawCtx.beginPath();
+drawCtx.arc(targetX, targetY, 6, 0, 2 * Math.PI);
+drawCtx.fillStyle = currentBrushColor;
+drawCtx.fill();
+
+if (!lastHandPresent) {
+currentPath = [];
+drawingLines.push({ points: currentPath, color: currentBrushColor, shadow: currentShadowColor });
+}
+currentPath.push({ x: targetX, y: targetY });
+lastHandPresent = true;
+}
+} else {
+drawValidationCounter = 0;
+lastHandPresent = false;
+lastFilteredX = null;
+lastFilteredY = null;
+}
+} else {
+drawValidationCounter = 0;
+lastHandPresent = false;
+lastFilteredX = null;
+lastFilteredY = null;
+}
+}
+
+function redrawStoredLines() {
+            drawCtx.lineWidth = 5;
+            drawCtx.lineWidth = 5; // Nilasi ketebalan kuas standar monitor (5px)
+drawCtx.lineCap = 'round';
+drawCtx.lineJoin = 'round';
+
+for (let i = 0; i < drawingLines.length; i++) {
+const lineData = drawingLines[i];
+const path = lineData.points;
+if (path.length < 2) continue;
+
+drawCtx.strokeStyle = lineData.color;
+drawCtx.shadowColor = lineData.shadow;
+drawCtx.shadowBlur = 4;
+
+drawCtx.beginPath();
+drawCtx.moveTo(path[0].x, path[0].y);
+for (let j = 1; j < path.length; j++) {
+drawCtx.lineTo(path[j].x, path[j].y);
+}
+drawCtx.stroke();
+}
+drawCtx.shadowBlur = 0; 
+}
+
+function clearDrawingCanvas() {
+drawingLines = [];
+currentPath = [];
+lastFilteredX = null;
+lastFilteredY = null;
+drawValidationCounter = 0;
+drawCtx.clearRect(0, 0, drawCanvas.width, drawCanvas.height);
+}
+
+        // FIX PROSES SNAP INDEPENDEN: MENGUNCI NILAI PIXEL STATIS TANPA PERKALIAN MONITOR AGAR HASILNYA 100% IDENTIK
+        // PERBAIKAN MUTLAK: IMPLEMENTASI DYNAMIC SCALING RATIO PIXEL BERDASARKAN MONITOR LAYAR NYATA
+function capturePhotoboxFrame() {
+isCaptured = true;
+const canvas = document.getElementById('hidden-canvas');
+const previewRender = document.getElementById('photo-preview-render');
+const controlPanel = document.getElementById('control-panel-wrapper');
+const floatingMenu = document.getElementById('floating-menu');
+const ctx = canvas.getContext('2d');
+
+const w = videoElement.videoWidth || 1280;
+const h = videoElement.videoHeight || 720;
+canvas.width = w;
+canvas.height = h;
+
+ctx.translate(w, 0);
+ctx.scale(-1, 1);
+ctx.drawImage(videoElement, 0, 0, w, h);
+ctx.setTransform(1, 0, 0, 1, 0, 0); 
+
+            // KALIBRASI FIX TOTAL: Mengunci ketebalan di 11.5 dan sebaran pendaran neon di 16 (Tanpa rumus pengali layar monitor)
+            ctx.lineWidth = 11.5; 
+ctx.lineCap = 'round';
+ctx.lineJoin = 'round';
+
+            const scaleX = w / drawCanvas.width;
+            const scaleY = h / drawCanvas.height;
+            // HITUNG RATIO SKALA SCALING MATEMATIS AKTIF (UKURAN NYATA KAMERA / UKURAN MONITOR BROWSER)
+            const scaleRatioX = w / drawCanvas.width;
+
+            // Mengalikan secara dinamis nilai dasar monitor (5px) dengan rasio skala saat jepret dibuka
+            ctx.lineWidth = 5 * scaleRatioX; 
+
+for (let i = 0; i < drawingLines.length; i++) {
+const lineData = drawingLines[i];
+const path = lineData.points;
+if (path.length < 2) continue;
+
+ctx.strokeStyle = lineData.color;
+ctx.shadowColor = lineData.shadow;
+                ctx.shadowBlur = 16; // Pendaran lampu neon dikunci sempurna mengikuti besaran 1280px
+                
+                // Menyelaraskan sebaran bias blur lampu neon secara otomatis mengikuti rasio ketebalan garis baru
+                ctx.shadowBlur = 4 * scaleRatioX; 
+
+ctx.beginPath();
+                ctx.moveTo(path[0].x * scaleX, path[0].y * scaleY);
+                ctx.moveTo(path[0].x * scaleRatioX, path[0].y * scaleRatioX);
+for (let j = 1; j < path.length; j++) {
+                    ctx.lineTo(path[j].x * scaleX, path[j].y * scaleY);
+                    ctx.lineTo(path[j].x * scaleRatioX, path[j].y * scaleRatioX);
+}
+ctx.stroke();
+}
+            ctx.shadowBlur = 0;
+            ctx.shadowBlur = 0; 
+
+lastCapturedDataURL = canvas.toDataURL('image/jpeg', 0.95);
+previewRender.src = lastCapturedDataURL;
+previewRender.style.display = 'block';
+
+controlPanel.classList.add('controls-active');
+floatingMenu.style.display = 'none'; 
+}
+
+function cancelAndRetakePhoto() {
+const previewRender = document.getElementById('photo-preview-render');
+const controlPanel = document.getElementById('control-panel-wrapper');
+const floatingMenu = document.getElementById('floating-menu');
+
+previewRender.style.display = 'none';
+previewRender.src = '';
+lastCapturedDataURL = null;
+isCaptured = false;
+drawValidationCounter = 0;
+
+controlPanel.classList.remove('controls-active');
+floatingMenu.style.display = 'flex'; 
+}
+
+function saveAndResetForNext() {
+if (!lastCapturedDataURL) return;
+
+const downloadLink = document.createElement('a');
+downloadLink.href = lastCapturedDataURL;
+downloadLink.download = 'Photobox_Art_Kita_' + Date.now() + '.jpg';
+document.body.appendChild(downloadLink);
+downloadLink.click();
+document.body.removeChild(downloadLink);
+
+clearDrawingCanvas();
+cancelAndRetakePhoto();
+}
+</script>
 </body>
 </html>
