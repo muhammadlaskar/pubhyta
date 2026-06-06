@@ -59,7 +59,7 @@
             width: 90%;
         }
 
-        #page1 .flower-border {
+        .flower-border {
             position: absolute;
             top: 0;
             left: 0;
@@ -69,7 +69,7 @@
             z-index: 15;
         }
 
-        #page1 .flower-row {
+        .flower-row {
             position: absolute;
             left: 0;
             width: 100%;
@@ -77,10 +77,10 @@
             justify-content: space-around;
             padding: 10px 0;
         }
-        #page1 .flower-row.top { top: 0; }
-        #page1 .flower-row.bottom { bottom: 0; }
+        .flower-row.top { top: 0; }
+        .flower-row.bottom { bottom: 0; }
 
-        #page1 .flower-column {
+        .flower-column {
             position: absolute;
             top: 60px;
             bottom: 60px;
@@ -89,10 +89,10 @@
             justify-content: space-around;
             height: calc(100% - 120px);
         }
-        #page1 .flower-column.left { left: 15px; }
-        #page1 .flower-column.right { right: 15px; }
+        .flower-column.left { left: 15px; }
+        .flower-column.right { right: 15px; }
 
-        #page1 .flower-border span {
+        .flower-border span {
             display: inline-block;
             font-size: 35px;
             animation: spinFlower 6s linear infinite;
@@ -265,7 +265,7 @@
             z-index: 10;
         }
 
-        #page2 .arrow-btn {
+        #page2 .secret-navigation-btn {
             position: absolute;
             bottom: 15px;
             right: 15px;
@@ -278,9 +278,9 @@
             user-select: none;
             transition: color 0.2s;
         }
-        #page2 .arrow-btn:hover { color: rgba(255, 71, 87, 0.6); }
+        #page2 .secret-navigation-btn:hover { color: rgba(255, 71, 87, 0.6); }
 
-        /* ================== HALAMAN 3 (VIDEO THEME) ================== */
+        /* ================== HALAMAN 3 (VIDEO FIX: GOOGLE DRIVE IFRAME COMPATIBLE) ================== */
         #page3 {
             background-image: url('hal 3.png');
             background-size: cover;
@@ -303,14 +303,15 @@
             overflow: hidden;
             z-index: 12; 
             box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+            background-color: #000;
         }
 
-        #page3 .video-box-overlay video {
+        /* Mengganti tag video bawaan laptop dengan Iframe Embed Gdrive anti-bocor */
+        #page3 .video-box-overlay iframe {
             width: 100%;
             height: 100%;
-            object-fit: cover;
+            border: none;
             display: block;
-            background-color: #000;
         }
 
         #page3 .fake-next-hitbox {
@@ -327,7 +328,237 @@
             border-radius: 20px;
         }
 
-        /* ================== HALAMAN 4 (PHOTOBOX MODULAR) ================== */
+        /* ================== HALAMAN 3-B (MINI GAME CLAW MACHINE) ================== */
+        #page3b {
+            background-image: url('halaman 3.JPG'); 
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            display: none;
+            position: absolute;
+            width: 100%;
+            height: 100%;
+        }
+
+        .claw-header-text {
+            position: absolute;
+            top: 4%;
+            left: 50%;
+            transform: translateX(-50%);
+            font-family: 'Comic Sans MS', cursive, sans-serif;
+            font-size: 1.8rem;
+            color: #d11244;
+            text-shadow: 1px 2px 4px rgba(255,255,255,0.8);
+            z-index: 30;
+            text-align: center;
+            width: 100%;
+            font-weight: bold;
+        }
+
+        .claw-machine-container {
+            position: absolute;
+            top: 48%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 38.5%; 
+            height: 64%;
+            background: rgba(255, 235, 240, 0.65); 
+            border: 8px solid #ff758f;
+            border-radius: 25px;
+            overflow: hidden;
+            z-index: 12;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.2), inset 0 0 20px rgba(255,255,255,0.4);
+        }
+
+        .claw-rail {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 6px;
+            background: #b2bec3;
+        }
+
+        .claw-string-cable {
+            position: absolute;
+            top: 6px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 4px;
+            height: 40px; 
+            background: #636e72;
+            transition: height 0.1s linear;
+        }
+
+        .claw-head {
+            position: absolute;
+            bottom: -22px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 44px;
+            height: 25px;
+            background: #74b9ff;
+            border-radius: 6px 6px 0 0;
+            border: 2px solid #0984e3;
+        }
+
+        .claw-arm {
+            position: absolute;
+            bottom: -20px;
+            width: 8px;
+            height: 24px;
+            background: #95a5a6;
+            border-radius: 4px;
+            transform-origin: top center;
+            transition: transform 0.2s;
+        }
+        .claw-arm.left { left: 4px; transform: rotate(-25deg); }
+        .claw-arm.right { right: 4px; transform: rotate(25deg); }
+
+        .claw-grabbing .claw-arm.left { transform: rotate(5deg); }
+        .claw-grabbing .claw-arm.right { transform: rotate(-5deg); }
+
+        .items-pool-floor {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 140px; 
+            border-top: 2px dashed rgba(255, 117, 143, 0.3);
+            z-index: 13;
+        }
+
+        .prize-item {
+            font-size: 2.1rem;
+            cursor: pointer;
+            user-select: none;
+            position: absolute;
+            display: inline-block;
+            z-index: 14;
+            transition: top 0.1s linear, left 0.1s linear, transform 0.2s;
+        }
+
+        .prize-chute-hole {
+            position: absolute;
+            bottom: 0;
+            left: 15px;
+            width: 65px;
+            height: 55px;
+            background: #2d3436;
+            border-radius: 10px 10px 0 0;
+            border: 3px solid #ff758f;
+            z-index: 15;
+            box-shadow: inset 0 5px 10px rgba(0,0,0,0.6);
+        }
+
+        .claw-stats-badge {
+            position: absolute;
+            bottom: 19%;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #ff4757;
+            color: white;
+            font-weight: bold;
+            padding: 6px 20px;
+            border-radius: 20px;
+            font-size: 1rem;
+            z-index: 25;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+        }
+
+        #claw-next-gate-btn {
+            position: absolute;
+            bottom: 3.5%;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 110px;
+            height: 45px;
+            cursor: not-allowed;
+            z-index: 26;
+            background: rgba(0,0,0,0.1);
+            border: none;
+            border-radius: 20px;
+            font-weight: bold;
+            color: rgba(255,255,255,0.4);
+            transition: all 0.3s;
+        }
+
+        #claw-next-gate-btn.unlocked {
+            background: #2ed573;
+            color: white;
+            cursor: pointer;
+            box-shadow: 0 5px 20px rgba(46, 213, 115, 0.5);
+            animation: pulseGate 1.5s infinite alternate;
+        }
+
+        @keyframes pulseGate {
+            0% { transform: translateX(-50%) scale(1); }
+            100% { transform: translateX(-50%) scale(1.06); }
+        }
+
+        #prize-photo-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.85);
+            backdrop-filter: blur(8px);
+            z-index: 200;
+            display: none;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+        }
+
+        .photo-prize-frame-content {
+            background: white;
+            padding: 20px;
+            border-radius: 20px;
+            max-width: 80%;
+            max-height: 70%;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border: 4px solid #ff9ff3;
+        }
+
+        .photo-prize-frame-content img {
+            max-width: 100%;
+            max-height: 60vh;
+            object-fit: contain;
+            border-radius: 10px;
+        }
+
+        .btn-download-prize-photo {
+            margin-top: 20px;
+            padding: 12px 30px;
+            background-color: #ff4757;
+            color: white;
+            font-weight: bold;
+            font-size: 1.1rem;
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            box-shadow: 0 5px 15px rgba(255, 71, 87, 0.4);
+            transition: transform 0.2s;
+            text-decoration: none;
+            display: inline-block;
+        }
+        .btn-download-prize-photo:hover { transform: scale(1.05); background-color: #ff6b81; }
+
+        .btn-close-photo-overlay {
+            margin-top: 12px;
+            background: transparent;
+            color: rgba(255,255,255,0.6);
+            border: none;
+            cursor: pointer;
+            font-size: 0.95rem;
+        }
+        .btn-close-photo-overlay:hover { color: white; }
+
+        /* ================== HALAMAN 4 ================== */
         #page4 {
             background-image: url('hal 4.png');
             background-size: 100% 100%;
@@ -543,11 +774,6 @@
             transition: transform 0.2s;
         }
         .next-btn:hover { background-color: #ff6b81; transform: scale(1.05); }
-
-        @keyframes pulseBtn {
-            0% { transform: scale(1); }
-            100% { transform: scale(1.05); }
-        }
     </style>
 </head>
 <body>
@@ -585,17 +811,45 @@
             </div>
         </div>
         <button class="unlock-btn" id="scbk-open-btn">Buka Isi Scrapbook! 📖</button>
-        <button class="arrow-btn" onclick="checkDeveloperPassword()">&rarr;</button>
+        <button class="secret-navigation-btn" onclick="checkDeveloperPassword()">&rarr;</button>
     </div>
 
     <div id="page3" class="page">
         <div class="video-box-overlay">
-            <video id="birthday-video" controls preload="auto">
-                <source src="video-upload.mp4" type="video/mp4">
-                <source src="video-ultah.mp4" type="video/mp4">
-            </video>
+            <iframe id="birthday-drive-iframe" src="https://drive.google.com/file/d/1GNi5CfTlbdglJ8uLj_UpPyDCqpm6-rkI/preview" allow="autoplay"></iframe>
         </div>
-        <button class="fake-next-hitbox" onclick="goToNextScrapbookPage()"></button>
+        <button class="fake-next-hitbox" onclick="goToClawMachinePage3B()"></button>
+    </div>
+
+    <div id="page3b" class="page">
+        <h3 class="claw-header-text">🕹️ Tangkap Kado Hubungan Kita! 🧸</h3>
+        
+        <div class="claw-machine-container" id="hardware-cabinet-box">
+            <div class="claw-rail"></div>
+            
+            <div class="claw-string-cable" id="hardware-claw-cable" style="left: 50%;">
+                <div class="claw-head">
+                    <div class="claw-arm left"></div>
+                    <div class="claw-arm right"></div>
+                </div>
+            </div>
+
+            <div class="prize-chute-hole"></div>
+
+            <div class="items-pool-floor" id="hardware-prizes-floor">
+                </div>
+        </div>
+
+        <div class="claw-stats-badge">Sisa Nyawa Main: <span id="claw-lives-counter">10</span> 🔥</div>
+        <button id="claw-next-gate-btn" onclick="enterPhotoboxPage4()">NEXT</button>
+    </div>
+
+    <div id="prize-photo-overlay">
+        <div class="photo-prize-frame-content">
+            <img id="prize-photo-img-tag" src="" alt="Hadiah Foto Kebersamaan">
+        </div>
+        <a id="prize-download-anchor-tag" href="" download="" class="btn-download-prize-photo">Download Foto Kebersamaan Kita 💖</a>
+        <button class="btn-close-photo-overlay" onclick="closePrizePhotoOverlay()">[ Tutup Tampilan ]</button>
     </div>
 
     <div id="page4" class="page">
@@ -640,18 +894,12 @@
             const horizontalCount = 12; 
             const verticalCount = 5;
 
+            if(!rowTop || !rowBottom || !colLeft || !colRight) return;
             rowTop.innerHTML = ''; rowBottom.innerHTML = ''; colLeft.innerHTML = ''; colRight.innerHTML = '';
 
-            for (let i = 0; i < horizontalCount; i++) {
-                rowTop.innerHTML += '<span>🌸</span>';
-                rowBottom.innerHTML += '<span>🌸</span>';
-            }
-            for (let i = 0; i < verticalCount; i++) {
-                colLeft.innerHTML += '<span>🌸</span>';
-                colRight.innerHTML += '<span>🌸</span>';
-            }
+            for (let i = 0; i < horizontalCount; i++) { rowTop.innerHTML += '<span>🌸</span>'; rowBottom.innerHTML += '<span>🌸</span>'; }
+            for (let i = 0; i < verticalCount; i++) { colLeft.innerHTML += '<span>🌸</span>'; colRight.innerHTML += '<span>🌸</span>'; }
         }
-        generateFlowerBorder();
 
         // BALON MANAGER
         const container = document.getElementById('balloon-container');
@@ -696,12 +944,10 @@
                 scrollIcon.classList.add('scroll-icon');
                 scrollIcon.innerText = "📜";
                 balloon.appendChild(scrollIcon);
-
                 balloon.dataset.message = messages[messageIndex % messages.length];
                 balloon.dataset.type = "letter";
                 messageIndex++;
             }
-
             setupBalloonClick(balloon);
             container.appendChild(balloon);
         }
@@ -712,9 +958,9 @@
 
             const balloon = document.createElement('div');
             balloon.classList.add('balloon');
-            balloon.style.left = (Math.random() * 70 + 15) + '%';
+            balloon.style.left = (Math.random() * 65 + 15) + '%';
 
-            const duration = Math.random() * 3 + 15;
+            const duration = Math.random() * 3 + 14;
             balloon.style.animation = `floatUpAnimation ${duration}s linear forwards`;
 
             balloon.style.background = `radial-gradient(circle at 30% 30%, #ffffff 0%, #ffd700 30%, #b8860b 100%)`;
@@ -740,7 +986,6 @@
             balloon.addEventListener('click', (e) => {
                 e.stopPropagation();
                 balloon.classList.add('pop-animation');
-
                 setTimeout(() => {
                     if (balloon.dataset.message) {
                         secretText.innerText = balloon.dataset.message;
@@ -761,35 +1006,14 @@
         }
 
         setInterval(createNormalBalloon, 3000);
-        setInterval(createGiftBalloon, 25000); 
-
-        nextPageBtn.addEventListener('click', (e) => {
-            e.stopPropagation();
-            overlay.classList.remove('show');
-            overlay.style.display = 'none';
-            document.getElementById('page1').style.display = 'none';
-            document.getElementById('page2').style.display = 'flex';
-            startCountdown();
-        });
-
-        overlay.addEventListener('click', () => {
-            if (nextPageBtn.style.display !== "block") {
-                overlay.classList.remove('show');
-                setTimeout(() => overlay.style.display = 'none', 300);
-            }
-        });
+        setInterval(createGiftBalloon, 7000); 
 
         // TIMING SYSTEM
         let isCountdownActive = true;
         function startCountdown() {
             const targetDate = new Date("June 6, 2026 15:00:00").getTime();
-
             const timerInterval = setInterval(() => {
-                if (!isCountdownActive) {
-                    clearInterval(timerInterval);
-                    return;
-                }
-
+                if (!isCountdownActive) { clearInterval(timerInterval); return; }
                 const now = new Date().getTime();
                 const difference = targetDate - now;
 
@@ -819,38 +1043,222 @@
 
         function checkDeveloperPassword() {
             const userInput = prompt("Masukkan password rahasia untuk masuk ke Halaman 3:");
-            if (userInput === "langmalakas") {
+            if (userInput === "mahalkita") {
                 isCountdownActive = false; 
                 document.getElementById('page2').style.display = 'none';
                 document.getElementById('page3').style.display = 'block'; 
             }
         }
 
-        function goToNextScrapbookPage() {
-            const vid = document.getElementById('birthday-video');
-            if(vid) vid.pause();
+        // Navigasi lompat alur per halaman kado
+        function goToClawMachinePage3B() {
             document.getElementById('page3').style.display = 'none';
+            document.getElementById('page3b').style.display = 'block';
+            activateClawMachineKeyboardSystem(); // Nyalakan sistem engine mini game
+        }
+
+        function goToNextScrapbookPage() {
+            document.getElementById('page3b').style.display = 'none';
             document.getElementById('page4').style.display = 'block'; 
             initiateSmartPhotoboxHalaman4();
         }
 
+
+        // ================== HARDWARE CODE: CLAW MACHINE SYSTEM (.PNG STABLE VERSION) ==================
+        let clawLives = 10;
+        let isClawMoving = false;
+        let isPasswordUnlocked = false;
+
+        const prizePoolData = [
+            { name: "Kado Zonk 🎁", type: "gift-zonk", emoji: "🎁" },
+            { name: "Kado Zonk 🎁", type: "gift-zonk", emoji: "🎁" },
+            { name: "Kado Zonk 🎁", type: "gift-zonk", emoji: "🎁" },
+            { name: "Kado Zonk 🎁", type: "gift-zonk", emoji: "🎁" },
+            { name: "Tas Pink Cantik! 🛍️", type: "gift-tas", emoji: "🛍️" },
+            
+            // Mengunci 4 file berformat .png hasil editanmu di GitHub
+            { name: "Foto Kenangan 1 🔮", type: "ball-photo", emoji: "🔮", file: "bola1.png" },
+            { name: "Foto Kenangan 2 🔮", type: "ball-photo", emoji: "🔮", file: "bola2.png" },
+            { name: "Foto Kenangan 3 🔮", type: "ball-photo", emoji: "🔮", file: "bola3.png" },
+            { name: "Foto Kenangan 4 🔮", type: "ball-photo", emoji: "🔮", file: "bola4.png" },
+            
+            { name: "Kotak Zonk 📦", type: "box-zonk", emoji: "📦" },
+            { name: "Kotak Zonk 📦", type: "box-zonk", emoji: "📦" },
+            { name: "Kunci Password Rahasia! 🔑", type: "box-key", emoji: "🔑" }
+        ];
+
+        function activateClawMachineKeyboardSystem() {
+            const floor = document.getElementById('hardware-prizes-floor');
+            floor.innerHTML = ''; 
+
+            prizePoolData.forEach((item, index) => {
+                const element = document.createElement('span');
+                element.classList.add('prize-item');
+                element.id = `prize-${index}`;
+                element.innerText = item.emoji;
+                element.setAttribute('data-index', index);
+
+                const randomXPercent = Math.random() * 70 + 16; 
+                const randomYBottomPixel = Math.random() * 45;  
+                const randomRotateDegree = Math.random() * 60 - 30; 
+
+                element.style.left = randomXPercent + "%";
+                element.style.bottom = randomYBottomPixel + "px";
+                element.style.transform = `rotate(${randomRotateDegree}deg)`;
+
+                floor.appendChild(element);
+            });
+
+            window.addEventListener('keydown', handleClawMachineKeyboardControl);
+        }
+
+        function handleClawMachineKeyboardControl(e) {
+            if (document.getElementById('page3b').style.display !== 'block' || isClawMoving) return;
+
+            const cable = document.getElementById('hardware-claw-cable');
+            let currentLeftPosition = parseFloat(cable.style.left);
+
+            if (e.key === "ArrowLeft") {
+                if (currentLeftPosition > 12) { cable.style.left = (currentLeftPosition - 4) + "%"; }
+            } else if (e.key === "ArrowRight") {
+                if (currentLeftPosition < 88) { cable.style.left = (currentLeftPosition + 4) + "%"; }
+            } else if (e.key === "ArrowDown" || e.key === " " || e.key === "Enter") {
+                e.preventDefault();
+                triggerClawDropMechanism(); 
+            }
+        }
+
+        function triggerClawDropMechanism() {
+            isClawMoving = true;
+            const cable = document.getElementById('hardware-claw-cable');
+            const machine = document.querySelector('.claw-machine-container');
+            const currentHorizontalLeft = parseFloat(cable.style.left);
+
+            cable.style.height = "255px"; 
+            
+            setTimeout(() => {
+                machine.classList.add('claw-grabbing');
+                const items = document.querySelectorAll('.prize-item');
+                let caughtItemElement = null;
+                let minimumDeltaDistance = 999;
+
+                items.forEach(el => {
+                    const elementLeftPercent = (el.offsetLeft / machine.clientWidth) * 100;
+                    const distanceDelta = Math.abs(elementLeftPercent - currentHorizontalLeft);
+                    if (distanceDelta < minimumDeltaDistance && distanceDelta < 13) {
+                        minimumDeltaDistance = distanceDelta;
+                        caughtItemElement = el;
+                    }
+                });
+
+                if (caughtItemElement) {
+                    setTimeout(() => {
+                        caughtItemElement.style.position = "absolute";
+                        caughtItemElement.style.bottom = "auto";
+                        caughtItemElement.style.top = "20px";
+                        caughtItemElement.style.left = "50px";
+                        caughtItemElement.style.transform = "translateX(-50%) rotate(0deg)";
+                        cable.appendChild(caughtItemElement);
+                        cable.style.height = "40px";
+
+                        setTimeout(() => {
+                            cable.style.transition = "left 1.2s ease-in-out";
+                            cable.style.left = "16%"; 
+
+                            setTimeout(() => {
+                                machine.classList.remove('claw-grabbing');
+                                caughtItemElement.style.top = "190px";
+                                caughtItemElement.style.opacity = "0";
+                                caughtItemElement.style.transition = "top 0.5s ease-in, opacity 0.5s ease";
+
+                                setTimeout(() => {
+                                    const poolIndex = caughtItemElement.getAttribute('data-index');
+                                    processClawGachaResult(prizePoolData[poolIndex]);
+                                    caughtItemElement.remove();
+                                    cable.style.transition = "none";
+                                    cable.style.left = "50%";
+                                    isClawMoving = false;
+                                }, 500);
+                            }, 1200);
+                        }, 700);
+                    }, 300);
+                } else {
+                    setTimeout(() => {
+                        cable.style.height = "40px";
+                        setTimeout(() => {
+                            machine.classList.remove('claw-grabbing');
+                            reduceClawLifeCounter(); 
+                            isClawMoving = false;
+                        }, 500);
+                    }, 600);
+                }
+            }, 700);
+        }
+
+        function processClawGachaResult(item) {
+            if (!item) return;
+
+            if (item.type === "gift-zonk" || item.type === "box-zonk") {
+                alert(`📦 Hasil: ${item.name}\n\nYah zonk, belum beruntung! Coba lagi sayang! 💜`);
+                reduceClawLifeCounter();
+            } 
+            else if (item.type === "gift-tas") {
+                alert(`🛍️ Hasil: ${item.name}\n\nCiyeee dapet kado TAS PINK! Hadiah fisiknya menyusul pas kita ketemu yaa, sekarang lanjut cari kuncinya dulu sayang! 💕`);
+            } 
+            else if (item.type === "ball-photo") {
+                const photoOverlay = document.getElementById('prize-photo-overlay');
+                const imgTag = document.getElementById('prize-photo-img-tag');
+                const downloadAnchor = document.getElementById('prize-download-anchor-tag');
+
+                imgTag.src = item.file;
+                downloadAnchor.href = item.file;
+                downloadAnchor.download = "Foto_Kenangan_Kita_" + item.file;
+
+                isClawMoving = true; 
+                photoOverlay.style.display = "flex";
+            }
+            else if (item.type === "box-key") {
+                isPasswordUnlocked = true;
+                const gateBtn = document.getElementById('claw-next-gate-btn');
+                gateBtn.classList.add('unlocked');
+                alert(`yayy dapet kodenyaa ✨\n\nKodenya adalah: "mahalkita"\n\nSekarang gerbang menuju Photobox Halaman Terakhir sudah terbuka! Klik tombol "NEXT" di bawah untuk meluncur! 😍⭐`);
+            }
+        }
+
+        function closePrizePhotoOverlay() {
+            document.getElementById('prize-photo-overlay').style.display = "none";
+            isClawMoving = false; 
+        }
+
+        function reduceClawLifeCounter() {
+            clawLives--;
+            document.getElementById('claw-lives-counter').innerText = clawLives;
+            if (clawLives <= 0 && !isPasswordUnlocked) {
+                alert("Game Over! Jangan sedih sayang, aku kasih bonus +5 nyawa main lagi gratis biar kamu menang! Hehe 💜");
+                clawLives = 5;
+                document.getElementById('claw-lives-counter').innerText = clawLives;
+            }
+        }
+
+        function enterPhotoboxPage4() {
+            if (!isPasswordUnlocked) {
+                alert("Pintu terkunci! Kamu harus mendapatkan 'Kotak Kunci 🔑' di dalam mesin capit terlebih dahulu sayang!");
+                return;
+            }
+            window.removeEventListener('keydown', handleClawMachineKeyboardControl);
+            goToNextScrapbookPage(); 
+        }
+
+
         // ================== MACHINE LEARNING ENGINE (HALAMAN 4) ==================
-        let lastCapturedDataURL = null;
-        let isCaptured = false;
         let drawingLines = []; 
         let currentPath = [];
-        let lastHandPresent = false;
         let lastFilteredX = null;
         let lastFilteredY = null;
         let drawValidationCounter = 0;
         const FRAME_VALIDATION_THRESHOLD = 9; 
-
         let currentBrushColor = '#ff9ff3'; 
         let currentShadowColor = '#ff4757';
-
-        const videoElement = document.getElementById('webcam-view');
-        const drawCanvas = document.getElementById('drawing-canvas');
-        const drawCtx = drawCanvas.getContext('2d');
 
         function initiateSmartPhotoboxHalaman4() {
             resizeDrawingCanvas();
@@ -860,32 +1268,17 @@
                 locateFile: (file) => `https://cdn.jsdelivr.net/npm/@mediapipe/hands/${file}`
             });
 
-            hands.setOptions({
-                maxNumHands: 1,
-                modelComplexity: 1,
-                minDetectionConfidence: 0.65,
-                minTrackingConfidence: 0.65
-            });
-
+            hands.setOptions({ maxNumHands: 1, modelComplexity: 1, minDetectionConfidence: 0.65, minTrackingConfidence: 0.65 });
             hands.onResults(onHandTrackingResultsWithFilter);
 
             const camera = new Camera(videoElement, {
-                onFrame: async () => {
-                    if (!isCaptured) {
-                        await hands.send({ image: videoElement });
-                    }
-                },
-                width: 1280,
-                height: 720
+                onFrame: async () => { if (!isCaptured) { await hands.send({ image: videoElement }); } },
+                width: 1280, height: 720
             });
             camera.start();
         }
 
-        function resizeDrawingCanvas() {
-            drawCanvas.width = drawCanvas.clientWidth;
-            drawCanvas.height = drawCanvas.clientHeight;
-            redrawStoredLines();
-        }
+        function resizeDrawingCanvas() { drawCanvas.width = drawCanvas.clientWidth; drawCanvas.height = drawCanvas.clientHeight; redrawStoredLines(); }
 
         function changeBrushColor(hexColor, element) {
             currentBrushColor = hexColor;
@@ -900,179 +1293,83 @@
 
         function onHandTrackingResultsWithFilter(results) {
             if (isCaptured) return;
-
             drawCtx.clearRect(0, 0, drawCanvas.width, drawCanvas.height);
             redrawStoredLines();
 
             if (results.multiHandLandmarks && results.multiHandLandmarks.length > 0) {
                 const landmarks = results.multiHandLandmarks[0];
-                const indexTip = landmarks[8]; 
-                const indexBase = landmarks[5];
-                const middleTip = landmarks[12];
-
-                const rawX = (1 - indexTip.x) * drawCanvas.width;
-                const rawY = indexTip.y * drawCanvas.height;
-
+                const indexTip = landmarks[8]; const indexBase = landmarks[5]; const middleTip = landmarks[12];
+                const rawX = (1 - indexTip.x) * drawCanvas.width; const rawY = indexTip.y * drawCanvas.height;
                 const isFingerPointingUp = (indexTip.y < indexBase.y) && (middleTip.y > indexBase.y);
 
                 if (isFingerPointingUp) {
                     drawValidationCounter++;
-
                     if (drawValidationCounter >= FRAME_VALIDATION_THRESHOLD) {
-                        let targetX = rawX;
-                        let targetY = rawY;
-
+                        let targetX = rawX; let targetY = rawY;
                         if (lastFilteredX !== null && lastFilteredY !== null) {
-                            targetX = (lastFilteredX * 0.6) + (rawX * 0.4);
-                            targetY = (lastFilteredY * 0.6) + (rawY * 0.4);
+                            targetX = (lastFilteredX * 0.6) + (rawX * 0.4); targetY = (lastFilteredY * 0.6) + (rawY * 0.4);
                         }
+                        lastFilteredX = targetX; lastFilteredY = targetY;
+                        drawCtx.beginPath(); drawCtx.arc(targetX, targetY, 6, 0, 2 * Math.PI); drawCtx.fillStyle = currentBrushColor; drawCtx.fill();
 
-                        lastFilteredX = targetX;
-                        lastFilteredY = targetY;
-
-                        drawCtx.beginPath();
-                        drawCtx.arc(targetX, targetY, 6, 0, 2 * Math.PI);
-                        drawCtx.fillStyle = currentBrushColor;
-                        drawCtx.fill();
-
-                        if (!lastHandPresent) {
-                            currentPath = [];
-                            drawingLines.push({ points: currentPath, color: currentBrushColor, shadow: currentShadowColor });
-                        }
-                        currentPath.push({ x: targetX, y: targetY });
-                        lastHandPresent = true;
+                        if (!lastHandPresent) { currentPath = []; drawingLines.push({ points: currentPath, color: currentBrushColor, shadow: currentShadowColor }); }
+                        currentPath.push({ x: targetX, y: targetY }); lastHandPresent = true;
                     }
-                } else {
-                    drawValidationCounter = 0;
-                    lastHandPresent = false;
-                    lastFilteredX = null;
-                    lastFilteredY = null;
-                }
-            } else {
-                drawValidationCounter = 0;
-                lastHandPresent = false;
-                lastFilteredX = null;
-                lastFilteredY = null;
-            }
+                } else { drawValidationCounter = 0; lastHandPresent = false; lastFilteredX = null; lastFilteredY = null; }
+            } else { drawValidationCounter = 0; lastHandPresent = false; lastFilteredX = null; lastFilteredY = null; }
         }
 
         function redrawStoredLines() {
-            drawCtx.lineWidth = 5; // Nilasi ketebalan kuas standar monitor (5px)
-            drawCtx.lineCap = 'round';
-            drawCtx.lineJoin = 'round';
-
+            drawCtx.lineWidth = 5; drawCtx.lineCap = 'round'; drawCtx.lineJoin = 'round';
             for (let i = 0; i < drawingLines.length; i++) {
-                const lineData = drawingLines[i];
-                const path = lineData.points;
-                if (path.length < 2) continue;
-                
-                drawCtx.strokeStyle = lineData.color;
-                drawCtx.shadowColor = lineData.shadow;
-                drawCtx.shadowBlur = 4;
-
-                drawCtx.beginPath();
-                drawCtx.moveTo(path[0].x, path[0].y);
-                for (let j = 1; j < path.length; j++) {
-                    drawCtx.lineTo(path[j].x, path[j].y);
-                }
+                const lineData = drawingLines[i]; const path = lineData.points; if (path.length < 2) continue;
+                drawCtx.strokeStyle = lineData.color; drawCtx.shadowColor = lineData.shadow; drawCtx.shadowBlur = 4;
+                drawCtx.beginPath(); drawCtx.moveTo(path[0].x, path[0].y);
+                for (let j = 1; j < path.length; j++) { drawCtx.lineTo(path[j].x, path[j].y); }
                 drawCtx.stroke();
             }
             drawCtx.shadowBlur = 0; 
         }
 
-        function clearDrawingCanvas() {
-            drawingLines = [];
-            currentPath = [];
-            lastFilteredX = null;
-            lastFilteredY = null;
-            drawValidationCounter = 0;
-            drawCtx.clearRect(0, 0, drawCanvas.width, drawCanvas.height);
-        }
+        function clearDrawingCanvas() { drawingLines = []; currentPath = []; lastFilteredX = null; lastFilteredY = null; drawValidationCounter = 0; drawCtx.clearRect(0, 0, drawCanvas.width, drawCanvas.height); }
 
-        // PERBAIKAN MUTLAK: IMPLEMENTASI DYNAMIC SCALING RATIO PIXEL BERDASARKAN MONITOR LAYAR NYATA
         function capturePhotoboxFrame() {
             isCaptured = true;
-            const canvas = document.getElementById('hidden-canvas');
-            const previewRender = document.getElementById('photo-preview-render');
-            const controlPanel = document.getElementById('control-panel-wrapper');
-            const floatingMenu = document.getElementById('floating-menu');
-            const ctx = canvas.getContext('2d');
+            const canvas = document.getElementById('hidden-canvas'); const previewRender = document.getElementById('photo-preview-render');
+            const controlPanel = document.getElementById('control-panel-wrapper'); const floatingMenu = document.getElementById('floating-menu');
+            const ctx = canvas.getContext('2d'); const w = videoElement.videoWidth || 1280; const h = videoElement.videoHeight || 720;
+            canvas.width = w; canvas.height = h;
 
-            const w = videoElement.videoWidth || 1280;
-            const h = videoElement.videoHeight || 720;
-            canvas.width = w;
-            canvas.height = h;
-
-            ctx.translate(w, 0);
-            ctx.scale(-1, 1);
-            ctx.drawImage(videoElement, 0, 0, w, h);
-            ctx.setTransform(1, 0, 0, 1, 0, 0); 
-
-            ctx.lineCap = 'round';
-            ctx.lineJoin = 'round';
-
-            // HITUNG RATIO SKALA SCALING MATEMATIS AKTIF (UKURAN NYATA KAMERA / UKURAN MONITOR BROWSER)
-            const scaleRatioX = w / drawCanvas.width;
-
-            // Mengalikan secara dinamis nilai dasar monitor (5px) dengan rasio skala saat jepret dibuka
-            ctx.lineWidth = 5 * scaleRatioX; 
+            ctx.translate(w, 0); ctx.scale(-1, 1); ctx.drawImage(videoElement, 0, 0, w, h); ctx.setTransform(1, 0, 0, 1, 0, 0); 
+            ctx.lineCap = 'round'; ctx.lineJoin = 'round';
+            const scaleRatioX = w / drawCanvas.width; ctx.lineWidth = 7.3; 
 
             for (let i = 0; i < drawingLines.length; i++) {
-                const lineData = drawingLines[i];
-                const path = lineData.points;
-                if (path.length < 2) continue;
-
-                ctx.strokeStyle = lineData.color;
-                ctx.shadowColor = lineData.shadow;
-                
-                // Menyelaraskan sebaran bias blur lampu neon secara otomatis mengikuti rasio ketebalan garis baru
-                ctx.shadowBlur = 4 * scaleRatioX; 
-
-                ctx.beginPath();
-                ctx.moveTo(path[0].x * scaleRatioX, path[0].y * scaleRatioX);
-                for (let j = 1; j < path.length; j++) {
-                    ctx.lineTo(path[j].x * scaleRatioX, path[j].y * scaleRatioX);
-                }
+                const lineData = drawingLines[i]; const path = lineData.points; if (path.length < 2) continue;
+                ctx.strokeStyle = lineData.color; ctx.shadowColor = lineData.shadow; ctx.shadowBlur = 0; 
+                ctx.beginPath(); ctx.moveTo(path[0].x * scaleRatioX, path[0].y * scaleRatioX);
+                for (let j = 1; j < path.length; j++) { ctx.lineTo(path[j].x * scaleRatioX, path[j].y * scaleRatioX); }
                 ctx.stroke();
             }
-            ctx.shadowBlur = 0; 
-
-            lastCapturedDataURL = canvas.toDataURL('image/jpeg', 0.95);
-            previewRender.src = lastCapturedDataURL;
-            previewRender.style.display = 'block';
-
-            controlPanel.classList.add('controls-active');
-            floatingMenu.style.display = 'none'; 
+            ctx.shadowBlur = 0; lastCapturedDataURL = canvas.toDataURL('image/jpeg', 0.95); previewRender.src = lastCapturedDataURL;
+            previewRender.style.display = 'block'; controlPanel.classList.add('controls-active'); floatingMenu.style.display = 'none'; 
         }
 
         function cancelAndRetakePhoto() {
-            const previewRender = document.getElementById('photo-preview-render');
-            const controlPanel = document.getElementById('control-panel-wrapper');
-            const floatingMenu = document.getElementById('floating-menu');
-
-            previewRender.style.display = 'none';
-            previewRender.src = '';
-            lastCapturedDataURL = null;
-            isCaptured = false;
-            drawValidationCounter = 0;
-
-            controlPanel.classList.remove('controls-active');
-            floatingMenu.style.display = 'flex'; 
+            const previewRender = document.getElementById('photo-preview-render'); const controlPanel = document.getElementById('control-panel-wrapper');
+            const floatingMenu = document.getElementById('floating-menu'); previewRender.style.display = 'none'; previewRender.src = '';
+            lastCapturedDataURL = null; isCaptured = false; drawValidationCounter = 0; controlPanel.classList.remove('controls-active'); floatingMenu.style.display = 'flex'; 
         }
 
         function saveAndResetForNext() {
             if (!lastCapturedDataURL) return;
-
-            const downloadLink = document.createElement('a');
-            downloadLink.href = lastCapturedDataURL;
-            downloadLink.download = 'Photobox_Art_Kita_' + Date.now() + '.jpg';
-            document.body.appendChild(downloadLink);
-            downloadLink.click();
-            document.body.removeChild(downloadLink);
-
-            clearDrawingCanvas();
-            cancelAndRetakePhoto();
+            const downloadLink = document.createElement('a'); downloadLink.href = lastCapturedDataURL;
+            downloadLink.download = 'Photobox_Art_Kita_' + Date.now() + '.jpg'; document.body.appendChild(downloadLink);
+            downloadLink.click(); document.body.removeChild(downloadLink);
+            clearDrawingCanvas(); cancelAndRetakePhoto();
         }
+
+        window.addEventListener('load', () => { generateFlowerBorder(); });
     </script>
 </body>
 </html>
